@@ -1,3 +1,4 @@
 server/package-lock.json
 server/node_modules
+server/yarn.lock
 .idea/
