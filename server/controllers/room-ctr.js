@@ -69,7 +69,7 @@ updateRoom = async (req, res) => {
     })
 }
 
-deleteBooking = async (req, res) => {
+deleteRoom = async (req, res) => {
     await Room.findOneAndDelete({ _id: req.params.id }, (err, room) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
