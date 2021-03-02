@@ -1,39 +1,39 @@
-const Booking = require('../models/booking-model')
+const Reservation = require('../models/reservation-model')
 
-createBooking = (req, res) => {
+createReservation = (req, res) => {
     const body = req.body
 
     if (!body) {
         return res.status(400).json({
             success: false,
-            error: 'You must provide a movie',
+            error: 'You must provide a reservation detail',
         })
     }
 
-    const booking = new Booking(body)
+    const reservation = new Reservation(body)
 
-    if (!booking) {
+    if (!reservation) {
         return res.status(400).json({ success: false, error: err })
     }
 
-    booking
+    reservation
         .save()
         .then(() => {
             return res.status(201).json({
                 success: true,
-                id: booking._id,
-                message: 'Booking created!',
+                id: reservation._id,
+                message: 'Reservation created!',
             })
         })
         .catch(error => {
             return res.status(400).json({
                 error,
-                message: 'Booking not created!',
+                message: 'Reservation not created!',
             })
         })
 }
 
-updateBooking = async (req, res) => {
+updateReservation = async (req, res) => {
     const body = req.body
 
     if (!body) {
@@ -43,83 +43,84 @@ updateBooking = async (req, res) => {
         })
     }
 
-    Booking.findOne({ _id: req.params.id }, (err, booking) => {
+    Reservation.findOne({ _id: req.params.id }, (err, reservation) => {
         if (err) {
             return res.status(404).json({
                 err,
-                message: 'Booking not found!',
+                message: 'Reservation not found!',
             })
         }
-        booking.name = body.name
-        booking.time = body.time
-        booking.rating = body.rating
-        booking
+        reservation.reservationNo = body.reservationNo
+        reservation.time = body.time
+        reservation.date = body.date
+        reservation.roomNo = body.roomNo
+        reservation
             .save()
             .then(() => {
                 return res.status(200).json({
                     success: true,
-                    id: booking._id,
-                    message: 'Booking updated!',
+                    id: reservation._id,
+                    message: 'Reservation updated!',
                 })
             })
             .catch(error => {
                 return res.status(404).json({
                     error,
-                    message: 'Booking not updated!',
+                    message: 'Reseravation not updated!',
                 })
             })
     })
 }
 
-deleteBooking = async (req, res) => {
-    await Booking.findOneAndDelete({ _id: req.params.id }, (err, booking) => {
+deleteReservation = async (req, res) => {
+    await Reservation.findOneAndDelete({ _id: req.params.id }, (err, reservation) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
 
-        if (!booking) {
+        if (!reservation) {
             return res
                 .status(404)
                 .json({ success: false, error: `Booking not found` })
         }
 
-        return res.status(200).json({ success: true, data: booking })
+        return res.status(200).json({ success: true, data: reservation })
     }).catch(err => console.log(err))
 }
 
-getBookingById = async (req, res) => {
-    await Booking.findOne({ _id: req.params.id }, (err, booking) => {
+getReservationById = async (req, res) => {
+    await Reservation.findOne({ _id: req.params.id }, (err, reservation) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
 
-        if (!booking) {
+        if (!reservation) {
             return res
                 .status(404)
                 .json({ success: false, error: `Booking not found` })
         }
-        return res.status(200).json({ success: true, data: movie })
+        return res.status(200).json({ success: true, data: reservation })
     }).catch(err => console.log(err))
 }
 
-getBookings = async (req, res) => {
-    await Booking.find({}, (err, bookings) => {
+getReservations = async (req, res) => {
+    await Reservation.find({}, (err, reservations) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
-        if (!bookings.length) {
+        if (!reservations.length) {
             return res
                 .status(404)
                 .json({ success: false, error: `Movie not found` })
         }
-        return res.status(200).json({ success: true, data: bookings })
+        return res.status(200).json({ success: true, data: reservations })
     }).catch(err => console.log(err))
 }
 
 module.exports = {
-    createBooking,
-    updateBooking,
-    deleteBooking,
-    getBookings,
-    getBookingById,
+    createReservation,
+    updateReservation,
+    deleteReservation,
+    getReservations,
+    getReservationById,
 }

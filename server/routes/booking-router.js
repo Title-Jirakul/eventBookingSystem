@@ -1,16 +1,16 @@
 const express = require('express')
 
-const BookingCtrl = require('../controllers/booking-ctrl')
+const ReservationCtrl = require('../controllers/reservation-ctrl')
 const RoomCtrl = require('../controllers/room-ctr')
 const CustomerPassCtr = require('../controllers/customer-ctr')
 
 const router = express.Router()
 
-router.post('/booking', BookingCtrl.createBooking)
-router.put('/booking/:id', BookingCtrl.updateBooking)
-router.delete('/booking/:id', BookingCtrl.deleteBooking)
-router.get('/booking/:id', BookingCtrl.getBookingById)
-router.get('/bookings', BookingCtrl.getBookings)
+router.post('/reservation', ReservationCtrl.createReservation)
+router.put('/reservation/:id', ReservationCtrl.updateReservation)
+router.delete('/reservation/:id', ReservationCtrl.deleteReservation)
+router.get('/reservation/:id', ReservationCtrl.getReservationById)
+router.get('/reservations', ReservationCtrl.getReservations)
 
 router.post('/room', RoomCtrl.createRoom)
 router.put('/room/:id', RoomCtrl.updateRoom)
