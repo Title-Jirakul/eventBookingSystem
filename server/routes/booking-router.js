@@ -18,10 +18,10 @@ router.delete('/room/:id', RoomCtrl.deleteRoom)
 router.get('/rooms/:id', RoomCtrl.getRoomByDate)
 router.get('/rooms', RoomCtrl.getRooms)
 
-router.post('/room', CustomerPassCtr.createPass)
-router.put('/room/:id', CustomerPassCtr.updatePass)
-router.delete('/room/:id', CustomerPassCtr.deletePass)
-router.get('/rooms/:id', CustomerPassCtr.getPassByReservationId)
-router.get('/rooms', CustomerPassCtr.getPasses)
+router.post('/pass', CustomerPassCtr.createPass)
+router.put('/pass/:id', CustomerPassCtr.updatePass)
+router.delete('/pass/:id', CustomerPassCtr.deletePass)
+router.get('/pass/:id', CustomerPassCtr.getPassByReservationId)
+router.get('/passes', CustomerPassCtr.getPasses)
 
 module.exports = router
