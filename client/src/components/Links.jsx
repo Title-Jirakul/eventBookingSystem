@@ -25,13 +25,13 @@ class Links extends Component {
                 <Collapse>
                     <List>
                         <Item>
-                            <Link to="/movies/list" className="nav-link">
-                                Reservation List
+                            <Link to="/reservations/create" className="nav-link">
+                                Create Reservation
                             </Link>
                         </Item>
                         <Item>
-                            <Link to="/movies/create" className="nav-link">
-                                Create Reservation
+                            <Link to="/reservations/list" className="nav-link">
+                                Reservations
                             </Link>
                         </Item>
                     </List>
