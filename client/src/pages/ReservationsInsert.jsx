@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import api from '../api'
 
+import Dropdown from 'react-bootstrap/Dropdown';
+
 import styled from 'styled-components'
 
 const Title = styled.h1.attrs({
@@ -76,24 +78,36 @@ class ReservationsInsert extends Component {
         const { reservationNumber, roomSetting } = this.state
         return (
             <Wrapper>
-                <Title>Create Reservation</Title>
+                <Title>Reservation</Title>
 
-                <Label>Reservation Number: </Label>
+                <Label>Pass Number: </Label>
                 <InputText
                     type="text"
                     value={reservationNumber}
                     onChange={this.handleChangeInputReservationNumber}
                 />
 
-                <Label>Avaliable Reserves: </Label>
+                <Label>Avaliable Classes: </Label>
                 <InputText
                     type="text"
                     value={roomSetting}
                     onChange={this.handleChangeInputRoomSetting}
                 />
 
-                <Button onClick={this.handleCreateReservation}>Add Reservation</Button>
-                <CancelButton href={'/reservations/create'}>Cancel</CancelButton>
+                <Dropdown>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                        Available Classes
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                        <Dropdown.Item href="#/action-1">Date: 25/01/2021, Class No: 1, Time: 10am, Capacity: 10, Max Capacity: 30</Dropdown.Item>
+                        <Dropdown.Item href="#/action-2">Date: 25/01/2021, Class No: 2, Time: 10am, Capacity: 20, Max Capacity: 30</Dropdown.Item>
+                        <Dropdown.Item href="#/action-3">Date: 25/01/2021, Class No: 3, Time: 10am, Capacity: 5, Max Capacity: 30</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+
+                <Button onClick={this.handleCreateReservation}>Book</Button>
+                <CancelButton href={'/reservations/create'}>Clear</CancelButton>
             </Wrapper>
         )
     }

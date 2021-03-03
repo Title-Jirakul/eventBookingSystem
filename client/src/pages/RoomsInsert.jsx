@@ -91,9 +91,9 @@ class RoomsInsert extends Component {
         const { roomNo, time, date, maxCapacity } = this.state
         return (
             <Wrapper>
-                <Title>Create Room</Title>
+                <Title>Add Class</Title>
 
-                <Label>Room Number: </Label>
+                <Label>Class Number: </Label>
                 <InputText
                     type="text"
                     value={roomNo}
@@ -126,7 +126,7 @@ class RoomsInsert extends Component {
                     onChange={this.handleChangeInputMaxCapacity}
                 />
 
-                <Button onClick={this.handleCreateRoom}>Add Room</Button>
+                <Button onClick={this.handleCreateRoom}>Add Class</Button>
                 <CancelButton href={'/rooms/create'}>Cancel</CancelButton>
             </Wrapper>
         )

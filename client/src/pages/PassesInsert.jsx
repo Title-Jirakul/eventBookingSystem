@@ -94,9 +94,9 @@ class PassesInsert extends Component {
         const { reservationNo, name, passType, dateIssued, isActive } = this.state
         return (
             <Wrapper>
-                <Title>Create Pass</Title>
+                <Title>Add Pass</Title>
 
-                <Label>Reservation Number: </Label>
+                <Label>Pass Number: </Label>
                 <InputText
                     type="text"
                     value={reservationNo}
