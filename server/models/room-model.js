@@ -7,6 +7,7 @@ const Rooms = new Schema(
         time: { type: String, required: true },
         date: { type: String, required: true },
         capacity: { type: Number, required: true },
+        maxCapacity: { type: Number, required: true },
     },
     { timestamps: true },
 )

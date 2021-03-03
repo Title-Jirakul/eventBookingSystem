@@ -19,7 +19,7 @@ class Links extends Component {
     render() {
         return (
             <React.Fragment>
-                <Link to="/" className="navbar-brand">
+                <Link to="/reservations/create" className="navbar-brand">
                     Reservation Booking System
                 </Link>
                 <Collapse>
@@ -27,6 +27,16 @@ class Links extends Component {
                         <Item>
                             <Link to="/reservations/create" className="nav-link">
                                 Create Reservation
+                            </Link>
+                        </Item>
+                        <Item>
+                            <Link to="/rooms/create" className="nav-link">
+                                Create Room
+                            </Link>
+                        </Item>
+                        <Item>
+                            <Link to="/passes/create" className="nav-link">
+                                Create Pass
                             </Link>
                         </Item>
                         <Item>
