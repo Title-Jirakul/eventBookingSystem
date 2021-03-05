@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import api from '../api'
 
-import Dropdown from 'react-bootstrap/Dropdown';
+import Dropdown from 'react-bootstrap/Dropdown'
 
 import styled from 'styled-components'
 
@@ -20,6 +20,11 @@ const Label = styled.label`
 `
 
 const InputText = styled.input.attrs({
+    className: 'form-control',
+})`
+    margin: 5px;
+`
+const InputSelect = styled.select.attrs({
     className: 'form-control',
 })`
     margin: 5px;
@@ -43,7 +48,9 @@ class ReservationsInsert extends Component {
 
         this.state = {
             reservationNumber: '',
+            name: '',
             roomSetting: '',
+            options: null,
         }
     }
 
@@ -52,30 +59,43 @@ class ReservationsInsert extends Component {
         this.setState({ reservationNumber })
     }
 
+    handleChangeInputName = async event => {
+        const name = event.target.value
+        this.setState({ name })
+    }
+
     handleChangeInputRoomSetting = async event => {
         const roomSetting = event.target.value
         this.setState({ roomSetting })
     }
 
     handleCreateReservation = async () => {
-        const { reservationNumber, roomSetting } = this.state
-        const settingJSON = JSON.parse(roomSetting)
-        const time = settingJSON.time
-        const date = settingJSON.date
-        const roomNumber = settingJSON.roomNo
-        const payload = { reservationNumber, time, date, roomNumber }
+        const { reservationNumber, name, roomSetting } = this.state
+        const roomSettingJSON = JSON.parse(roomSetting)
+        const time = roomSettingJSON.time
+        const date = roomSettingJSON.date
+        const roomNumber = roomSettingJSON.roomNo
+        const payload = { reservationNo: reservationNumber, name: name, time: time, date: date, roomNo: roomNumber }
 
         await api.createReservation(payload).then(res => {
             window.alert(`Reservation created successfully`)
-            this.setState({
-                reservationNumber: '',
-                roomSetting: '',
-            })
+            window.location.reload();
         })
     }
 
+    getOptions = async () => {
+       await api.getRooms().then(res => {
+          this.setState({options: res.data.data})
+          console.log("get option")
+       })
+    }
+
+    async componentDidMount() {
+      {this.getOptions()}
+    }
+
     render() {
-        const { reservationNumber, roomSetting } = this.state
+        const { reservationNumber, name, roomSetting, options } = this.state
         return (
             <Wrapper>
                 <Title>Reservation</Title>
@@ -87,25 +107,24 @@ class ReservationsInsert extends Component {
                     onChange={this.handleChangeInputReservationNumber}
                 />
 
-                <Label>Avaliable Classes: </Label>
+                <Label>Name: </Label>
                 <InputText
                     type="text"
-                    value={roomSetting}
-                    onChange={this.handleChangeInputRoomSetting}
+                    value={name}
+                    onChange={this.handleChangeInputName}
                 />
 
-                <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                        Available Classes
-                    </Dropdown.Toggle>
-
-                    <Dropdown.Menu>
-                        <Dropdown.Item href="#/action-1">Date: 25/01/2021, Class No: 1, Time: 10am, Capacity: 10, Max Capacity: 30</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Date: 25/01/2021, Class No: 2, Time: 10am, Capacity: 20, Max Capacity: 30</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Date: 25/01/2021, Class No: 3, Time: 10am, Capacity: 5, Max Capacity: 30</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
-
+                <Label>Avaliable Classes: </Label>
+                <InputSelect onChange={this.handleChangeInputRoomSetting} defaultvalue="">
+                   <option hidden disabled selected value>-- Select an option --</option>
+                   {this.state.options && this.state.options.map(object => {
+                      return <option value={JSON.stringify(object)}>{
+                      " Room: " + object.roomNo +
+                      " ,Date: " + object.date + 
+                      " ,Time: " + object.time + 
+                      " ,Capacity: " + object.capacity + "/" + object.maxCapacity}</option>
+                   })}
+                </InputSelect>
                 <Button onClick={this.handleCreateReservation}>Book</Button>
                 <CancelButton href={'/reservations/create'}>Clear</CancelButton>
             </Wrapper>

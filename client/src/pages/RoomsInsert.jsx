@@ -24,6 +24,12 @@ const InputText = styled.input.attrs({
     margin: 5px;
 `
 
+const InputSelect = styled.select.attrs({
+    className: 'form-control',
+})`
+    margin: 5px;
+`
+
 const Button = styled.button.attrs({
     className: `btn btn-primary`,
 })`
@@ -72,7 +78,6 @@ class RoomsInsert extends Component {
 
     handleCreateRoom = async () => {
         const { roomNo, time, date, maxCapacity} = this.state
-        //const arrayTime = time.split('/')
         const capacity = 0
         const payload = { roomNo, time, date, capacity, maxCapacity}
 
@@ -94,11 +99,10 @@ class RoomsInsert extends Component {
                 <Title>Add Class</Title>
 
                 <Label>Class Number: </Label>
-                <InputText
-                    type="text"
-                    value={roomNo}
-                    onChange={this.handleChangeInputRoomNo}
-                />
+                <InputSelect onChange={this.handleChangeInputRoomNo} defaultvalue={roomNo}>
+                    <option hidden disabled selected value>-- Select an option --</option>
+                    <option value="roomNo 1">RoomNo 1</option>
+                </InputSelect>
 
                 <Label>Time: </Label>
                 <InputText
