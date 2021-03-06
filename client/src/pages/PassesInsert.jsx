@@ -24,6 +24,12 @@ const InputText = styled.input.attrs({
     margin: 5px;
 `
 
+const InputSelect = styled.select.attrs({
+    className: 'form-control',
+})`
+    margin: 5px;
+`
+
 const Button = styled.button.attrs({
     className: `btn btn-primary`,
 })`
@@ -111,11 +117,10 @@ class PassesInsert extends Component {
                 />
 
                 <Label>Pass Type: </Label>
-                <InputText
-                    type="text"
-                    value={passType}
-                    onChange={this.handleChangeInputPassType}
-                />
+                <InputSelect onChange={this.handleChangeInputPassType} defaultvalue="">
+                    <option hidden disabled selected value>-- Select an option --</option>
+                    <option value="pass type 1">Pass Type 1</option>
+                </InputSelect>
 
                 <Label>Date Issued: </Label>
                 <InputText
@@ -124,13 +129,14 @@ class PassesInsert extends Component {
                     onChange={this.handleChangeInputDateIssued}
                 />
 
+                <div>
                 <Label>Is Active: </Label>
                 <input
                     type="checkbox"
                     checked = {this.state.isActive}
                     onChange={this.handleChangeInputIsActive}
                 />
-
+                </div>
                 <Button onClick={this.handleCreatePass}>Add Pass</Button>
                 <CancelButton href={'/passes/create'}>Cancel</CancelButton>
             </Wrapper>
