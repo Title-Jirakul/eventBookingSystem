@@ -23,7 +23,7 @@ class DeleteClass extends Component {
                 `Do tou want to delete this class permanently?`,
             )
         ) {
-            api.deleteReservation(this.props.id)
+            api.deleteRoom(this.props.id)
             window.location.reload()
         }
     }
