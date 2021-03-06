@@ -50,6 +50,11 @@ class Links extends Component {
                                 All Reservations
                             </Link>
                         </Item>
+                        <Item>
+                            <Link to="/passes/list" className="nav-link">
+                                All Passes
+                            </Link>
+                        </Item>
                     </List>
                 </Collapse>
             </React.Fragment>

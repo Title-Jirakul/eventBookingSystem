@@ -14,16 +14,16 @@ const Delete = styled.div`
     cursor: pointer;
 `
 
-class DeleteClass extends Component {
+class DeletePass extends Component {
     deleteUser = event => {
         event.preventDefault()
 
         if (
             window.confirm(
-                `Do tou want to delete this class permanently?`,
+                `Do tou want to delete the pass ${this.props.reservationNo} permanently?`,
             )
         ) {
-            api.deleteReservation(this.props.id)
+            api.deletePass(this.props.id)
             window.location.reload()
         }
     }
@@ -33,11 +33,11 @@ class DeleteClass extends Component {
     }
 }
 
-class ClassList extends Component {
+class PassList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            classes: [],
+            passes: [],
             columns: [],
             isLoading: false,
         }
@@ -46,42 +46,46 @@ class ClassList extends Component {
     componentDidMount = async () => {
         this.setState({ isLoading: true })
 
-        await api.getRooms().then(classes => {
+        await api.getPasses().then(passes => {
+            const passData = passes.data.data
+            passData.map(data => {
+               data.isActive = data.isActive ? "Yes" : "No"
+            })
             this.setState({
-                classes: classes.data.data,
+                passes: passData,
                 isLoading: false,
             })
         })
     }
 
     render() {
-        const { classes, isLoading } = this.state
-        console.log('TCL: classesList -> render -> classes', classes)
+        const { passes, isLoading } = this.state
+        console.log('TCL: passesList -> render -> passes', passes)
 
         const columns = [
             {
-                Header: 'Room No',
-                accessor: 'roomNo',
+                Header: 'Reservation No',
+                accessor: 'reservationNo',
                 filterable: true,
             },
             {
-                Header: 'Date',
-                accessor: 'date',
+                Header: 'Name',
+                accessor: 'name',
                 filterable: true,
             },
             {
-                Header: 'Time',
-                accessor: 'time',
+                Header: 'Pass Type',
+                accessor: 'passType',
                 filterable: true,
             },
             {
-                Header: 'Max Capacity',
-                accessor: 'maxCapacity',
+                Header: 'Date Issued',
+                accessor: 'dateIssued',
                 filterable: true,
             },
             {
-                Header: 'Capacity',
-                accessor: 'capacity',
+                Header: 'Is Active',
+                accessor: 'isActive',
                 filterable: true,
             },
             {
@@ -90,7 +94,7 @@ class ClassList extends Component {
                 Cell: function(props) {
                     return (
                         <span>
-                            <DeleteClass id={props.original._id}/>
+                            <DeletePass id={props.original._id} reservationNo={props.original.reservationNo}/>
                         </span>
                     )
                 },
@@ -98,7 +102,7 @@ class ClassList extends Component {
         ]
 
         let showTable = true
-        if (!classes.length) {
+        if (!passes.length) {
             showTable = false
         }
 
@@ -106,7 +110,7 @@ class ClassList extends Component {
             <Wrapper>
                 {showTable && (
                     <ReactTable
-                        data={classes}
+                        data={passes}
                         columns={columns}
                         loading={isLoading}
                         defaultPageSize={10}
@@ -119,4 +123,4 @@ class ClassList extends Component {
     }
 }
 
-export default ClassList
+export default PassList

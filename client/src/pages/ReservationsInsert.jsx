@@ -80,17 +80,19 @@ class ReservationsInsert extends Component {
         await api.createReservation(payload).then(res => {
             window.alert(`Reservation created successfully`)
             window.location.reload();
+        }).catch(res => {
+            window.alert(`Reservation created failed`)
+            window.location.reload();
         })
     }
 
     getOptions = async () => {
        await api.getRooms().then(res => {
           this.setState({options: res.data.data})
-          console.log("get option")
        })
     }
 
-    async componentDidMount() {
+    componentDidMount = async () => {
       {this.getOptions()}
     }
 
