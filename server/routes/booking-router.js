@@ -14,6 +14,7 @@ router.get('/reservations', ReservationCtrl.getReservations)
 
 router.post('/room', RoomCtrl.createRoom)
 router.put('/room/:id', RoomCtrl.updateRoom)
+router.put('/roomByOne/:id', RoomCtrl.updateRoomByOne)
 router.delete('/room/:id', RoomCtrl.deleteRoom)
 router.get('/rooms/:id', RoomCtrl.getRoomByDate)
 router.get('/rooms', RoomCtrl.getRooms)

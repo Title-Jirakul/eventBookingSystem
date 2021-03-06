@@ -50,6 +50,36 @@ updateRoom = async (req, res) => {
                 message: 'Room not found!',
             })
         }
+        room.roomNo = body.roomNo
+        room.time = body.time
+        room.date = body.date
+        room.maxCapacity = body.maxCapacity
+        room
+            .save()
+            .then(() => {
+                return res.status(200).json({
+                    success: true,
+                    id: room._id,
+                    message: 'Room updated!',
+                })
+            })
+            .catch(error => {
+                return res.status(404).json({
+                    error,
+                    message: 'Room not updated!',
+                })
+            })
+    })
+}
+
+updateRoomByOne = async (req, res) => {
+    Room.findOne({ _id: req.params.id }, (err, room) => {
+        if (err) {
+            return res.status(404).json({
+                err,
+                message: 'Room not found!',
+            })
+        }
         room.capacity = room.capacity + 1
         room
             .save()
@@ -117,6 +147,7 @@ getRooms = async (req, res) => {
 module.exports = {
     createRoom,
     updateRoom,
+    updateRoomByOne,
     deleteRoom,
     getRooms,
     getRoomByDate,

@@ -13,6 +13,7 @@ export const getReservationById = id => api.get(`/reservation/${id}`)
 export const createRoom = payload => api.post(`/room`, payload)
 export const getRooms = () => api.get(`/rooms`)
 export const updateRoom = (id, payload) => api.put(`/room/${id}`, payload)
+export const updateRoomByOne = id => api.put(`/roomByOne/${id}`)
 export const deleteRoom = id => api.delete(`/room/${id}`)
 export const getRoomByDate = id => api.get(`/room/${id}`)
 
@@ -32,6 +33,7 @@ const apis = {
     createRoom,
     getRooms,
     updateRoom,
+    updateRoomByOne,
     deleteRoom,
     getRoomByDate,
 

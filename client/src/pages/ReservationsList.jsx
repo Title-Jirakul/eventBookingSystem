@@ -54,6 +54,11 @@ class ReservationsList extends Component {
         })
     }
 
+    filterMethod = (filter, row) => {
+        const id = filter.pivotId || filter.id
+        return row[id] !== undefined ? row[id].toLowerCase().startsWith(filter.value.toLowerCase()) : true
+    }
+
     render() {
         const { reservations, isLoading } = this.state
         console.log('TCL: reservationsList -> render -> reservations', reservations)
@@ -63,26 +68,31 @@ class ReservationsList extends Component {
                 Header: 'Reservation No',
                 accessor: 'reservationNo',
                 filterable: true,
+                filterMethod: this.filterMethod,
             },
             {
                 Header: 'Name',
                 accessor: 'name',
                 filterable: true,
+                filterMethod: this.filterMethod,
             },
             {
                 Header: 'Date',
                 accessor: 'date',
                 filterable: true,
+                filterMethod: this.filterMethod,
             },
             {
                 Header: 'Time',
                 accessor: 'time',
                 filterable: true,
+                filterMethod: this.filterMethod,
             },
             {
                 Header: 'Room No',
                 accessor: 'roomNo',
                 filterable: true,
+                filterMethod: this.filterMethod,
             },
             {
                 Header: '',
