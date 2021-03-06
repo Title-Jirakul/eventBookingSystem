@@ -93,6 +93,9 @@ class PassesInsert extends Component {
                dateIssued: '',
                isActive: true,
             })
+        }).catch(res => {
+            window.alert(`Reservation created failed`)
+            window.location.reload();
         })
     }
 

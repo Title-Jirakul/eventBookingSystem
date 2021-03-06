@@ -89,6 +89,9 @@ class RoomsInsert extends Component {
                date: '',
                maxCapacity: 30,
             })
+        }).catch(res => {
+            window.alert(`Reservation created failed`)
+            window.location.reload();
         })
     }
 
