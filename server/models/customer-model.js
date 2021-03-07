@@ -5,9 +5,9 @@ const CustomersPass = new Schema(
     {
         reservationNo: { type: String, required: true },
         name: { type: String, required: true },
-        passType: { type: String, required: true },
-        dateIssued: { type: String, required: true },
-        isActive: { type: Boolean, required: false },
+        passType: { type: String, required: false },
+        phoneNo: { type: String, required: false },
+        isActive: { type: Boolean, required: false, default: true },
     },
     { timestamps: true },
 )

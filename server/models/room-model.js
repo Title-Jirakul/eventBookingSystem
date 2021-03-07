@@ -6,8 +6,10 @@ const Rooms = new Schema(
         roomNo: { type: String, required: true },
         time: { type: String, required: true },
         date: { type: String, required: true },
-        capacity: { type: Number, required: true },
-        maxCapacity: { type: Number, required: true },
+        capacity: { type: Number, required: true, default: 0 },
+        maxCapacity: { type: Number, required: true, default: 30 },
+        className: { type: String, required: false },
+        instructor: { type: String, required: false },
     },
     { timestamps: true },
 )

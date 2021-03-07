@@ -54,6 +54,9 @@ updateReservation = async (req, res) => {
         reservation.time = body.time
         reservation.date = body.date
         reservation.roomNo = body.roomNo
+        reservation.phoneNo = body.phoneNo
+        reservation.name = body.name
+        reservation.name = body.lastName
         reservation
             .save()
             .then(() => {
@@ -88,6 +91,7 @@ deleteReservation = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+// TODO: get reservationByReservationNo
 getReservationById = async (req, res) => {
     await Reservation.findOne({ _id: req.params.id }, (err, reservation) => {
         if (err) {

@@ -52,7 +52,7 @@ updatePass = async (req, res) => {
         }
         pass.name = body.name
         pass.passType = body.passType
-        pass.dateIssued = body.dateIssued
+        pass.phoneNo = body.phoneNo
         pass.isActive = body.isActive
         pass
             .save()

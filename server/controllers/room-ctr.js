@@ -6,7 +6,7 @@ createRoom = (req, res) => {
     if (!body) {
         return res.status(400).json({
             success: false,
-            error: 'You must provide a room',
+            error: 'You must provide a class',
         })
     }
 
@@ -22,13 +22,13 @@ createRoom = (req, res) => {
             return res.status(201).json({
                 success: true,
                 id: room._id,
-                message: 'Room created!',
+                message: 'Class created!',
             })
         })
         .catch(error => {
             return res.status(400).json({
                 error,
-                message: 'Room not created!',
+                message: 'Class not created!',
             })
         })
 }
@@ -47,26 +47,28 @@ updateRoom = async (req, res) => {
         if (err) {
             return res.status(404).json({
                 err,
-                message: 'Room not found!',
+                message: 'Class not found!',
             })
         }
         room.roomNo = body.roomNo
         room.time = body.time
         room.date = body.date
         room.maxCapacity = body.maxCapacity
+        room.className = body.className
+        room.instructor = body.instructor
         room
             .save()
             .then(() => {
                 return res.status(200).json({
                     success: true,
                     id: room._id,
-                    message: 'Room updated!',
+                    message: 'Class updated!',
                 })
             })
             .catch(error => {
                 return res.status(404).json({
                     error,
-                    message: 'Room not updated!',
+                    message: 'Class not updated!',
                 })
             })
     })
@@ -77,7 +79,7 @@ updateRoomByOne = async (req, res) => {
         if (err) {
             return res.status(404).json({
                 err,
-                message: 'Room not found!',
+                message: 'Class not found!',
             })
         }
         room.capacity = room.capacity + 1
@@ -87,13 +89,13 @@ updateRoomByOne = async (req, res) => {
                 return res.status(200).json({
                     success: true,
                     id: room._id,
-                    message: 'Room updated!',
+                    message: 'Class updated!',
                 })
             })
             .catch(error => {
                 return res.status(404).json({
                     error,
-                    message: 'Room not updated!',
+                    message: 'Class not updated!',
                 })
             })
     })
@@ -108,7 +110,7 @@ deleteRoom = async (req, res) => {
         if (!room) {
             return res
                 .status(404)
-                .json({ success: false, error: `Room not found` })
+                .json({ success: false, error: `Class not found` })
         }
 
         return res.status(200).json({ success: true, data: room })
@@ -124,7 +126,7 @@ getRoomByDate = async (req, res) => {
         if (!room) {
             return res
                 .status(404)
-                .json({ success: false, error: `Room not found` })
+                .json({ success: false, error: `Class not found` })
         }
         return res.status(200).json({ success: true, data: room })
     }).catch(err => console.log(err))
@@ -138,7 +140,7 @@ getRooms = async (req, res) => {
         if (!rooms.length) {
             return res
                 .status(404)
-                .json({ success: false, error: `Movie not found` })
+                .json({ success: false, error: `Classes not found` })
         }
         return res.status(200).json({ success: true, data: rooms })
     }).catch(err => console.log(err))
