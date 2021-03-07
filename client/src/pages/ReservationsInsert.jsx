@@ -78,6 +78,8 @@ class ReservationsInsert extends Component {
         const payload = { reservationNo: reservationNumber, name: name, time: time, date: date, roomNo: roomNumber }
 
         await api.createReservation(payload).then(res => {
+            api.updateRoomByOne(roomSettingJSON._id)
+        }).then(res => {
             window.alert(`Reservation created successfully`)
             window.location.reload();
         }).catch(res => {
@@ -88,7 +90,8 @@ class ReservationsInsert extends Component {
 
     getOptions = async () => {
        await api.getRooms().then(res => {
-          this.setState({options: res.data.data})
+          let options = res.data.data.filter(data => data.capacity < data.maxCapacity)
+          this.setState({options: options})
        })
     }
 
@@ -116,7 +119,7 @@ class ReservationsInsert extends Component {
                     onChange={this.handleChangeInputName}
                 />
 
-                <Label>Avaliable Classes: </Label>
+                <Label>Available Classes: </Label>
                 <InputSelect onChange={this.handleChangeInputRoomSetting} defaultvalue="">
                    <option hidden disabled selected value>-- Select an option --</option>
                    {this.state.options && this.state.options.map(object => {
