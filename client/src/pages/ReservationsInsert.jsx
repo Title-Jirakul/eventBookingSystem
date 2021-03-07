@@ -81,7 +81,7 @@ class ReservationsInsert extends Component {
             window.alert(`Reservation created successfully`)
             window.location.reload();
         }).catch(res => {
-            window.alert(`Reservation created failed`)
+            window.alert(`Reservation creation failed`)
             window.location.reload();
         })
     }

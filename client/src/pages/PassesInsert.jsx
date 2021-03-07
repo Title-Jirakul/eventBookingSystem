@@ -94,7 +94,7 @@ class PassesInsert extends Component {
                isActive: true,
             })
         }).catch(res => {
-            window.alert(`Reservation created failed`)
+            window.alert(`Pass creation failed`)
             window.location.reload();
         })
     }

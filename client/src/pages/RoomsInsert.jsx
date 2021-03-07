@@ -82,7 +82,7 @@ class RoomsInsert extends Component {
         const payload = { roomNo, time, date, capacity, maxCapacity}
 
         await api.createRoom(payload).then(res => {
-            window.alert(`Room Created successfully`)
+            window.alert(`Class Created successfully`)
             this.setState({
                roomNo: '',
                time: '',
@@ -90,7 +90,7 @@ class RoomsInsert extends Component {
                maxCapacity: 30,
             })
         }).catch(res => {
-            window.alert(`Reservation created failed`)
+            window.alert(`Class creation failed`)
             window.location.reload();
         })
     }
