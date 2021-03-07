@@ -23,7 +23,7 @@ class DeleteClass extends Component {
                 `Do tou want to delete this class permanently?`,
             )
         ) {
-            api.deleteReservation(this.props.id)
+            api.deleteRoom(this.props.id)
             window.location.reload()
         }
     }
@@ -54,6 +54,11 @@ class ClassList extends Component {
         })
     }
 
+    filterMethod = (filter, row) => {
+        const id = filter.pivotId || filter.id
+        return row[id] !== undefined ? row[id].toLowerCase().startsWith(filter.value.toLowerCase()) : true
+    }
+
     render() {
         const { classes, isLoading } = this.state
         console.log('TCL: classesList -> render -> classes', classes)
@@ -63,16 +68,19 @@ class ClassList extends Component {
                 Header: 'Room No',
                 accessor: 'roomNo',
                 filterable: true,
+                filterMethod: this.filterMethod,
             },
             {
                 Header: 'Date',
                 accessor: 'date',
                 filterable: true,
+                filterMethod: this.filterMethod,
             },
             {
                 Header: 'Time',
                 accessor: 'time',
                 filterable: true,
+                filterMethod: this.filterMethod,
             },
             {
                 Header: 'Max Capacity',

@@ -58,6 +58,11 @@ class PassList extends Component {
         })
     }
 
+    filterMethod = (filter, row) => {
+        const id = filter.pivotId || filter.id
+        return row[id] !== undefined ? row[id].toLowerCase().startsWith(filter.value.toLowerCase()) : true
+    }
+
     render() {
         const { passes, isLoading } = this.state
         console.log('TCL: passesList -> render -> passes', passes)
@@ -67,26 +72,31 @@ class PassList extends Component {
                 Header: 'Reservation No',
                 accessor: 'reservationNo',
                 filterable: true,
+                filterMethod: this.filterMethod,
             },
             {
                 Header: 'Name',
                 accessor: 'name',
                 filterable: true,
+                filterMethod: this.filterMethod,
             },
             {
                 Header: 'Pass Type',
                 accessor: 'passType',
                 filterable: true,
+                filterMethod: this.filterMethod,
             },
             {
                 Header: 'Date Issued',
                 accessor: 'dateIssued',
                 filterable: true,
+                filterMethod: this.filterMethod,
             },
             {
                 Header: 'Is Active',
                 accessor: 'isActive',
                 filterable: true,
+                filterMethod: this.filterMethod,
             },
             {
                 Header: '',
