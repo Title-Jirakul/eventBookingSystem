@@ -88,14 +88,23 @@ class ReservationsInsert extends Component {
             name: name, time: time, date: date, roomNo: roomNumber, phoneNo: phoneNo,
         lastName: lastName }
 
-        await api.createReservation(payload).then(res => {
-            api.updateRoomByOne(roomSettingJSON._id)
-        }).then(res => {
-            window.alert(`Reservation created successfully`)
-            window.location.reload();
+        await api.getPassByReservationId(reservationNumber).then(res => {
+            console.log(res.data.data)
+            if(!res.data.data){
+               window.alert(`Pass is not active, please try a different pass`)
+            } else {
+               api.createReservation(payload).then(res => {
+                  api.updateRoomByOne(roomSettingJSON._id)
+               }).then(res => {
+                  window.alert(`Reservation created successfully`)
+                  window.location.reload();
+               }).catch(res => {
+                  window.alert(`Reservation creation failed`)
+                  window.location.reload();
+               })
+            }
         }).catch(res => {
-            window.alert(`Reservation creation failed`)
-            window.location.reload();
+           window.alert(`Pass not exist, please try a different pass`)
         })
     }
 
