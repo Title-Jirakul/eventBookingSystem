@@ -20,7 +20,7 @@ class DeletePass extends Component {
 
         if (
             window.confirm(
-                `Do tou want to delete the pass ${this.props.reservationNo} permanently?`,
+                `Do you want to delete the ticket ${this.props.reservationNo} permanently?`,
             )
         ) {
             api.deletePass(this.props.id)
@@ -81,14 +81,14 @@ class PassList extends Component {
                 filterMethod: this.filterMethod,
             },
             {
-                Header: 'Pass Type',
+                Header: 'Ticket Type',
                 accessor: 'passType',
                 filterable: true,
                 filterMethod: this.filterMethod,
             },
             {
-                Header: 'Date Issued',
-                accessor: 'dateIssued',
+                Header: 'Phone Number',
+                accessor: 'phoneNo',
                 filterable: true,
                 filterMethod: this.filterMethod,
             },

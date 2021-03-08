@@ -50,7 +50,7 @@ class PassesInsert extends Component {
             reservationNo: '',
             name: '',
             passType: '',
-            dateIssued: '',
+            phoneNo: '',
             isActive: true,
         }
     }
@@ -70,9 +70,9 @@ class PassesInsert extends Component {
         this.setState({ passType })
     }
 
-    handleChangeInputDateIssued = async event => {
-        const dateIssued = event.target.value
-        this.setState({ dateIssued })
+    handleChangeInputphoneNo = async event => {
+        const phoneNo = event.target.value
+        this.setState({ phoneNo })
     }
 
     handleChangeInputIsActive = async event => {
@@ -81,36 +81,43 @@ class PassesInsert extends Component {
     }
 
     handleCreatePass = async () => {
-        const { reservationNo, name, passType, dateIssued, isActive } = this.state
-        const payload = { reservationNo, name,  passType, dateIssued, isActive}
+        const { reservationNo, name, passType, phoneNo, isActive } = this.state
+        const payload = { reservationNo, name,  passType, phoneNo, isActive}
 
         await api.createPass(payload).then(res => {
-            window.alert(`Pass Created Successfully`)
+            window.alert(`Ticket Created Successfully`)
             this.setState({
                reservationNo: '',
                name: '',
                passType: '',
-               dateIssued: '',
+               phoneNo: '',
                isActive: true,
             })
         }).catch(res => {
-            window.alert(`Pass creation failed`)
+            window.alert(`Ticket creation failed`)
             window.location.reload();
         })
     }
 
     render() {
-        const { reservationNo, name, passType, dateIssued, isActive } = this.state
+        const { reservationNo, name, passType, phoneNo, isActive } = this.state
         return (
             <Wrapper>
-                <Title>Add Pass</Title>
+                <Title>Add Ticket</Title>
 
-                <Label>Pass Number: </Label>
+                <Label>Ticket Number: </Label>
                 <InputText
                     type="text"
                     value={reservationNo}
                     onChange={this.handleChangeInputReservationNo}
                 />
+
+                <Label>Ticket Type: </Label>
+                {/* Input select can be dynamic: admin can add passType in here */}
+                <InputSelect onChange={this.handleChangeInputPassType} defaultvalue="">
+                    <option hidden disabled selected value>-- Select an option --</option>
+                    <option value="pass type 1">Pass Type 1</option>
+                </InputSelect>
 
                 <Label>Name: </Label>
                 <InputText
@@ -119,17 +126,11 @@ class PassesInsert extends Component {
                     onChange={this.handleChangeInputName}
                 />
 
-                <Label>Pass Type: </Label>
-                <InputSelect onChange={this.handleChangeInputPassType} defaultvalue="">
-                    <option hidden disabled selected value>-- Select an option --</option>
-                    <option value="pass type 1">Pass Type 1</option>
-                </InputSelect>
-
-                <Label>Date Issued: </Label>
+                <Label>Phone Number: </Label>
                 <InputText
                     type="text"
-                    value={dateIssued}
-                    onChange={this.handleChangeInputDateIssued}
+                    value={phoneNo}
+                    onChange={this.handleChangeInputphoneNo}
                 />
 
                 <div>
@@ -140,7 +141,7 @@ class PassesInsert extends Component {
                     onChange={this.handleChangeInputIsActive}
                 />
                 </div>
-                <Button onClick={this.handleCreatePass}>Add Pass</Button>
+                <Button onClick={this.handleCreatePass}>Add Ticket</Button>
                 <CancelButton href={'/passes/create'}>Cancel</CancelButton>
             </Wrapper>
         )

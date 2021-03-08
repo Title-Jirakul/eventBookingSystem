@@ -30,19 +30,24 @@ class Links extends Component {
                             </Link>
                         </Item>
                         <Item>
+                            <Link to="/reservations/update" className="nav-link">
+                                Your Reservations
+                            </Link>
+                        </Item>
                         <Item>
                             <Link to="/classes/list" className="nav-link">
                                 All Classes
                             </Link>
                         </Item>
                         {/* Items below are only displayed to Admin */}
+                        <Item>
                             <Link to="/classes/create" className="nav-link">
                                 Add Class
                             </Link>
                         </Item>
                         <Item>
                             <Link to="/passes/create" className="nav-link">
-                                Add Pass
+                                Add Ticket
                             </Link>
                         </Item>
                         <Item>
@@ -52,7 +57,7 @@ class Links extends Component {
                         </Item>
                         <Item>
                             <Link to="/passes/list" className="nav-link">
-                                All Passes
+                                All Tickets
                             </Link>
                         </Item>
                     </List>
