@@ -65,14 +65,26 @@ class ReservationsList extends Component {
 
         const columns = [
             {
-                Header: 'Reservation No',
+                Header: 'Ticket No',
                 accessor: 'reservationNo',
                 filterable: true,
                 filterMethod: this.filterMethod,
             },
             {
-                Header: 'Name',
+                Header: 'First Name',
                 accessor: 'name',
+                filterable: true,
+                filterMethod: this.filterMethod,
+            },
+            {
+                Header: 'Last Name',
+                accessor: 'lastName',
+                filterable: true,
+                filterMethod: this.filterMethod,
+            },
+            {
+                Header: 'Phone Number',
+                accessor: 'phoneNo',
                 filterable: true,
                 filterMethod: this.filterMethod,
             },

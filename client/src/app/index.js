@@ -14,11 +14,7 @@ function App() {
                 <Route path="/reservations/list" exact component={ReservationsList} />
                 <Route path="/classes/list" exact component={ClassList} />
                 <Route path="/reservations/create" exact component={ReservationsInsert} />
-                <Route
-                    path="/reservations/update/:id"
-                    exact
-                    component={ReservationsUpdate}
-                />
+                <Route path="/reservations/update" exact component={ReservationsUpdate} />
                 <Route path="/classes/create" exact component={RoomsInsert} />
                 <Route path="/passes/create" exact component={PassesInsert} />
                 <Route path="/passes/list" exact component={PassList} />

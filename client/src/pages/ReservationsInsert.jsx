@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
 import api from '../api'
-
-import Dropdown from 'react-bootstrap/Dropdown'
-
 import styled from 'styled-components'
 
 const Title = styled.h1.attrs({
@@ -49,6 +46,8 @@ class ReservationsInsert extends Component {
         this.state = {
             reservationNumber: '',
             name: '',
+            lastName: '',
+            phoneNo: '',
             roomSetting: '',
             options: null,
         }
@@ -64,18 +63,30 @@ class ReservationsInsert extends Component {
         this.setState({ name })
     }
 
+    handleChangeInputLastName = async event => {
+        const lastName = event.target.value
+        this.setState({ lastName })
+    }
+
+    handleChangeInputPhoneNo = async event => {
+        const phoneNo = event.target.value
+        this.setState({ phoneNo })
+    }
+
     handleChangeInputRoomSetting = async event => {
         const roomSetting = event.target.value
         this.setState({ roomSetting })
     }
 
     handleCreateReservation = async () => {
-        const { reservationNumber, name, roomSetting } = this.state
+        const { reservationNumber, name, roomSetting, phoneNo, lastName } = this.state
         const roomSettingJSON = JSON.parse(roomSetting)
         const time = roomSettingJSON.time
         const date = roomSettingJSON.date
         const roomNumber = roomSettingJSON.roomNo
-        const payload = { reservationNo: reservationNumber, name: name, time: time, date: date, roomNo: roomNumber }
+        const payload = { reservationNo: reservationNumber, 
+            name: name, time: time, date: date, roomNo: roomNumber, phoneNo: phoneNo,
+        lastName: lastName }
 
         await api.getPassByReservationId(reservationNumber).then(res => {
             console.log(res.data.data)
@@ -109,24 +120,38 @@ class ReservationsInsert extends Component {
     }
 
     render() {
-        const { reservationNumber, name, roomSetting, options } = this.state
+        const { reservationNumber, name, roomSetting, options, phoneNo, lastName } = this.state
         return (
             <Wrapper>
                 <Title>Reservation</Title>
 
-                <Label>Pass Number: </Label>
+                <Label>Ticket Number: </Label>
                 <InputText
                     type="text"
                     value={reservationNumber}
                     onChange={this.handleChangeInputReservationNumber}
                 />
 
-                <Label>Name: </Label>
+                <Label>First Name: </Label>
                 <InputText
                     type="text"
                     value={name}
                     onChange={this.handleChangeInputName}
                 />
+
+                <Label>Last Name: </Label>
+                <InputText
+                    type="text"
+                    value={lastName}
+                    onChange={this.handleChangeInputLastName}
+                />
+
+                <Label>Phone Number: </Label>
+                <InputText
+                    type="text"
+                    value={phoneNo}
+                    onChange={this.handleChangeInputPhoneNo}
+                />  
 
                 <Label>Available Classes: </Label>
                 <InputSelect onChange={this.handleChangeInputRoomSetting} defaultvalue="">

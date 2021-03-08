@@ -48,10 +48,22 @@ class RoomsInsert extends Component {
 
         this.state = {
             roomNo: '',
+            className: '',
+            instructor: '',
             time: '',
             date: '',
             maxCapacity: 30,
         }
+    }
+
+    handleChangeInputName = async event => {
+        const className = event.target.value
+        this.setState({ className })
+    }
+
+    handleChangeInputInstructor = async event => {
+        const instructor = event.target.value
+        this.setState({ instructor })
     }
 
     handleChangeInputRoomNo = async event => {
@@ -77,9 +89,9 @@ class RoomsInsert extends Component {
     }
 
     handleCreateRoom = async () => {
-        const { roomNo, time, date, maxCapacity} = this.state
+        const { roomNo, time, date, maxCapacity, className, instructor} = this.state
         const capacity = 0
-        const payload = { roomNo, time, date, capacity, maxCapacity}
+        const payload = { roomNo, time, date, capacity, maxCapacity, className, instructor}
 
         await api.createRoom(payload).then(res => {
             window.alert(`Class Created successfully`)
@@ -88,6 +100,8 @@ class RoomsInsert extends Component {
                time: '',
                date: '',
                maxCapacity: 30,
+               className: '',
+               instructor: '',
             })
         }).catch(res => {
             window.alert(`Class creation failed`)
@@ -96,7 +110,7 @@ class RoomsInsert extends Component {
     }
 
     render() {
-        const { roomNo, time, date, maxCapacity } = this.state
+        const { roomNo, time, date, maxCapacity, className, instructor } = this.state
         return (
             <Wrapper>
                 <Title>Add Class</Title>
@@ -106,6 +120,20 @@ class RoomsInsert extends Component {
                     <option hidden disabled selected value>-- Select an option --</option>
                     <option value="roomNo 1">RoomNo 1</option>
                 </InputSelect>
+
+                <Label>Class Name: </Label>
+                <InputText
+                    type="text"
+                    value={className}
+                    onChange={this.handleChangeInputName}
+                />
+
+                <Label>Instrutor: </Label>
+                <InputText
+                    type="text"
+                    value={instructor}
+                    onChange={this.handleChangeInputInstructor}
+                />
 
                 <Label>Time: </Label>
                 <InputText
