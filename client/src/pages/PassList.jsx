@@ -87,8 +87,8 @@ class PassList extends Component {
                 filterMethod: this.filterMethod,
             },
             {
-                Header: 'Date Issued',
-                accessor: 'dateIssued',
+                Header: 'Phone No',
+                accessor: 'phoneNo',
                 filterable: true,
                 filterMethod: this.filterMethod,
             },

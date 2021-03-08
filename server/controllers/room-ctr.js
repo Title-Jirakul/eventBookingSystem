@@ -118,7 +118,7 @@ deleteRoom = async (req, res) => {
 }
 
 getRoomByDate = async (req, res) => {
-    await Room.findOne({ date: req.params.date }, (err, room) => {
+    await Room.findOne({ date: req.params.id }, (err, room) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }

@@ -9,7 +9,7 @@ const router = express.Router()
 router.post('/reservation', ReservationCtrl.createReservation)
 router.put('/reservation/:id', ReservationCtrl.updateReservation)
 router.delete('/reservation/:id', ReservationCtrl.deleteReservation)
-router.get('/reservation/:id', ReservationCtrl.getReservationById)
+router.get('/reservation/:id', ReservationCtrl.getReservationByReservationNo)
 router.get('/reservations', ReservationCtrl.getReservations)
 
 router.post('/room', RoomCtrl.createRoom)

@@ -50,7 +50,7 @@ class PassesInsert extends Component {
             reservationNo: '',
             name: '',
             passType: '',
-            dateIssued: '',
+            phoneNo: '',
             isActive: true,
         }
     }
@@ -70,9 +70,9 @@ class PassesInsert extends Component {
         this.setState({ passType })
     }
 
-    handleChangeInputDateIssued = async event => {
-        const dateIssued = event.target.value
-        this.setState({ dateIssued })
+    handleChangeInputPhoneNo = async event => {
+        const phoneNo = event.target.value
+        this.setState({ phoneNo })
     }
 
     handleChangeInputIsActive = async event => {
@@ -81,8 +81,8 @@ class PassesInsert extends Component {
     }
 
     handleCreatePass = async () => {
-        const { reservationNo, name, passType, dateIssued, isActive } = this.state
-        const payload = { reservationNo, name,  passType, dateIssued, isActive}
+        const { reservationNo, name, passType, phoneNo, isActive } = this.state
+        const payload = { reservationNo, name,  passType, phoneNo, isActive}
 
         await api.createPass(payload).then(res => {
             window.alert(`Pass Created Successfully`)
@@ -90,7 +90,7 @@ class PassesInsert extends Component {
                reservationNo: '',
                name: '',
                passType: '',
-               dateIssued: '',
+               phoneNo: '',
                isActive: true,
             })
         }).catch(res => {
@@ -100,7 +100,7 @@ class PassesInsert extends Component {
     }
 
     render() {
-        const { reservationNo, name, passType, dateIssued, isActive } = this.state
+        const { reservationNo, name, passType, phoneNo, isActive } = this.state
         return (
             <Wrapper>
                 <Title>Add Pass</Title>
@@ -125,11 +125,11 @@ class PassesInsert extends Component {
                     <option value="pass type 1">Pass Type 1</option>
                 </InputSelect>
 
-                <Label>Date Issued: </Label>
+                <Label>Phone No: </Label>
                 <InputText
                     type="text"
-                    value={dateIssued}
-                    onChange={this.handleChangeInputDateIssued}
+                    value={phoneNo}
+                    onChange={this.handleChangeInputPhoneNo}
                 />
 
                 <div>

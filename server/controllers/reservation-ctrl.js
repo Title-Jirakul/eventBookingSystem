@@ -91,9 +91,8 @@ deleteReservation = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
-// TODO: get reservationByReservationNo
-getReservationById = async (req, res) => {
-    await Reservation.findOne({ _id: req.params.id }, (err, reservation) => {
+getReservationByReservationNo = async (req, res) => {
+    await Reservation.findOne({ reservationNo: req.params.id }, (err, reservation) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
@@ -126,5 +125,5 @@ module.exports = {
     updateReservation,
     deleteReservation,
     getReservations,
-    getReservationById,
+    getReservationByReservationNo,
 }
