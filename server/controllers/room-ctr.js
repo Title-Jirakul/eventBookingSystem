@@ -74,6 +74,33 @@ updateRoom = async (req, res) => {
     })
 }
 
+updateRoomByLessOne = async (req, res) => {
+    Room.findOne({ _id: req.params.id }, (err, room) => {
+        if (err) {
+            return res.status(404).json({
+                err,
+                message: 'Class not found!',
+            })
+        }
+        room.capacity = room.capacity - 1
+        room
+            .save()
+            .then(() => {
+                return res.status(200).json({
+                    success: true,
+                    id: room._id,
+                    message: 'Class updated!',
+                })
+            })
+            .catch(error => {
+                return res.status(404).json({
+                    error,
+                    message: 'Class not updated!',
+                })
+            })
+    })
+}
+
 updateRoomByOne = async (req, res) => {
     Room.findOne({ _id: req.params.id }, (err, room) => {
         if (err) {
@@ -150,6 +177,7 @@ module.exports = {
     createRoom,
     updateRoom,
     updateRoomByOne,
+    updateRoomByLessOne,
     deleteRoom,
     getRooms,
     getRoomByDate,

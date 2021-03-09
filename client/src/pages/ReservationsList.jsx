@@ -24,6 +24,7 @@ class DeleteReservation extends Component {
             )
         ) {
             api.deleteReservation(this.props.id)
+            api.updateRoomByLess(this.props.roomID)
             window.location.reload()
         }
     }
@@ -112,7 +113,7 @@ class ReservationsList extends Component {
                 Cell: function(props) {
                     return (
                         <span>
-                            <DeleteReservation id={props.original._id} reservationNo={props.original.reservationNo}/>
+                            <DeleteReservation id={props.original._id} reservationNo={props.original.reservationNo} roomID={props.original.roomID}/>
                         </span>
                     )
                 },
