@@ -24,6 +24,7 @@ class DeleteClass extends Component {
             )
         ) {
             api.deleteRoom(this.props.id)
+            api.deleteReservationsByRoomID(this.props.id)
             window.location.reload()
         }
     }

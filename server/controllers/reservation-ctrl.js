@@ -56,7 +56,7 @@ updateReservation = async (req, res) => {
         reservation.roomNo = body.roomNo
         reservation.phoneNo = body.phoneNo
         reservation.name = body.name
-        reservation.name = body.lastName
+        reservation.lastName = body.lastName
         reservation
             .save()
             .then(() => {
@@ -88,6 +88,15 @@ deleteReservation = async (req, res) => {
         }
 
         return res.status(200).json({ success: true, data: reservation })
+    }).catch(err => console.log(err))
+}
+
+deleteReservationsByRoomID = async (req, res) => {
+    await Reservation.deleteMany({ roomID: req.params.id }, (err) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+        return res.status(200).json({ success: true})
     }).catch(err => console.log(err))
 }
 
@@ -124,6 +133,7 @@ module.exports = {
     createReservation,
     updateReservation,
     deleteReservation,
+    deleteReservationsByRoomID,
     getReservations,
     getReservationByReservationNo,
 }

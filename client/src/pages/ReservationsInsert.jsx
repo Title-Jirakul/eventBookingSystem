@@ -84,13 +84,14 @@ class ReservationsInsert extends Component {
         const time = roomSettingJSON.time
         const date = roomSettingJSON.date
         const roomNumber = roomSettingJSON.roomNo
+        const roomID = roomSettingJSON._id
         const payload = { reservationNo: reservationNumber, 
             name: name, time: time, date: date, roomNo: roomNumber, phoneNo: phoneNo,
-        lastName: lastName }
+        lastName: lastName, roomID: roomID }
 
         await api.getPassByReservationId(reservationNumber).then(res => {
             console.log(res.data.data)
-            if(!res.data.data){
+            if(!res.data.data.isActive){
                window.alert(`Pass is not active, please try a different pass`)
             } else {
                api.createReservation(payload).then(res => {
