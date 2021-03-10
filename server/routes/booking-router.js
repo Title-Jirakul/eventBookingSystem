@@ -10,7 +10,7 @@ router.post('/reservation', ReservationCtrl.createReservation)
 router.put('/reservation/:id', ReservationCtrl.updateReservation)
 router.delete('/reservation/:id', ReservationCtrl.deleteReservation)
 router.delete('/reservations/:id', ReservationCtrl.deleteReservationsByRoomID)
-router.get('/reservation/:id', ReservationCtrl.getReservationByReservationNo)
+router.get('/reservations/:id', ReservationCtrl.getReservationByReservationNo)
 router.get('/reservations', ReservationCtrl.getReservations)
 
 router.post('/room', RoomCtrl.createRoom)

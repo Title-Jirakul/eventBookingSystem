@@ -9,7 +9,7 @@ export const getReservations = () => api.get(`/reservations`)
 export const updateReservation = (id, payload) => api.put(`/reservation/${id}`, payload)
 export const deleteReservation = id => api.delete(`/reservation/${id}`)
 export const deleteReservationsByRoomID = id => api.delete(`/reservations/${id}`)
-export const getReservationByReservationNo = id => api.get(`/reservation/${id}`)
+export const getReservationByReservationNo = id => api.get(`/reservations/${id}`)
 
 export const createRoom = payload => api.post(`/room`, payload)
 export const getRooms = () => api.get(`/rooms`)

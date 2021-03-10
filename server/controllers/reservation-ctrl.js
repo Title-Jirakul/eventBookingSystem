@@ -101,17 +101,17 @@ deleteReservationsByRoomID = async (req, res) => {
 }
 
 getReservationByReservationNo = async (req, res) => {
-    await Reservation.findOne({ reservationNo: req.params.id }, (err, reservation) => {
+    await Reservation.find({ reservationNo: req.params.id }, (err, reservations) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
 
-        if (!reservation) {
+        if (!reservations.length) {
             return res
                 .status(404)
                 .json({ success: false, error: `Booking not found` })
         }
-        return res.status(200).json({ success: true, data: reservation })
+        return res.status(200).json({ success: true, data: reservations })
     }).catch(err => console.log(err))
 }
 
