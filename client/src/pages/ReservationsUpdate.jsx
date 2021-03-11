@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
+import ReactTable from 'react-table-6'
 import api from '../api'
 
 import styled from 'styled-components'
+import 'react-table-6/react-table.css'
 
 const Title = styled.h1.attrs({
     className: 'h1',
@@ -23,12 +25,6 @@ const InputText = styled.input.attrs({
     margin: 5px;
 `
 
-const InputSelect = styled.select.attrs({
-    className: 'form-control',
-})`
-    margin: 5px;
-`
-
 const Button = styled.button.attrs({
     className: `btn btn-primary`,
 })`
@@ -41,13 +37,49 @@ const CancelButton = styled.a.attrs({
     margin: 15px 15px 15px 5px;
 `
 
+const Delete = styled.div`
+    color: #ff0000;
+    cursor: pointer;
+`
+const WrapperTable = styled.div`
+    padding: 0 40px 40px 40px;
+`
+
+class DeleteReservation extends Component {
+    deleteUser = event => {
+        event.preventDefault()
+
+        if (
+            window.confirm(
+                `Do you want to delete this reservation permanently?`,
+            )
+        ) {
+            api.deleteReservation(this.props.id)
+            api.updateRoomByLess(this.props.roomID)
+            window.location.reload()
+        }
+    }
+
+    render() {
+        return <Delete onClick={this.deleteUser}>Delete</Delete>
+    }
+}
+
 class ReservationsUpdate extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
             ticketNo: '',
+            reservations: [],
+            columns: [],
+            isLoading: false,
         }
+    }
+
+     filterMethod = (filter, row) => {
+        const id = filter.pivotId || filter.id
+        return row[id] !== undefined ? row[id].toLowerCase().startsWith(filter.value.toLowerCase()) : true
     }
 
     handleChangeInputTicketNo = async event => {
@@ -55,8 +87,59 @@ class ReservationsUpdate extends Component {
         this.setState({ ticketNo })
     }
 
+    handleGetReservations = async () => {
+        const { ticketNo } = this.state
+        this.setState({ isLoading: true })
+
+        await api.getReservationByReservationNo(ticketNo).then(res => {
+            this.setState({
+               reservations: res.data.data,
+               isLoading: false,
+            })
+        }).catch(res => {
+            window.alert(`Ticket doesn't exist, please try again`)
+        })
+    }
+
     render() {
-        const { roomNo, time, date, maxCapacity, className, instructor } = this.state
+        const { ticketNo, reservations, isLoading } = this.state
+
+        const columns = [
+            {
+                Header: 'Date',
+                accessor: 'date',
+                filterable: true,
+                filterMethod: this.filterMethod,
+            },
+            {
+                Header: 'Time',
+                accessor: 'time',
+                filterable: true,
+                filterMethod: this.filterMethod,
+            },
+            {
+                Header: 'Room No',
+                accessor: 'roomNo',
+                filterable: true,
+                filterMethod: this.filterMethod,
+            },
+            {
+                Header: '',
+                accessor: '',
+                Cell: function(props) {
+                    return (
+                        <span>
+                            <DeleteReservation id={props.original._id} roomID={props.original.roomID}/>
+                        </span>
+                    )
+                },
+            },
+        ]
+
+        let showTable = true
+        if (!reservations.length) {
+            showTable = false
+        }
         return (
             <Wrapper>
                 <Title>Your Reservations</Title>
@@ -64,13 +147,25 @@ class ReservationsUpdate extends Component {
                 <Label>Ticket Number: </Label>
                 <InputText
                     type="text"
-                    value={time}
+                    value={ticketNo}
                     onChange={this.handleChangeInputTicketNo}
                 />
 
                 <Button onClick={this.handleGetReservations}>Get Reservations</Button>
-                <CancelButton href={'/rooms/create'}>Clear</CancelButton>
+                <CancelButton href={'/reservations/update'}>Clear</CancelButton>
             </Wrapper>
+            <WrapperTable>
+                {showTable && (
+                    <ReactTable
+                        data={reservations}
+                        columns={columns}
+                        loading={isLoading}
+                        defaultPageSize={10}
+                        showPageSizeOptions={true}
+                        minRows={0}
+                    />
+                )}
+            </WrapperTable>
         )
     }
 }

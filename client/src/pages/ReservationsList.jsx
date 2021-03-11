@@ -20,7 +20,7 @@ class DeleteReservation extends Component {
 
         if (
             window.confirm(
-                `Do tou want to delete the reservation ${this.props.reservationNo} permanently?`,
+                `Do you want to delete the reservation ${this.props.reservationNo} permanently?`,
             )
         ) {
             api.deleteReservation(this.props.id)
