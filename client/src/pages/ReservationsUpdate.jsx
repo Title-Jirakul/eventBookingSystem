@@ -97,7 +97,7 @@ class ReservationsUpdate extends Component {
                isLoading: false,
             })
         }).catch(res => {
-            window.alert(`Ticket doesn't exist, please try again`)
+            window.alert(`No reservation made for this ticket, please try again`)
         })
     }
 
@@ -153,7 +153,6 @@ class ReservationsUpdate extends Component {
 
                 <Button onClick={this.handleGetReservations}>Get Reservations</Button>
                 <CancelButton href={'/reservations/update'}>Clear</CancelButton>
-            </Wrapper>
             <WrapperTable>
                 {showTable && (
                     <ReactTable
@@ -166,6 +165,7 @@ class ReservationsUpdate extends Component {
                     />
                 )}
             </WrapperTable>
+            </Wrapper>
         )
     }
 }
