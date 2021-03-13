@@ -128,7 +128,7 @@ class RoomsInsert extends Component {
                     onChange={this.handleChangeInputName}
                 />
 
-                <Label>Instrutor: </Label>
+                <Label>Instructor: </Label>
                 <InputText
                     type="text"
                     value={instructor}
