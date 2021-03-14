@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react'
 import api from '../api'
+import { AdminNavBar } from '../components'
 
 import styled from 'styled-components'
 
@@ -103,6 +104,7 @@ class PassesInsert extends Component {
         const { reservationNo, name, passType, phoneNo, isActive } = this.state
         return (
             <Wrapper>
+            <AdminNavBar/>
                 <Title>Add Ticket</Title>
 
                 <Label>Ticket Number: </Label>

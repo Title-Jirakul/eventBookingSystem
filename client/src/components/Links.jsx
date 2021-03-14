@@ -34,32 +34,6 @@ class Links extends Component {
                                 Your Reservations
                             </Link>
                         </Item>
-                        <Item>
-                            <Link to="/classes/list" className="nav-link">
-                                All Classes
-                            </Link>
-                        </Item>
-                        {/* Items below are only displayed to Admin */}
-                        <Item>
-                            <Link to="/classes/create" className="nav-link">
-                                Add Class
-                            </Link>
-                        </Item>
-                        <Item>
-                            <Link to="/passes/create" className="nav-link">
-                                Add Ticket
-                            </Link>
-                        </Item>
-                        <Item>
-                            <Link to="/reservations/list" className="nav-link">
-                                All Reservations
-                            </Link>
-                        </Item>
-                        <Item>
-                            <Link to="/passes/list" className="nav-link">
-                                All Tickets
-                            </Link>
-                        </Item>
                     </List>
                 </Collapse>
             </React.Fragment>

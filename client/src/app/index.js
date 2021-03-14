@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
-import { NavBar } from '../components'
 import { ReservationsList, ReservationsInsert, ReservationsUpdate, RoomsInsert, PassesInsert, ClassList, PassList } from '../pages'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -9,7 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 function App() {
     return (
         <Router>
-            <NavBar />
             <Switch>
                 <Route path="/reservations/list" exact component={ReservationsList} />
                 <Route path="/classes/list" exact component={ClassList} />

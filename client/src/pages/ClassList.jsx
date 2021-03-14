@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ReactTable from 'react-table-6'
 import api from '../api'
+import { AdminNavBar } from '../components'
 
 import styled from 'styled-components'
 import 'react-table-6/react-table.css'
@@ -125,6 +126,7 @@ class ClassList extends Component {
 
         return (
             <Wrapper>
+                <AdminNavBar/>
                 {showTable && (
                     <ReactTable
                         data={classes}
