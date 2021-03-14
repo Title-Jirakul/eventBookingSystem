@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import api from '../api'
 import styled from 'styled-components'
+import { NavBar } from '../components'
 
 const Title = styled.h1.attrs({
     className: 'h1',
@@ -124,6 +125,7 @@ class ReservationsInsert extends Component {
         const { reservationNumber, name, roomSetting, options, phoneNo, lastName } = this.state
         return (
             <Wrapper>
+                <NavBar/>
                 <Title>Reservation</Title>
 
                 <Label>Ticket Number: </Label>

@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react'
 import api from '../api'
+import { AdminNavBar } from '../components'
 
 import styled from 'styled-components'
 
@@ -113,6 +114,7 @@ class RoomsInsert extends Component {
         const { roomNo, time, date, maxCapacity, className, instructor } = this.state
         return (
             <Wrapper>
+                <AdminNavBar/>
                 <Title>Add Class</Title>
 
                 <Label>Class Number: </Label>

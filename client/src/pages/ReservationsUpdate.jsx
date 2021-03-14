@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ReactTable from 'react-table-6'
 import api from '../api'
+import { NavBar } from '../components'
 
 import styled from 'styled-components'
 import 'react-table-6/react-table.css'
@@ -142,6 +143,7 @@ class ReservationsUpdate extends Component {
         }
         return (
             <Wrapper>
+                <NavBar/>
                 <Title>Your Reservations</Title>
 
                 <Label>Ticket Number: </Label>
