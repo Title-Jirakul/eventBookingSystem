@@ -121,6 +121,10 @@ class RoomsInsert extends Component {
                 <InputSelect onChange={this.handleChangeInputRoomNo} defaultvalue={roomNo}>
                     <option hidden disabled selected value>-- Select an option --</option>
                     <option value="roomNo 1">RoomNo 1</option>
+                    <option value="roomNo 2">RoomNo 2</option>
+                    <option value="roomNo 3">RoomNo 3</option>
+                    <option value="roomNo 4">RoomNo 4</option>
+                    <option value="roomNo 5">RoomNo 5</option>
                 </InputSelect>
 
                 <Label>Class Name: </Label>
