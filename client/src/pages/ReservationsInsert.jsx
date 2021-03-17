@@ -50,7 +50,9 @@ class ReservationsInsert extends Component {
             lastName: '',
             phoneNo: '',
             roomSetting: '',
+            date: '',
             options: null,
+            allOptions: null,
         }
     }
 
@@ -77,6 +79,12 @@ class ReservationsInsert extends Component {
     handleChangeInputRoomSetting = async event => {
         const roomSetting = event.target.value
         this.setState({ roomSetting })
+    }
+
+    handleChangeInputDate = async event => {
+        const date = event.target.value
+        this.getOptionsByDate(date);
+        this.setState({ date })
     }
 
     handleCreateReservation = async () => {
@@ -112,9 +120,15 @@ class ReservationsInsert extends Component {
 
     getOptions = async () => {
        await api.getRooms().then(res => {
-          let options = res.data.data.filter(data => data.capacity < data.maxCapacity)
-          this.setState({options: options})
+          let allOptions = res.data.data.filter(data => data.capacity < data.maxCapacity)
+          this.setState({allOptions: allOptions})
        })
+    }
+
+    getOptionsByDate = async (thisDate) => {
+       const {allOptions} = this.state
+       let options = allOptions.filter(data => data.capacity < data.maxCapacity && data.date == thisDate)
+       this.setState({options: options})
     }
 
     componentDidMount = async () => {
@@ -122,7 +136,7 @@ class ReservationsInsert extends Component {
     }
 
     render() {
-        const { reservationNumber, name, roomSetting, options, phoneNo, lastName } = this.state
+        const { reservationNumber, name, roomSetting, options, phoneNo, lastName, date } = this.state
         return (
             <Wrapper>
                 <NavBar/>
@@ -154,7 +168,14 @@ class ReservationsInsert extends Component {
                     type="text"
                     value={phoneNo}
                     onChange={this.handleChangeInputPhoneNo}
-                />  
+                />
+                
+                <Label>Date: </Label>
+                <InputText
+                    type="text"
+                    value={date}
+                    onChange={this.handleChangeInputDate}
+                />
 
                 <Label>Available Classes: </Label>
                 <InputSelect onChange={this.handleChangeInputRoomSetting} defaultvalue="">
@@ -162,7 +183,6 @@ class ReservationsInsert extends Component {
                    {this.state.options && this.state.options.map(object => {
                       return <option value={JSON.stringify(object)}>{
                       " Room: " + object.roomNo +
-                      " ,Date: " + object.date + 
                       " ,Time: " + object.time + 
                       " ,Capacity: " + object.capacity + "/" + object.maxCapacity}</option>
                    })}

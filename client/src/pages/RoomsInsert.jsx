@@ -1,9 +1,12 @@
 
 import React, { Component } from 'react'
+import { useState } from 'react'
 import api from '../api'
 import { AdminNavBar } from '../components'
+import DatePicker from 'react-datepicker'
 
 import styled from 'styled-components'
+import "react-datepicker/dist/react-datepicker.css"
 
 const Title = styled.h1.attrs({
     className: 'h1',
@@ -112,6 +115,7 @@ class RoomsInsert extends Component {
 
     render() {
         const { roomNo, time, date, maxCapacity, className, instructor } = this.state
+        //const [startDate, setStartDate] = this.useState(null)
         return (
             <Wrapper>
                 <AdminNavBar/>
@@ -154,6 +158,12 @@ class RoomsInsert extends Component {
                     value={date}
                     onChange={this.handleChangeInputDate}
                 />
+                <div>
+                    <DatePicker
+                        //selected={startDate}
+                        //onChange={date => setStartDate(date)}
+                    />
+                </div>
 
                 <Label>Max Capacity: </Label>
                 <InputText
