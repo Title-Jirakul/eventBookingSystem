@@ -1,9 +1,13 @@
 
 import React, { Component } from 'react'
+import { useState } from 'react'
+import { forwardRef } from 'react'
 import api from '../api'
 import { AdminNavBar } from '../components'
+import DatePicker from 'react-datepicker'
 
 import styled from 'styled-components'
+import "react-datepicker/dist/react-datepicker.css"
 
 const Title = styled.h1.attrs({
     className: 'h1',
@@ -13,6 +17,12 @@ const Wrapper = styled.div.attrs({
     className: 'form-group',
 })`
     margin: 0 30px;
+`
+
+const LilWrapper = styled.div.attrs({
+    className: 'form-group',
+})`
+    margin: 0 5px;
 `
 
 const Label = styled.label`
@@ -42,6 +52,26 @@ const CancelButton = styled.a.attrs({
 })`
     margin: 15px 15px 15px 5px;
 `
+
+const DatePick = ({parentCallback}) => {
+  const [startDate, setStartDate] = useState(new Date());
+  const ExampleCustomInput = forwardRef(
+    ({ value, onClick }, ref) => (
+      <button className="btn btn-outline-secondary" onClick={onClick} ref={ref}>
+        Pick a date
+      </button>
+    ),
+  )
+  return (
+    <DatePicker
+      selected={startDate}
+      onChange={date => {
+         setStartDate(date)
+         parentCallback(date)}}
+         customInput={<ExampleCustomInput />}
+    />
+  )
+}
 
 class RoomsInsert extends Component {
     constructor(props) {
@@ -80,6 +110,11 @@ class RoomsInsert extends Component {
     handleChangeInputDate = async event => {
         const date = event.target.value
         this.setState({ date })
+    }
+
+    handleChangeInputDatePicker = async (date) => {
+        const str = date.toString().split(" ", 4)
+        this.setState({ date: str[2] + " " + str[1].toUpperCase() + " " + str[3]})
     }
 
     handleChangeInputMaxCapacity = async event => {
@@ -149,6 +184,9 @@ class RoomsInsert extends Component {
                 />
 
                 <Label>Date: </Label>
+                <LilWrapper>
+                    <DatePick parentCallback={this.handleChangeInputDatePicker}/>
+                </LilWrapper>
                 <InputText
                     type="text"
                     value={date}

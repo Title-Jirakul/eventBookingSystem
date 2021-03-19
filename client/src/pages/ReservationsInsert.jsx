@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
+import { useState } from 'react'
+import { forwardRef } from 'react'
 import api from '../api'
 import styled from 'styled-components'
 import { NavBar } from '../components'
+import DatePicker from 'react-datepicker'
 
 const Title = styled.h1.attrs({
     className: 'h1',
@@ -11,6 +14,12 @@ const Wrapper = styled.div.attrs({
     className: 'form-group',
 })`
     margin: 0 30px;
+`
+
+const LilWrapper = styled.div.attrs({
+    className: 'form-group',
+})`
+    margin: 0 5px;
 `
 
 const Label = styled.label`
@@ -40,6 +49,26 @@ const CancelButton = styled.a.attrs({
     margin: 15px 15px 15px 5px;
 `
 
+const DatePick = ({parentCallback}) => {
+  const [startDate, setStartDate] = useState(new Date());
+  const ExampleCustomInput = forwardRef(
+    ({ value, onClick }, ref) => (
+      <button className="btn btn-outline-secondary" onClick={onClick} ref={ref}>
+        Pick a date
+      </button>
+    ),
+  )
+  return (
+    <DatePicker
+      selected={startDate}
+      onChange={date => {
+         setStartDate(date)
+         parentCallback(date)}}
+         customInput={<ExampleCustomInput />}
+    />
+  )
+}
+
 class ReservationsInsert extends Component {
     constructor(props) {
         super(props)
@@ -50,7 +79,9 @@ class ReservationsInsert extends Component {
             lastName: '',
             phoneNo: '',
             roomSetting: '',
+            date: '',
             options: null,
+            allOptions: null,
         }
     }
 
@@ -77,6 +108,19 @@ class ReservationsInsert extends Component {
     handleChangeInputRoomSetting = async event => {
         const roomSetting = event.target.value
         this.setState({ roomSetting })
+    }
+
+    handleChangeInputDate = async event => {
+        const date = event.target.value
+        this.getOptionsByDate(date);
+        this.setState({ date })
+    }
+
+    handleChangeInputDatePicker = async (rawDate) => {
+        const str = rawDate.toString().split(" ", 4)
+        const date = str[2] + " " + str[1].toUpperCase() + " " + str[3]
+        this.getOptionsByDate(date);
+        this.setState({ date })
     }
 
     handleCreateReservation = async () => {
@@ -112,9 +156,15 @@ class ReservationsInsert extends Component {
 
     getOptions = async () => {
        await api.getRooms().then(res => {
-          let options = res.data.data.filter(data => data.capacity < data.maxCapacity)
-          this.setState({options: options})
+          let allOptions = res.data.data.filter(data => data.capacity < data.maxCapacity)
+          this.setState({allOptions: allOptions})
        })
+    }
+
+    getOptionsByDate = async (thisDate) => {
+       const {allOptions} = this.state
+       let options = allOptions.filter(data => data.capacity < data.maxCapacity && data.date == thisDate)
+       this.setState({options: options})
     }
 
     componentDidMount = async () => {
@@ -122,7 +172,7 @@ class ReservationsInsert extends Component {
     }
 
     render() {
-        const { reservationNumber, name, roomSetting, options, phoneNo, lastName } = this.state
+        const { reservationNumber, name, roomSetting, options, phoneNo, lastName, date } = this.state
         return (
             <Wrapper>
                 <NavBar/>
@@ -154,7 +204,17 @@ class ReservationsInsert extends Component {
                     type="text"
                     value={phoneNo}
                     onChange={this.handleChangeInputPhoneNo}
-                />  
+                />
+                
+                <Label>Date: </Label>
+                <LilWrapper>
+                    <DatePick parentCallback={this.handleChangeInputDatePicker}/>
+                </LilWrapper>
+                <InputText
+                    type="text"
+                    value={date}
+                    onChange={this.handleChangeInputDate}
+                />
 
                 <Label>Available Classes: </Label>
                 <InputSelect onChange={this.handleChangeInputRoomSetting} defaultvalue="">
@@ -162,7 +222,6 @@ class ReservationsInsert extends Component {
                    {this.state.options && this.state.options.map(object => {
                       return <option value={JSON.stringify(object)}>{
                       " Room: " + object.roomNo +
-                      " ,Date: " + object.date + 
                       " ,Time: " + object.time + 
                       " ,Capacity: " + object.capacity + "/" + object.maxCapacity}</option>
                    })}
