@@ -80,6 +80,7 @@ class ReservationsInsert extends Component {
             phoneNo: '',
             roomSetting: '',
             date: '',
+            time: '',
             options: null,
             allOptions: null,
         }
@@ -111,16 +112,25 @@ class ReservationsInsert extends Component {
     }
 
     handleChangeInputDate = async event => {
+        const {time} = this.state 
         const date = event.target.value
-        this.getOptionsByDate(date);
+        this.getOptionsByDateTime(date, time);
         this.setState({ date })
     }
 
     handleChangeInputDatePicker = async (rawDate) => {
+        const {time} = this.state 
         const str = rawDate.toString().split(" ", 4)
         const date = str[2] + " " + str[1].toUpperCase() + " " + str[3]
-        this.getOptionsByDate(date);
+        this.getOptionsByDateTime(date, time);
         this.setState({ date })
+    }
+
+    handleChangeInputTime = async event => {
+        const {date} = this.state 
+        const time = event.target.value
+        this.getOptionsByDateTime(date, time);
+        this.setState({ time })
     }
 
     handleCreateReservation = async () => {
@@ -161,9 +171,9 @@ class ReservationsInsert extends Component {
        })
     }
 
-    getOptionsByDate = async (thisDate) => {
+    getOptionsByDateTime = async (thisDate, thisTime) => {
        const {allOptions} = this.state
-       let options = allOptions.filter(data => data.capacity < data.maxCapacity && data.date == thisDate)
+       let options = allOptions.filter(data => data.capacity < data.maxCapacity && data.date == thisDate && data.time == thisTime)
        this.setState({options: options})
     }
 
@@ -172,7 +182,7 @@ class ReservationsInsert extends Component {
     }
 
     render() {
-        const { reservationNumber, name, roomSetting, options, phoneNo, lastName, date } = this.state
+        const { reservationNumber, name, roomSetting, options, phoneNo, lastName, date, time } = this.state
         return (
             <Wrapper>
                 <NavBar/>
@@ -216,13 +226,21 @@ class ReservationsInsert extends Component {
                     onChange={this.handleChangeInputDate}
                 />
 
+                <Label>Time: </Label>
+                <InputText
+                    type="text"
+                    value={time}
+                    onChange={this.handleChangeInputTime}
+                />
+
                 <Label>Available Classes: </Label>
                 <InputSelect onChange={this.handleChangeInputRoomSetting} defaultvalue="">
                    <option hidden disabled selected value>-- Select an option --</option>
                    {this.state.options && this.state.options.map(object => {
                       return <option value={JSON.stringify(object)}>{
                       " Room: " + object.roomNo +
-                      " ,Time: " + object.time + 
+                      " ,Class Name: " + object.className +
+                      " ,Instructor: " + object.instructor +
                       " ,Capacity: " + object.capacity + "/" + object.maxCapacity}</option>
                    })}
                 </InputSelect>
