@@ -227,11 +227,16 @@ class ReservationsInsert extends Component {
                 />
 
                 <Label>Time: </Label>
-                <InputText
-                    type="text"
-                    value={time}
-                    onChange={this.handleChangeInputTime}
-                />
+                <InputSelect onChange={this.handleChangeInputTime} defaultvalue={time}>
+                    <option hidden disabled selected value>-- Select a time --</option>
+                    <option value="09:00 - 10:30">09:00 - 10:30</option>
+                    <option value="11:00 - 12:30">11:00 - 12:30</option>
+                    <option value="11:00 - 13:00">11:00 - 13:00</option>
+                    <option value="14:00 - 15:30">14:00 - 15:30</option>
+                    <option value="16:30 - 17:30">16:30 - 17:30</option>
+                    <option value="16:30 - 18:00">16:30 - 18:00</option>
+                    <option value="16:30 - 18:30">16:30 - 18:30</option>
+                </InputSelect>
 
                 <Label>Available Classes: </Label>
                 <InputSelect onChange={this.handleChangeInputRoomSetting} defaultvalue="">

@@ -176,13 +176,6 @@ class RoomsInsert extends Component {
                     onChange={this.handleChangeInputInstructor}
                 />
 
-                <Label>Time: </Label>
-                <InputText
-                    type="text"
-                    value={time}
-                    onChange={this.handleChangeInputTime}
-                />
-
                 <Label>Date: </Label>
                 <LilWrapper>
                     <DatePick parentCallback={this.handleChangeInputDatePicker}/>
@@ -192,6 +185,18 @@ class RoomsInsert extends Component {
                     value={date}
                     onChange={this.handleChangeInputDate}
                 />
+
+                <Label>Time: </Label>
+                <InputSelect onChange={this.handleChangeInputTime} defaultvalue={time}>
+                    <option hidden disabled selected value>-- Select a time --</option>
+                    <option value="09:00 - 10:30">09:00 - 10:30</option>
+                    <option value="11:00 - 12:30">11:00 - 12:30</option>
+                    <option value="11:00 - 13:00">11:00 - 13:00</option>
+                    <option value="14:00 - 15:30">14:00 - 15:30</option>
+                    <option value="16:30 - 17:30">16:30 - 17:30</option>
+                    <option value="16:30 - 18:00">16:30 - 18:00</option>
+                    <option value="16:30 - 18:30">16:30 - 18:30</option>
+                </InputSelect>
 
                 <Label>Max Capacity: </Label>
                 <InputText
