@@ -23,8 +23,7 @@ export const createPass = payload => api.post(`/pass`, payload)
 export const getPasses = () => api.get(`/passes`)
 export const updatePass = (id, payload) => api.put(`/pass/${id}`, payload)
 export const deletePass = id => api.delete(`/pass/${id}`)
-// export const getPassByReservationId = id => api.get(`/pass/${id}`)
-export const getPassByReservationId = payload => api.get(`/ticket`, payload)
+export const getPassByReservationId = id => api.get(`/pass/${id}`)
 
 const apis = {
     createReservation,
