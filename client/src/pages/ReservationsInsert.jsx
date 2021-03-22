@@ -144,7 +144,9 @@ class ReservationsInsert extends Component {
             name: name, time: time, date: date, roomNo: roomNumber, phoneNo: phoneNo,
         lastName: lastName, roomID: roomID }
 
-        await api.getPassByReservationId(reservationNumber).then(res => {
+        const ticketNo = { id: reservationNumber }
+
+        await api.getPassByReservationId(ticketNo).then(res => {
             console.log(res.data.data)
             if(!res.data.data.isActive){
                window.alert(`Pass is not active, please try a different pass`)
