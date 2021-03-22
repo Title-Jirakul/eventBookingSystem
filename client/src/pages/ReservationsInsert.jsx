@@ -148,7 +148,7 @@ class ReservationsInsert extends Component {
 
         console.log(ticketNo)
         console.log("Checking if ticket exists")
-        
+
         await api.getPassByReservationId(ticketNo).then(res => {
             if(!res.data.data.isActive){
                window.alert(`Pass is not active, please try a different pass`)
@@ -164,7 +164,8 @@ class ReservationsInsert extends Component {
                })
             }
         }).catch(res => {
-           window.alert(`Pass not exist, please try a different pass`)
+            console.log(ticketNo) 
+            window.alert(`Pass not exist, please try a different pass`)
         })
     }
 
