@@ -89,7 +89,9 @@ deletePass = async (req, res) => {
 }
 
 getPassByReservationId = async (req, res) => {
-    await CustomerPass.findOne({ reservationNo: req.body.id }, (err, booking) => {
+    const body = req.body
+    console.log(body)
+    await CustomerPass.findOne({ reservationNo: body.id }, (err, booking) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
