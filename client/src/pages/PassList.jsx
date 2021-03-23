@@ -15,6 +15,11 @@ const Delete = styled.div`
     cursor: pointer;
 `
 
+const Update = styled.div`
+    color: #ef9b0f;
+    cursor: pointer;
+`
+
 class DeletePass extends Component {
     deleteUser = event => {
         event.preventDefault()
@@ -31,6 +36,18 @@ class DeletePass extends Component {
 
     render() {
         return <Delete onClick={this.deleteUser}>Delete</Delete>
+    }
+}
+
+class UpdatePass extends Component {
+    updateUser = event => {
+        event.preventDefault()
+
+        window.location.href = `/passes/update/${this.props.id}`
+    }
+
+    render() {
+        return <Update onClick={this.updateUser}>Update</Update>
     }
 }
 
@@ -110,6 +127,17 @@ class PassList extends Component {
                     )
                 },
             },
+            {
+                Header: '',
+                accessor: '',
+                Cell: function(props) {
+                    return (
+                        <span>
+                            <UpdatePass id={props.original._id} />
+                        </span>
+                    )
+                },
+            },
         ]
 
         let showTable = true
@@ -125,8 +153,8 @@ class PassList extends Component {
                         data={passes}
                         columns={columns}
                         loading={isLoading}
-                        defaultPageSize={10}
-                        showPageSizeOptions={true}
+                        defaultPageSize={passes.length}
+                        showPagination={false}
                         minRows={0}
                     />
                 )}

@@ -233,6 +233,7 @@ class ReservationsInsert extends Component {
                     <option value="11:00 - 12:30">11:00 - 12:30</option>
                     <option value="11:00 - 13:00">11:00 - 13:00</option>
                     <option value="14:00 - 15:30">14:00 - 15:30</option>
+                    <option value="14:00 - 16:00">14:00 - 16:00</option>
                     <option value="16:30 - 17:30">16:30 - 17:30</option>
                     <option value="16:30 - 18:00">16:30 - 18:00</option>
                     <option value="16:30 - 18:30">16:30 - 18:30</option>

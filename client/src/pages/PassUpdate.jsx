@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import api from '../api'
 import { AdminNavBar } from '../components'
@@ -43,11 +42,12 @@ const CancelButton = styled.a.attrs({
     margin: 15px 15px 15px 5px;
 `
 
-class PassesInsert extends Component {
+class PassUpdate extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
+            id: this.props.match.params.id,
             reservationNo: '',
             name: '',
             passType: '',
@@ -81,16 +81,29 @@ class PassesInsert extends Component {
         this.setState({ isActive })
     }
 
-    handleCreatePass = async () => {
-        const { reservationNo, name, passType, phoneNo, isActive } = this.state
+    handleUpdatePass = async () => {
+        const { id, reservationNo, name, passType, phoneNo, isActive } = this.state
         const payload = { reservationNo, name,  passType, phoneNo, isActive}
 
-        await api.createPass(payload).then(res => {
-            window.alert(`Ticket Created Successfully`)
+        await api.updatePass(id, payload).then(res => {
+            window.alert(`Ticket updated Successfully`)
             window.location.reload();
         }).catch(res => {
-            window.alert(`Ticket creation failed`)
+            window.alert(`Ticket update failed`)
             window.location.reload();
+        })
+    }
+
+    componentDidMount = async () => {
+        const { id } = this.state
+        const pass = await api.getPassById(id)
+        console.log(pass)
+        this.setState({
+            reservationNo: pass.data.data.reservationNo,
+            name: pass.data.data.name,
+            passType: pass.data.data.passType,
+            phoneNo: pass.data.data.phoneNo,
+            isActive: pass.data.data.isActive,
         })
     }
 
@@ -99,7 +112,7 @@ class PassesInsert extends Component {
         return (
             <Wrapper>
             <AdminNavBar/>
-                <Title>Add Ticket</Title>
+                <Title>Update Ticket</Title>
 
                 <Label>Ticket Number: </Label>
                 <InputText
@@ -110,8 +123,7 @@ class PassesInsert extends Component {
 
                 <Label>Ticket Type: </Label>
                 {/* Input select can be dynamic: admin can add passType in here */}
-                <InputSelect onChange={this.handleChangeInputPassType} defaultvalue="">
-                    <option hidden disabled selected value>-- Select an option --</option>
+                <InputSelect onChange={this.handleChangeInputPassType} value={passType}>
                     <option value="one">1 Day</option>
                     <option value="three">3 Days</option>
                     <option value="class">Class</option>
@@ -139,11 +151,11 @@ class PassesInsert extends Component {
                     onChange={this.handleChangeInputIsActive}
                 />
                 </div>
-                <Button onClick={this.handleCreatePass}>Add Ticket</Button>
-                <CancelButton href={'/passes/create'}>Cancel</CancelButton>
+                <Button onClick={this.handleUpdatePass}>Update Ticket</Button>
+                <CancelButton href={'/passes/list'}>Cancel</CancelButton>
             </Wrapper>
         )
     }
 }
 
-export default PassesInsert
+export default PassUpdate

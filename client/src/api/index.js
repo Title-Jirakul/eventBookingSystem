@@ -24,6 +24,7 @@ export const getPasses = () => api.get(`/passes`)
 export const updatePass = (id, payload) => api.put(`/pass/${id}`, payload)
 export const deletePass = id => api.delete(`/pass/${id}`)
 export const getPassByReservationId = id => api.get(`/pass/${id}`)
+export const getPassById = id => api.get(`/passes/${id}`)
 
 const apis = {
     createReservation,
@@ -46,6 +47,7 @@ const apis = {
     updatePass,
     deletePass,
     getPassByReservationId,
+    getPassById,
 }
 
 export default apis

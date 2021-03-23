@@ -103,6 +103,21 @@ getPassByReservationId = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+getPassById = async (req, res) => {
+    await CustomerPass.findOne({ _id: req.params.id }, (err, booking) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+
+        if (!booking) {
+            return res
+                .status(404)
+                .json({ success: false, error: `Booking not found` })
+        }
+        return res.status(200).json({ success: true, data: booking })
+    }).catch(err => console.log(err))
+}
+
 getPasses = async (req, res) => {
     await CustomerPass.find({}, (err, bookings) => {
         if (err) {
@@ -122,5 +137,6 @@ module.exports = {
     updatePass,
     deletePass,
     getPasses,
+    getPassById,
     getPassByReservationId,
 }

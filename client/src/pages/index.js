@@ -6,5 +6,6 @@ import PassesInsert from './PassesInsert'
 import ClassList from './ClassList'
 import PassList from './PassList'
 import Admin from './Admin'
+import PassUpdate from './PassUpdate'
 
-export { ReservationsList, ReservationsInsert, ReservationsUpdate, RoomsInsert, PassesInsert, ClassList, PassList, Admin }
+export { ReservationsList, ReservationsInsert, ReservationsUpdate, RoomsInsert, PassesInsert, ClassList, PassList, Admin, PassUpdate }

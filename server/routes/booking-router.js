@@ -25,6 +25,7 @@ router.post('/pass', CustomerPassCtr.createPass)
 router.put('/pass/:id', CustomerPassCtr.updatePass)
 router.delete('/pass/:id', CustomerPassCtr.deletePass)
 router.get('/pass/:id', CustomerPassCtr.getPassByReservationId)
+router.get('/passes/:id', CustomerPassCtr.getPassById)
 router.get('/passes', CustomerPassCtr.getPasses)
 
 module.exports = router
