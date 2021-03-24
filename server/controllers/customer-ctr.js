@@ -50,6 +50,7 @@ updatePass = async (req, res) => {
                 message: 'Booking not found!',
             })
         }
+        pass.reservationNo = body.reservationNo
         pass.name = body.name
         pass.passType = body.passType
         pass.phoneNo = body.phoneNo
