@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const DayPasses = new Schema(
     {
-        reservationNo: { type: String, required: true },
+        reservationID: { type: String, required: true },
         dateBooked: { type: String, required: true },
     },
     { timestamps: true },

@@ -3,6 +3,8 @@ const express = require('express')
 const ReservationCtrl = require('../controllers/reservation-ctrl')
 const RoomCtrl = require('../controllers/room-ctr')
 const CustomerPassCtr = require('../controllers/customer-ctr')
+const DayPassCtr = require('../controllers/dayPass-ctr')
+const SinglePassCtr = require('../controllers/singlePass-ctr')
 
 const router = express.Router()
 
@@ -27,5 +29,15 @@ router.delete('/pass/:id', CustomerPassCtr.deletePass)
 router.get('/pass/:id', CustomerPassCtr.getPassByReservationId)
 router.get('/passes/:id', CustomerPassCtr.getPassById)
 router.get('/passes', CustomerPassCtr.getPasses)
+
+router.post('/dayPass', DayPassCtr.createDayPass)
+router.put('/dayPass/:id', DayPassCtr.updateDayPassDate)
+router.delete('/dayPass/:id', DayPassCtr.deleteDayPass)
+router.get('/dayPass/:id', DayPassCtr.getDayPass)
+
+router.post('/singlePass', SinglePassCtr.createSinglePass)
+router.put('/singlePass/:id', SinglePassCtr.updateSinglePassUsed)
+router.delete('/singlePass/:id', SinglePassCtr.deleteSinglePass)
+router.get('/singlePass/:id', SinglePassCtr.getSinglePass)
 
 module.exports = router
