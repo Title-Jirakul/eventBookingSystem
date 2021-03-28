@@ -148,19 +148,41 @@ class ReservationsInsert extends Component {
             if(!res.data.data.isActive){
                window.alert(`Pass is not active, please try a different pass`)
             } else {
-               api.createReservation(payload).then(res => {
-                  api.updateRoomByOne(roomSettingJSON._id)
-               }).then(res => {
-                  window.alert(`Reservation created successfully`)
-                  window.location.reload();
-               }).catch(res => {
-                  window.alert(`Reservation creation failed`)
-                  window.location.reload();
-               })
+               switch (res.data.data.passType) {
+                  case 'class':
+                     api.getSinglePass(res.data.data._id).then(res => {
+                        if(!res.data.data.isUsed) {
+                           api.updateSinglePassUsed(res.data.data.reservationID).then(() => {
+                              this.makeReservation(payload, roomID)
+                           }).catch(() => {
+                              window.alert(`pass update failed`)
+                           })
+                        } else {
+                           window.alert(`Single pass is used`)
+                        }
+                     })
+                     break
+                  case 'one':
+                     this.makeReservation(payload, roomID)
+                     break
+                  case 'three':
+                     this.makeReservation(payload, roomID)
+                     break
+               } 
             }
         }).catch(res => {
             window.alert(`Pass not exist, please try a different pass`)
         })
+    }
+
+    makeReservation = async (payload, roomID) => {
+       api.createReservation(payload).then(() => {
+           api.updateRoomByOne(roomID).then(() => {
+              window.alert(`Reservation created successfully`) ? window.location.reload() : window.location.reload()
+           })
+       }).catch(res => {
+           window.alert(`Reservation creation failed`)
+       })
     }
 
     getOptions = async () => {

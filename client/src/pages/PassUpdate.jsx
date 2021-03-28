@@ -86,11 +86,22 @@ class PassUpdate extends Component {
         const payload = { reservationNo, name,  passType, phoneNo, isActive}
 
         await api.updatePass(id, payload).then(res => {
-            window.alert(`Ticket updated Successfully`)
-            window.location.reload();
+            switch (passType) {
+               case 'class':
+                  const singlePassPayload = { reservationID: id, isUsed: false}
+                  api.createSinglePass(singlePassPayload).then(res => {
+                     window.alert(`Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                  })
+                  break
+               case 'one':
+                  api.deleteSinglePass(id)
+                  break
+               case 'three':
+                  api.deleteSinglePass(id)
+                  break
+            }
         }).catch(res => {
             window.alert(`Ticket update failed`)
-            window.location.reload();
         })
     }
 

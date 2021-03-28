@@ -16,7 +16,7 @@ const Delete = styled.div`
 `
 
 class DeleteReservation extends Component {
-    deleteUser = event => {
+    deleteUser = async event => {
         event.preventDefault()
 
         if (
@@ -24,9 +24,25 @@ class DeleteReservation extends Component {
                 `Do you want to delete the reservation ${this.props.reservationNo} permanently?`,
             )
         ) {
-            api.deleteReservation(this.props.id)
-            api.updateRoomByLess(this.props.roomID)
-            window.location.reload()
+            await api.deleteReservation(this.props.id).then(res => {
+               api.updateRoomByLess(this.props.roomID).then(res => {
+                  api.getPassByReservationId(this.props.reservationNo).then(res => {
+                     switch(res.data.data.passType) {
+                        case 'class':
+                           api.updateSinglePassUsed(res.data.data._id).then(res => {
+                              window.location.reload()
+                           })
+                           break
+                        case 'one':
+                           window.location.reload()
+                           break
+                        case 'three':
+                           window.location.reload()
+                           break
+                     }
+                  })
+               })
+            })
         }
     }
 

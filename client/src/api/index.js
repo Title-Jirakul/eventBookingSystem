@@ -26,6 +26,11 @@ export const deletePass = id => api.delete(`/pass/${id}`)
 export const getPassByReservationId = id => api.get(`/pass/${id}`)
 export const getPassById = id => api.get(`/passes/${id}`)
 
+export const createSinglePass = payload => api.post(`/singlePass`, payload)
+export const deleteSinglePass = id => api.delete(`/singlePass/${id}`)
+export const getSinglePass = id => api.get(`/singlePass/${id}`)
+export const updateSinglePassUsed = id => api.put(`/singlePass/${id}`)
+
 const apis = {
     createReservation,
     getReservations,
@@ -48,6 +53,11 @@ const apis = {
     deletePass,
     getPassByReservationId,
     getPassById,
+
+    createSinglePass,
+    deleteSinglePass,
+    getSinglePass,
+    updateSinglePassUsed,
 }
 
 export default apis

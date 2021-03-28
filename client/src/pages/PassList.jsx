@@ -21,7 +21,7 @@ const Update = styled.div`
 `
 
 class DeletePass extends Component {
-    deleteUser = event => {
+    deleteUser = async event => {
         event.preventDefault()
 
         if (
@@ -29,8 +29,11 @@ class DeletePass extends Component {
                 `Do you want to delete the ticket ${this.props.reservationNo} permanently?`,
             )
         ) {
-            api.deletePass(this.props.id)
-            window.location.reload()
+            await api.deletePass(this.props.id).then(() => {
+               api.deleteSinglePass(this.props.id).then(() => {
+                  window.location.reload()
+               })
+            })
         }
     }
 
@@ -83,7 +86,6 @@ class PassList extends Component {
 
     render() {
         const { passes, isLoading } = this.state
-        console.log('TCL: passesList -> render -> passes', passes)
 
         const columns = [
             {

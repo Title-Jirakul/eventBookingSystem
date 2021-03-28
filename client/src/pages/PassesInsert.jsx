@@ -86,11 +86,20 @@ class PassesInsert extends Component {
         const payload = { reservationNo, name,  passType, phoneNo, isActive}
 
         await api.createPass(payload).then(res => {
-            window.alert(`Ticket Created Successfully`)
-            window.location.reload();
+            switch (passType) {
+               case 'class':
+                  const singlePassPayload = { reservationID: res.data.id, isUsed: false}
+                  api.createSinglePass(singlePassPayload).then(res => {
+                     window.alert(`Ticket Created Successfully`) ? window.location.reload() : window.location.reload()
+                  })
+                  break
+               case 'one':
+                  break
+               case 'three':
+                  break
+            }
         }).catch(res => {
             window.alert(`Ticket creation failed`)
-            window.location.reload();
         })
     }
 
