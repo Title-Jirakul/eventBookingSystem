@@ -52,6 +52,7 @@ class PassUpdate extends Component {
             name: '',
             passType: '',
             phoneNo: '',
+            oldPassType: '',
             isActive: true,
         }
     }
@@ -82,16 +83,20 @@ class PassUpdate extends Component {
     }
 
     handleUpdatePass = async () => {
-        const { id, reservationNo, name, passType, phoneNo, isActive } = this.state
+        const { id, reservationNo, name, passType, phoneNo, isActive, oldPassType } = this.state
         const payload = { reservationNo, name,  passType, phoneNo, isActive}
 
         await api.updatePass(id, payload).then(res => {
             switch (passType) {
                case 'class':
-                  const singlePassPayload = { reservationID: id, isUsed: false}
-                  api.createSinglePass(singlePassPayload).then(res => {
+                  if(oldPassType != passType) {
+                     const singlePassPayload = { reservationID: id, isUsed: false}
+                     api.createSinglePass(singlePassPayload).then(res => {
+                        window.alert(`Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                     })
+                  } else {
                      window.alert(`Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
-                  })
+                  }
                   break
                case 'one':
                   api.deleteSinglePass(id)
@@ -113,6 +118,7 @@ class PassUpdate extends Component {
             reservationNo: pass.data.data.reservationNo,
             name: pass.data.data.name,
             passType: pass.data.data.passType,
+            oldPassType: pass.data.data.passType,
             phoneNo: pass.data.data.phoneNo,
             isActive: pass.data.data.isActive,
         })
