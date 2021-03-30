@@ -90,12 +90,14 @@ class PassesInsert extends Component {
                case 'class':
                   const singlePassPayload = { reservationID: res.data.id, isUsed: false}
                   api.createSinglePass(singlePassPayload).then(res => {
-                     window.alert(`Ticket Created Successfully`) ? window.location.reload() : window.location.reload()
+                     window.alert(`Single Use Ticket Created Successfully`) ? window.location.reload() : window.location.reload()
                   })
                   break
                case 'one':
+                  window.alert(`1 Day Ticket Created Successfully`) ? window.location.reload() : window.location.reload()
                   break
                case 'three':
+                  window.alert(`3 Day Ticket Created Successfully`) ? window.location.reload() : window.location.reload()
                   break
             }
         }).catch(res => {

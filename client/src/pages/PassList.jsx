@@ -33,6 +33,9 @@ class DeletePass extends Component {
                api.deleteSinglePass(this.props.id).then(() => {
                   window.location.reload()
                })
+               api.deleteDayPass(this.props.id).then(() => {
+                  window.location.reload()
+               })
             })
         }
     }
