@@ -160,6 +160,8 @@ class ReservationsInsert extends Component {
                         } else {
                            window.alert(`Single pass is used`)
                         }
+                     }).catch(() => {
+                        this.makeReservation(payload, roomID)
                      })
                      break
                   case 'one':
