@@ -161,7 +161,10 @@ class ReservationsInsert extends Component {
                            window.alert(`Single pass is used`)
                         }
                      }).catch(() => {
-                        this.makeReservation(payload, roomID)
+                        const singlePassPayload = { reservationID: res.data.data._id, isUsed: false}
+                        api.createSinglePass(singlePassPayload).then(res => {
+                           this.makeReservation(payload, roomID)
+                        })
                      })
                      break
                   case 'one':

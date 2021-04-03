@@ -31,6 +31,8 @@ class DeleteReservation extends Component {
                         case 'class':
                            api.updateSinglePassUsed(res.data.data._id).then(res => {
                               window.location.reload()
+                           }).catch(() => {
+                              window.location.reload()
                            })
                            break
                         case 'one':
