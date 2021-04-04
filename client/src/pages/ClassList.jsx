@@ -132,8 +132,8 @@ class ClassList extends Component {
                         data={classes}
                         columns={columns}
                         loading={isLoading}
-                        defaultPageSize={10}
-                        showPageSizeOptions={true}
+                        defaultPageSize={classes.length}
+                        showPagination={false}
                         minRows={0}
                     />
                 )}

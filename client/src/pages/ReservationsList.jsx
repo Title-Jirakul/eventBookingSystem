@@ -152,8 +152,8 @@ class ReservationsList extends Component {
                         data={reservations}
                         columns={columns}
                         loading={isLoading}
-                        defaultPageSize={10}
-                        showPageSizeOptions={true}
+                        defaultPageSize={reservations.length}
+                        showPagination={false}
                         minRows={0}
                     />
                 )}
