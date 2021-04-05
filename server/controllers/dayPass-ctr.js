@@ -50,7 +50,7 @@ updateDayPassDate = async (req, res) => {
                 message: 'day pass not found!',
             })
         }
-        pass.dateBooked = body.date
+        pass.dateBooked = body.dateBooked
         pass
             .save()
             .then(() => {

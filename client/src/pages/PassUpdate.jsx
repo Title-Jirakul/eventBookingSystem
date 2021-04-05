@@ -90,19 +90,36 @@ class PassUpdate extends Component {
             switch (passType) {
                case 'class':
                   if(oldPassType != passType) {
-                     const singlePassPayload = { reservationID: id, isUsed: false}
-                     api.createSinglePass(singlePassPayload).then(res => {
-                        window.alert(`Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                     api.deleteDayPass(id).then(res => {
+                        window.alert(`Single Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                     }).catch(() => {
+                        window.alert(`Single Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
                      })
                   } else {
-                     window.alert(`Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                     window.alert(`Single Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
                   }
                   break
                case 'one':
-                  api.deleteSinglePass(id)
+                  if(oldPassType != passType) {
+                     api.deleteSinglePass(id).then(res => {
+                        window.alert(`One Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                     }).catch(() => {
+                        window.alert(`One Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                     })
+                  } else {
+                     window.alert(`One Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                  }
                   break
                case 'three':
-                  api.deleteSinglePass(id)
+                  if(oldPassType != passType) {
+                     api.deleteSinglePass(id).then(res => {
+                        window.alert(`Three Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                     }).catch(() => {
+                        window.alert(`Three Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                     })
+                  } else {
+                     window.alert(`Three Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                  }
                   break
             }
         }).catch(res => {

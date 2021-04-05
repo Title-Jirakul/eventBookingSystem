@@ -168,10 +168,28 @@ class ReservationsInsert extends Component {
                      })
                      break
                   case 'one':
-                     this.makeReservation(payload, roomID)
+                     api.getDayPass(res.data.data._id).then(res => {
+                        if(res.data.data.dateBooked == date) {
+                           this.makeReservation(payload, roomID)
+                        } else {
+                           window.alert(`single day pass is used is for ` + date)
+                        }
+                     }).catch(() => {
+                        const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
+                        api.createDayPass(dayPassPayload).then(res => {
+                           this.makeReservation(payload, roomID)
+                        })
+                     })
                      break
                   case 'three':
-                     this.makeReservation(payload, roomID)
+                     api.getDayPass(res.data.data._id).then(res => {
+                        this.makeReservation(payload, roomID)
+                     }).catch(() => {
+                        const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
+                        api.createDayPass(dayPassPayload).then(res => {
+                           this.makeReservation(payload, roomID)
+                        })
+                     })
                      break
                } 
             }

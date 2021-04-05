@@ -36,10 +36,26 @@ class DeleteReservation extends Component {
                            })
                            break
                         case 'one':
-                           window.location.reload()
+                           api.getReservationByReservationNo(this.props.reservationNo).then(res => {
+                              window.location.reload()
+                           }).catch(() => {
+                              api.deleteDayPass(res.data.data._id).then(res => {
+                                 window.location.reload()
+                              }).catch(() => {
+                                 window.location.reload()
+                              })
+                           })
                            break
                         case 'three':
-                           window.location.reload()
+                           api.getReservationByReservationNo(this.props.reservationNo).then(res => {
+                              window.location.reload()
+                           }).catch(() => {
+                              api.deleteDayPass(res.data.data._id).then(res => {
+                                 window.location.reload()
+                              }).catch(() => {
+                                 window.location.reload()
+                              })
+                           })
                            break
                      }
                   })
