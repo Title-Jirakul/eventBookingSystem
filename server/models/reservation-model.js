@@ -11,6 +11,7 @@ const Reservations = new Schema(
         roomNo: { type: String, required: true },
         phoneNo: { type: String, required: false },
         roomID: { type: String, required: false },
+        instructor: { type: String, required: false },
     },
     { timestamps: true },
 )

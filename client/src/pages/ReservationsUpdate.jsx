@@ -141,6 +141,12 @@ class ReservationsUpdate extends Component {
                 filterMethod: this.filterMethod,
             },
             {
+                Header: 'Instructor',
+                accessor: 'instructor',
+                filterable: true,
+                filterMethod: this.filterMethod,
+            },
+            {
                 Header: '',
                 accessor: '',
                 Cell: function(props) {

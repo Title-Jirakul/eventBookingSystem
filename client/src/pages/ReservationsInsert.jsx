@@ -140,9 +140,10 @@ class ReservationsInsert extends Component {
         const date = roomSettingJSON.date
         const roomNumber = roomSettingJSON.roomNo
         const roomID = roomSettingJSON._id
+        const instructor = roomSettingJSON.instructor
         const payload = { reservationNo: reservationNumber, 
             name: name, time: time, date: date, roomNo: roomNumber, phoneNo: phoneNo,
-        lastName: lastName, roomID: roomID }
+        lastName: lastName, roomID: roomID, instructor: instructor }
 
         await api.getPassByReservationId(reservationNumber).then(res => {
             if(!res.data.data.isActive){
