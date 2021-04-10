@@ -10,6 +10,7 @@ export const updateReservation = (id, payload) => api.put(`/reservation/${id}`, 
 export const deleteReservation = id => api.delete(`/reservation/${id}`)
 export const deleteReservationsByRoomID = id => api.delete(`/reservations/${id}`)
 export const getReservationByReservationNo = id => api.get(`/reservations/${id}`)
+export const getReservationById = id => api.get(`/reservation/${id}`)
 
 export const createRoom = payload => api.post(`/room`, payload)
 export const getRooms = () => api.get(`/rooms`)
@@ -43,6 +44,7 @@ const apis = {
     deleteReservation,
     deleteReservationsByRoomID,
     getReservationByReservationNo,
+    getReservationById,
 
     createRoom,
     getRooms,

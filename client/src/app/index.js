@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 
-import { ReservationsList, ReservationsInsert, ReservationsUpdate, RoomsInsert, PassesInsert, ClassList, PassList, Admin, PassUpdate } from '../pages'
+import { ReservationsList, ReservationsInsert, ReservationsUpdate, RoomsInsert, PassesInsert, ClassList, PassList, Admin, PassUpdate, ReservationUpdate } from '../pages'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -18,6 +18,7 @@ function App() {
                 <Route path="/passes/list" exact component={PassList} />
                 <Route path="/admin" exact component={Admin} />
                 <Route path="/passes/update/:id" exact component={PassUpdate} />
+                <Route path="/reservation/update/:id" exact component={ReservationUpdate} />
                 <Redirect to="/reservations/create"/>
             </Switch>
         </Router>
