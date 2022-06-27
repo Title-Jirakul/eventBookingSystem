@@ -159,7 +159,7 @@ class ReservationsInsert extends Component {
                               window.alert(`pass update failed`)
                            })
                         } else {
-                           window.alert(`Single pass is used`)
+                           window.alert(`Single pass has been used`)
                         }
                      }).catch(() => {
                         const singlePassPayload = { reservationID: res.data.data._id, isUsed: true}
@@ -180,7 +180,7 @@ class ReservationsInsert extends Component {
                         })
                         }
                         else {
-                           window.alert(`single day pass is used is for ` + date)
+                           window.alert(`single day pass cannot be used on ` + date)
                         }
                      }).catch(() => {
                         const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
@@ -226,10 +226,10 @@ class ReservationsInsert extends Component {
                            api.updateSinglePassUsed(res.data.data.reservationID).then(() => {
                               this.makeVirtualReservation(payload, roomID)
                            }).catch(() => {
-                              window.alert(`pass update failed`)
+                              window.alert(`Pass update failed`)
                            })
                         } else {
-                           window.alert(`Single pass is used`)
+                           window.alert(`Virtual single class pass has been used`)
                         }
                      }).catch(() => {
                         const singlePassPayload = { reservationID: res.data.data._id, isUsed: true}
@@ -250,7 +250,7 @@ class ReservationsInsert extends Component {
                            })
                         }
                         else {
-                           window.alert(`single day pass is used is for ` + date)
+                           window.alert(`Virtual single day pass cannot be used on ` + date)
                         }
                      }).catch(() => {
                         const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
