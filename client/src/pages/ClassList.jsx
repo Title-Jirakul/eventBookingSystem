@@ -107,6 +107,16 @@ class ClassList extends Component {
                 filterable: true,
             },
             {
+                Header: 'Max Virtual Capacity',
+                accessor: 'maxVirtualCapacity',
+                filterable: true,
+            },
+            {
+                Header: 'Virtual Capacity',
+                accessor: 'virtualCapacity',
+                filterable: true,
+            },
+            {
                 Header: '',
                 accessor: '',
                 Cell: function(props) {

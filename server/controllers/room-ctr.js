@@ -54,6 +54,7 @@ updateRoom = async (req, res) => {
         room.time = body.time
         room.date = body.date
         room.maxCapacity = body.maxCapacity
+        room.maxVirtualCapacity = body.maxVirtualCapacity
         room.className = body.className
         room.instructor = body.instructor
         room
@@ -101,6 +102,33 @@ updateRoomByLessOne = async (req, res) => {
     })
 }
 
+updateVirtualRoomByLessOne = async (req, res) => {
+    Room.findOne({ _id: req.params.id }, (err, room) => {
+        if (err) {
+            return res.status(404).json({
+                err,
+                message: 'Class not found!',
+            })
+        }
+        room.virtualCapacity = room.virtualCapacity - 1
+        room
+            .save()
+            .then(() => {
+                return res.status(200).json({
+                    success: true,
+                    id: room._id,
+                    message: 'Class updated!',
+                })
+            })
+            .catch(error => {
+                return res.status(404).json({
+                    error,
+                    message: 'Class not updated!',
+                })
+            })
+    })
+}
+
 updateRoomByOne = async (req, res) => {
     Room.findOne({ _id: req.params.id }, (err, room) => {
         if (err) {
@@ -110,6 +138,33 @@ updateRoomByOne = async (req, res) => {
             })
         }
         room.capacity = room.capacity + 1
+        room
+            .save()
+            .then(() => {
+                return res.status(200).json({
+                    success: true,
+                    id: room._id,
+                    message: 'Class updated!',
+                })
+            })
+            .catch(error => {
+                return res.status(404).json({
+                    error,
+                    message: 'Class not updated!',
+                })
+            })
+    })
+}
+
+updateVirtualRoomByOne = async (req, res) => {
+    Room.findOne({ _id: req.params.id }, (err, room) => {
+        if (err) {
+            return res.status(404).json({
+                err,
+                message: 'Class not found!',
+            })
+        }
+        room.virtualCapacity = room.virtualCapacity + 1
         room
             .save()
             .then(() => {
@@ -178,6 +233,8 @@ module.exports = {
     updateRoom,
     updateRoomByOne,
     updateRoomByLessOne,
+    updateVirtualRoomByOne,
+    updateVirtualRoomByLessOne,
     deleteRoom,
     getRooms,
     getRoomByDate,

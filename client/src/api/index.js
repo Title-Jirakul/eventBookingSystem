@@ -17,6 +17,8 @@ export const getRooms = () => api.get(`/rooms`)
 export const updateRoom = (id, payload) => api.put(`/room/${id}`, payload)
 export const updateRoomByOne = id => api.put(`/roomByOne/${id}`)
 export const updateRoomByLess = id => api.put(`/roomByLess/${id}`)
+export const updateVirtualRoomByOne = id => api.put(`/vroomByOne/${id}`)
+export const updateVirtualRoomByLess = id => api.put(`/vroomByLess/${id}`)
 export const deleteRoom = id => api.delete(`/room/${id}`)
 export const getRoomByDate = id => api.get(`/room/${id}`)
 
@@ -51,6 +53,8 @@ const apis = {
     updateRoom,
     updateRoomByOne,
     updateRoomByLess,
+    updateVirtualRoomByOne,
+    updateVirtualRoomByLess,
     deleteRoom,
     getRoomByDate,
 

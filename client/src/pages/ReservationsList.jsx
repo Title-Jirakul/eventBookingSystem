@@ -25,19 +25,22 @@ class DeleteReservation extends Component {
             )
         ) {
             await api.deleteReservation(this.props.id).then(res => {
-               api.updateRoomByLess(this.props.roomID).then(res => {
                   api.getPassByReservationId(this.props.reservationNo).then(res => {
                      switch(res.data.data.passType) {
                         case 'class':
                            api.updateSinglePassUsed(res.data.data._id).then(res => {
-                              window.location.reload()
+                              api.updateRoomByLess(this.props.roomID).then(res => {
+                                 window.location.reload()
+                              })
                            }).catch(() => {
                               window.location.reload()
                            })
                            break
                         case 'one':
                            api.getReservationByReservationNo(this.props.reservationNo).then(res => {
-                              window.location.reload()
+                              api.updateRoomByLess(this.props.roomID).then(res => {
+                                 window.location.reload()
+                              })
                            }).catch(() => {
                               api.deleteDayPass(res.data.data._id).then(res => {
                                  window.location.reload()
@@ -48,7 +51,44 @@ class DeleteReservation extends Component {
                            break
                         case 'three':
                            api.getReservationByReservationNo(this.props.reservationNo).then(res => {
+                              api.updateRoomByLess(this.props.roomID).then(res => {
+                                 window.location.reload()
+                              })
+                           }).catch(() => {
+                              api.deleteDayPass(res.data.data._id).then(res => {
+                                 window.location.reload()
+                              }).catch(() => {
+                                 window.location.reload()
+                              })
+                           })
+                           break
+                        case 'vclass':
+                           api.updateSinglePassUsed(res.data.data._id).then(res => {
+                              api.updateVirtualRoomByLess(this.props.roomID).then(res => {
+                                 window.location.reload()
+                              })
+                           }).catch(() => {
                               window.location.reload()
+                           })
+                           break
+                        case 'vone':
+                           api.getReservationByReservationNo(this.props.reservationNo).then(res => {
+                              api.updateVirtualRoomByLess(this.props.roomID).then(res => {
+                                 window.location.reload()
+                              })
+                           }).catch(() => {
+                              api.deleteDayPass(res.data.data._id).then(res => {
+                                 window.location.reload()
+                              }).catch(() => {
+                                 window.location.reload()
+                              })
+                           })
+                           break
+                        case 'two':
+                           api.getReservationByReservationNo(this.props.reservationNo).then(res => {
+                              api.updateRoomByLess(this.props.roomID).then(res => {
+                                 window.location.reload()
+                              })
                            }).catch(() => {
                               api.deleteDayPass(res.data.data._id).then(res => {
                                  window.location.reload()
@@ -59,7 +99,6 @@ class DeleteReservation extends Component {
                            break
                      }
                   })
-               })
             })
         }
     }
