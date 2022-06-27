@@ -8,6 +8,8 @@ const Rooms = new Schema(
         date: { type: String, required: true },
         capacity: { type: Number, required: true, default: 0 },
         maxCapacity: { type: Number, required: true, default: 30 },
+        virtualCapacity: { type: Number, required: true, default: 0 },
+        maxVirtualCapacity: { type: Number, required: true, default: 1000 },
         className: { type: String, required: false },
         instructor: { type: String, required: false },
     },

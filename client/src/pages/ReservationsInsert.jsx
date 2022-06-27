@@ -172,7 +172,14 @@ class ReservationsInsert extends Component {
                      api.getDayPass(res.data.data._id).then(res => {
                         if(res.data.data.dateBooked == date) {
                            this.makeReservation(payload, roomID)
-                        } else {
+                        } 
+                        else if (res.data.data.dateBooked == "") {
+                           const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
+                        api.updateDayPassDate(dayPassPayload).then(res => {
+                           this.makeReservation(payload, roomID)
+                        })
+                        }
+                        else {
                            window.alert(`single day pass is used is for ` + date)
                         }
                      }).catch(() => {
@@ -189,6 +196,66 @@ class ReservationsInsert extends Component {
                         const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
                         api.createDayPass(dayPassPayload).then(res => {
                            this.makeReservation(payload, roomID)
+                        })
+                     })
+                     break
+                  case 'two':
+                     api.getDayPass(res.data.data._id).then(res => {
+                        if(res.data.data.dateBooked == date || parseInt(res.data.data.dateBooked) + 1 == parseInt(date)) {
+                           this.makeReservation(payload, roomID)
+                        } 
+                        else if (res.data.data.dateBooked == "") {
+                           const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
+                        api.updateDayPassDate(dayPassPayload).then(res => {
+                           this.makeReservation(payload, roomID)
+                        })
+                        }
+                        else {
+                           window.alert(`2 day pass is used is starting ` + date)
+                        }
+                     }).catch(() => {
+                        const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
+                        api.createDayPass(dayPassPayload).then(res => {
+                           this.makeReservation(payload, roomID)
+                        })
+                     })
+                     break
+                  case 'vclass':
+                     api.getSinglePass(res.data.data._id).then(res => {
+                        if(!res.data.data.isUsed) {
+                           api.updateSinglePassUsed(res.data.data.reservationID).then(() => {
+                              this.makeVirtualReservation(payload, roomID)
+                           }).catch(() => {
+                              window.alert(`pass update failed`)
+                           })
+                        } else {
+                           window.alert(`Single pass is used`)
+                        }
+                     }).catch(() => {
+                        const singlePassPayload = { reservationID: res.data.data._id, isUsed: true}
+                        api.createSinglePass(singlePassPayload).then(res => {
+                           this.makeVirtualReservation(payload, roomID)
+                        })
+                     })
+                     break
+                  case 'vone':
+                     api.getDayPass(res.data.data._id).then(res => {
+                        if(res.data.data.dateBooked == date) {
+                           this.makeVirtualReservation(payload, roomID)
+                        } 
+                        else if (res.data.data.dateBooked == "") {
+                           const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
+                           api.updateDayPassDate(dayPassPayload).then(res => {
+                              this.makeVirtualReservation(payload, roomID)
+                           })
+                        }
+                        else {
+                           window.alert(`single day pass is used is for ` + date)
+                        }
+                     }).catch(() => {
+                        const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
+                        api.createDayPass(dayPassPayload).then(res => {
+                           this.makeVirtualReservation(payload, roomID)
                         })
                      })
                      break
@@ -209,16 +276,26 @@ class ReservationsInsert extends Component {
        })
     }
 
+    makeVirtualReservation = async (payload, roomID) => {
+       api.createReservation(payload).then(() => {
+           api.updateVirtualRoomByOne(roomID).then(() => {
+              window.alert(`Reservation created successfully`) ? window.location.reload() : window.location.reload()
+           })
+       }).catch(res => {
+           window.alert(`Reservation creation failed`)
+       })
+    }
+
     getOptions = async () => {
        await api.getRooms().then(res => {
-          let allOptions = res.data.data.filter(data => data.capacity < data.maxCapacity)
+          let allOptions = res.data.data.filter(data => (data.capacity < data.maxCapacity) || (data.virtualCapacity < data.maxVirtualCapacity))
           this.setState({allOptions: allOptions})
        })
     }
 
     getOptionsByDateTime = async (thisDate, thisTime) => {
        const {allOptions} = this.state
-       let options = allOptions.filter(data => data.capacity < data.maxCapacity && data.date == thisDate && data.time == thisTime)
+       let options = allOptions.filter(data => (data.capacity < data.maxCapacity) || (data.virtualCapacity < data.maxVirtualCapacity) && data.date == thisDate && data.time == thisTime)
        this.setState({options: options})
     }
 
@@ -292,7 +369,8 @@ class ReservationsInsert extends Component {
                       " Room: " + object.roomNo +
                       " ,Class Name: " + object.className +
                       " ,Instructor: " + object.instructor +
-                      " ,Capacity: " + object.capacity + "/" + object.maxCapacity}</option>
+                      " ,Capacity: " + object.capacity + "/" + object.maxCapacity + 
+                      " ,Virtual Capacity: " + object.virtualCapacity + "/" + object.maxVirtualCapacity}</option>
                    })}
                 </InputSelect>
                 <Button onClick={this.handleCreateReservation}>Book</Button>

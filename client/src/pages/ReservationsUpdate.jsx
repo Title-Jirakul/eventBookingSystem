@@ -56,23 +56,44 @@ class DeleteReservation extends Component {
             )
         ) {
             await api.deleteReservation(this.props.id).then(res => {
-               api.updateRoomByLess(this.props.roomID).then(res => {
                   api.getPassByReservationId(this.props.reservationNo).then(res => {
                      switch(res.data.data.passType) {
                         case 'class':
                            api.updateSinglePassUsed(res.data.data._id).then(res => {
-                              window.location.reload()
+                              api.updateRoomByLess(this.props.roomID).then(res => {
+                                 window.location.reload()
+                              })
+                           })
+                           break
+                        case 'vclass':
+                           api.updateSinglePassUsed(res.data.data._id).then(res => {
+                              api.updateVirtualRoomByLess(this.props.roomID).then(res => {
+                                 window.location.reload()
+                              })
                            })
                            break
                         case 'one':
-                           window.location.reload()
+                           api.updateRoomByLess(this.props.roomID).then(res => {
+                                 window.location.reload()
+                           })
                            break
                         case 'three':
-                           window.location.reload()
+                           api.updateRoomByLess(this.props.roomID).then(res => {
+                                 window.location.reload()
+                           })
+                           break
+                        case 'two':
+                           api.updateRoomByLess(this.props.roomID).then(res => {
+                                 window.location.reload()
+                           })
+                           break
+                        case 'vone':
+                           api.updateVirtualRoomByLess(this.props.roomID).then(res => {
+                                 window.location.reload()
+                           })
                            break
                      }
                   })
-               })
             })
         }
     }

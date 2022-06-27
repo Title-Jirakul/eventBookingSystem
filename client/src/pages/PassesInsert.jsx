@@ -94,10 +94,31 @@ class PassesInsert extends Component {
                   })
                   break
                case 'one':
-                  window.alert(`1 Day Ticket Created Successfully`) ? window.location.reload() : window.location.reload()
+                  const singleDayPassPayload = { reservationID: res.data.id, dateBooked: ""}
+                  api.createDayPass(singleDayPassPayload).then(res => {
+                     window.alert(`Single day Ticket Created Successfully`) ? window.location.reload() : window.location.reload()
+                  })
                   break
                case 'three':
                   window.alert(`3 Day Ticket Created Successfully`) ? window.location.reload() : window.location.reload()
+                  break
+               case 'two':
+                  const singleDayPassPayload = { reservationID: res.data.id, dateBooked: ""}
+                  api.createDayPass(singleDayPassPayload).then(res => {
+                     window.alert(`Two day Ticket Created Successfully`) ? window.location.reload() : window.location.reload()
+                  })
+                  break
+               case 'vclass':
+                  const singlePassPayload = { reservationID: res.data.id, isUsed: false}
+                  api.createSinglePass(singlePassPayload).then(res => {
+                     window.alert(`Single Use Ticket Created Successfully`) ? window.location.reload() : window.location.reload()
+                  })
+                  break
+               case 'vone':
+                  const singleDayPassPayload = { reservationID: res.data.id, dateBooked: ""}
+                  api.createDayPass(singleDayPassPayload).then(res => {
+                     window.alert(`Single day Ticket Created Successfully`) ? window.location.reload() : window.location.reload()
+                  })
                   break
             }
         }).catch(res => {
@@ -123,9 +144,11 @@ class PassesInsert extends Component {
                 {/* Input select can be dynamic: admin can add passType in here */}
                 <InputSelect onChange={this.handleChangeInputPassType} defaultvalue="">
                     <option hidden disabled selected value>-- Select an option --</option>
-                    <option value="one">1 Day</option>
-                    <option value="three">3 Days</option>
-                    <option value="class">Class</option>
+                    <option value="one">1 Day Pass</option>
+                    <option value="two">2 Day Pass</option>
+                    <option value="class">Single Class</option>
+                    <option value="vclass">Virtual Single Class</option>
+                    <option value="vone">Virtual 1 Day Pass</option>
                 </InputSelect>
 
                 <Label>Name: </Label>

@@ -84,6 +84,7 @@ class RoomsInsert extends Component {
             time: '',
             date: '',
             maxCapacity: 30,
+            maxVirtualCapacity: 0,
         }
     }
 
@@ -124,10 +125,18 @@ class RoomsInsert extends Component {
         this.setState({ maxCapacity })
     }
 
+    handleChangeInputMaxVirtualCapacity = async event => {
+        const maxVirtualCapacity = event.target.validity.valid
+            ? event.target.value
+            : this.state.maxVirtualCapacity
+        this.setState({ maxVirtualCapacity })
+    }
+
     handleCreateRoom = async () => {
         const { roomNo, time, date, maxCapacity, className, instructor} = this.state
         const capacity = 0
-        const payload = { roomNo, time, date, capacity, maxCapacity, className, instructor}
+        const virtualCapacity = 0
+        const payload = { roomNo, time, date, capacity, maxCapacity, virtualCapacity, maxVirtualCapacity, className, instructor}
 
         await api.createRoom(payload).then(res => {
             window.alert(`Class Created successfully`) ? window.location.reload() : window.location.reload()
@@ -137,7 +146,7 @@ class RoomsInsert extends Component {
     }
 
     render() {
-        const { roomNo, time, date, maxCapacity, className, instructor } = this.state
+        const { roomNo, time, date, maxCapacity, maxVirtualCapacity, className, instructor } = this.state
         return (
             <Wrapper>
                 <AdminNavBar/>
@@ -200,6 +209,18 @@ class RoomsInsert extends Component {
                     pattern="[1-1000]+([,\.][1-1000]+)?"
                     value={maxCapacity}
                     onChange={this.handleChangeInputMaxCapacity}
+                />
+
+                <Label>Max Virtual Capacity: </Label>
+                <InputText
+                    type="number"
+                    step="1"
+                    lang="en-US"
+                    min="0"
+                    max="1000"
+                    pattern="[0-1000]+([,\.][0-1000]+)?"
+                    value={maxVirtualCapacity}
+                    onChange={this.handleChangeInputMaxVirtualCapacity}
                 />
 
                 <Button onClick={this.handleCreateRoom}>Add Class</Button>
