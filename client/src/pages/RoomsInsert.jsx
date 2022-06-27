@@ -133,7 +133,7 @@ class RoomsInsert extends Component {
     }
 
     handleCreateRoom = async () => {
-        const { roomNo, time, date, maxCapacity, className, instructor} = this.state
+        const { roomNo, time, date, maxCapacity, maxVirtualCapacity, className, instructor} = this.state
         const capacity = 0
         const virtualCapacity = 0
         const payload = { roomNo, time, date, capacity, maxCapacity, virtualCapacity, maxVirtualCapacity, className, instructor}
