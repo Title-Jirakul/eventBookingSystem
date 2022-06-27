@@ -211,7 +211,7 @@ class ReservationsInsert extends Component {
                         })
                         }
                         else {
-                           window.alert(`2 day pass is used is starting ` + date)
+                           window.alert(`Two day pass cannot be used on ` + date)
                         }
                      }).catch(() => {
                         const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}

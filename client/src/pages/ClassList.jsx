@@ -108,12 +108,12 @@ class ClassList extends Component {
             },
             {
                 Header: 'Max Virtual Capacity',
-                accessor: 'maxCapacity',
+                accessor: 'maxVirtualCapacity',
                 filterable: true,
             },
             {
                 Header: 'Virtual Capacity',
-                accessor: 'capacity',
+                accessor: 'virtualCapacity',
                 filterable: true,
             },
             {
