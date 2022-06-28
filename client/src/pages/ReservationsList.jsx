@@ -97,6 +97,8 @@ class DeleteReservation extends Component {
                               })
                            })
                            break
+                        default:
+                            break
                      }
                   })
             })

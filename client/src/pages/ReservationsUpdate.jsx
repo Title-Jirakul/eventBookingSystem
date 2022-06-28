@@ -92,6 +92,8 @@ class DeleteReservation extends Component {
                                  window.location.reload()
                            })
                            break
+                        default:
+                            break
                      }
                   })
             })

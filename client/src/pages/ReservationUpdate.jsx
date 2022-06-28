@@ -104,7 +104,7 @@ class ReservationUpdate extends Component {
     }
 
     render() {
-        const { reservationNo, name, lastName, phoneNo, roomSetting, date, time } = this.state
+        const { reservationNo, name, lastName, phoneNo, roomSetting, date, time, roomNo } = this.state
         return (
             <Wrapper>
             <AdminNavBar/>

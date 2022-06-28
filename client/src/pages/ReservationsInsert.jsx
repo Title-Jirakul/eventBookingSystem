@@ -170,10 +170,10 @@ class ReservationsInsert extends Component {
                      break
                   case 'one':
                      api.getDayPass(res.data.data._id).then(res => {
-                        if(res.data.data.dateBooked == date) {
+                        if(res.data.data.dateBooked === date) {
                            this.makeReservation(payload, roomID)
                         } 
-                        else if (res.data.data.dateBooked == "") {
+                        else if (res.data.data.dateBooked === "") {
                            const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
                         api.updateDayPassDate(dayPassPayload).then(res => {
                            this.makeReservation(payload, roomID)
@@ -201,10 +201,10 @@ class ReservationsInsert extends Component {
                      break
                   case 'two':
                      api.getDayPass(res.data.data._id).then(res => {
-                        if(res.data.data.dateBooked == date || parseInt(res.data.data.dateBooked) + 1 == parseInt(date)) {
+                        if(res.data.data.dateBooked === date || parseInt(res.data.data.dateBooked) + 1 === parseInt(date)) {
                            this.makeReservation(payload, roomID)
                         } 
-                        else if (res.data.data.dateBooked == "") {
+                        else if (res.data.data.dateBooked === "") {
                            const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
                         api.updateDayPassDate(dayPassPayload).then(res => {
                            this.makeReservation(payload, roomID)
@@ -240,10 +240,10 @@ class ReservationsInsert extends Component {
                      break
                   case 'vone':
                      api.getDayPass(res.data.data._id).then(res => {
-                        if(res.data.data.dateBooked == date) {
+                        if(res.data.data.dateBooked === date) {
                            this.makeVirtualReservation(payload, roomID)
                         } 
-                        else if (res.data.data.dateBooked == "") {
+                        else if (res.data.data.dateBooked === "") {
                            const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
                            api.updateDayPassDate(dayPassPayload).then(res => {
                               this.makeVirtualReservation(payload, roomID)
@@ -295,12 +295,12 @@ class ReservationsInsert extends Component {
 
     getOptionsByDateTime = async (thisDate, thisTime) => {
        const {allOptions} = this.state
-       let options = allOptions.filter(data => (data.capacity < data.maxCapacity) || (data.virtualCapacity < data.maxVirtualCapacity) && data.date == thisDate && data.time == thisTime)
+       let options = allOptions.filter(data => ((data.capacity < data.maxCapacity) || (data.virtualCapacity < data.maxVirtualCapacity)) && ((data.date === thisDate) && (data.time === thisTime)))
        this.setState({options: options})
     }
 
     componentDidMount = async () => {
-      {this.getOptions()}
+      this.getOptions()
     }
 
     render() {
