@@ -44,4 +44,7 @@
       "last 1 safari version"
     ]
   }
+  "engines": {
+    "node": "14.10.1"
+  }
 }
