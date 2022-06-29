@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import ReactTable from 'react-table-6'
+import ReactTable from 'react-table-v6'
 import api from '../api'
 import { NavBar } from '../components'
 
 import styled from 'styled-components'
-import 'react-table-6/react-table.css'
+import 'react-table-v6/react-table.css'
 
 const Title = styled.h1.attrs({
     className: 'h1',

@@ -131,7 +131,7 @@ getReservations = async (req, res) => {
 }
 
 getReservationById = async (req, res) => {
-    await CustomerPass.findOne({ _id: req.params.id }, (err, reservation) => {
+    await Reservation.findOne({ _id: req.params.id }, (err, reservation) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
