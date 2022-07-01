@@ -57,6 +57,7 @@ updateReservation = async (req, res) => {
         reservation.phoneNo = body.phoneNo
         reservation.name = body.name
         reservation.lastName = body.lastName
+        reservation.roomID = body.roomID
         reservation.instructor = body.instructor
         reservation
             .save()
