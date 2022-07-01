@@ -201,17 +201,14 @@ class ReservationsInsert extends Component {
                      break
                   case 'two':
                      api.getDayPass(res.data.data._id).then(res => {
-                        if(res.data.data.dateBooked === date || parseInt(res.data.data.dateBooked) + 1 === parseInt(date)) {
-                           this.makeReservation(payload, roomID)
-                        } 
-                        else if (res.data.data.dateBooked === "") {
+                        if (res.data.data.dateBooked === "") {
                            const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
                         api.updateDayPassDate(dayPassPayload).then(res => {
                            this.makeReservation(payload, roomID)
                         })
                         }
                         else {
-                           window.alert(`Two day pass cannot be used on ` + date)
+                           this.makeReservation(payload, roomID)
                         }
                      }).catch(() => {
                         const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}

@@ -15,5 +15,8 @@ const Reservations = new Schema(
     },
     { timestamps: true },
 )
-
+Reservations.index({
+    'reservationNo': 1,
+    'roomID': 1
+},{unique: true ,background: true})
 module.exports = mongoose.model('reservations', Reservations)
