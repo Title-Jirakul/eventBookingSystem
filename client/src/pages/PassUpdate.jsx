@@ -121,6 +121,39 @@ class PassUpdate extends Component {
                      window.alert(`Three Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
                   }
                   break
+               case 'two':
+                  if(oldPassType != passType) {
+                     api.deleteSinglePass(id).then(res => {
+                        window.alert(`Two Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                     }).catch(() => {
+                        window.alert(`Two Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                     })
+                  } else {
+                     window.alert(`Two Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                  }
+                  break
+               case 'vone':
+                  if(oldPassType != passType) {
+                     api.deleteSinglePass(id).then(res => {
+                        window.alert(`Virtual One Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                     }).catch(() => {
+                        window.alert(`Virtual One Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                     })
+                  } else {
+                     window.alert(`Virtual One Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                  }
+                  break
+               case 'vclass':
+                  if(oldPassType != passType) {
+                     api.deleteDayPass(id).then(res => {
+                        window.alert(`Virtual Single Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                     }).catch(() => {
+                        window.alert(`Virtual Single Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                     })
+                  } else {
+                     window.alert(`Virtual Single Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                  }
+                  break
             }
         }).catch(res => {
             window.alert(`Ticket update failed`)
@@ -158,9 +191,11 @@ class PassUpdate extends Component {
                 <Label>Ticket Type: </Label>
                 {/* Input select can be dynamic: admin can add passType in here */}
                 <InputSelect onChange={this.handleChangeInputPassType} value={passType}>
-                    <option value="one">1 Day</option>
-                    <option value="three">3 Days</option>
-                    <option value="class">Class</option>
+                    <option value="one">1 Day Pass</option>
+                    <option value="two">2 Day Pass</option>
+                    <option value="class">Single Class</option>
+                    <option value="vclass">Virtual Single Class</option>
+                    <option value="vone">Virtual 1 Day Pass</option>
                 </InputSelect>
 
                 <Label>Name: </Label>

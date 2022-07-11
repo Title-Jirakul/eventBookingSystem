@@ -94,7 +94,7 @@ class PassesInsert extends Component {
                   })
                   break
                case 'one':
-                  const singleDayPassPayload = { reservationID: res.data.id, dateBooked: ""}
+                  const singleDayPassPayload = { reservationID: res.data.id, dateBooked: " "}
                   api.createDayPass(singleDayPassPayload).then(res => {
                      window.alert(`One day ticket Created Successfully`) ? window.location.reload() : window.location.reload()
                   })
@@ -103,7 +103,7 @@ class PassesInsert extends Component {
                   window.alert(`3 Day Ticket Created Successfully`) ? window.location.reload() : window.location.reload()
                   break
                case 'two':
-                  const twoDayPassPayload = { reservationID: res.data.id, dateBooked: ""}
+                  const twoDayPassPayload = { reservationID: res.data.id, dateBooked: " "}
                   api.createDayPass(twoDayPassPayload).then(res => {
                      window.alert(`Two day ticket Created Successfully`) ? window.location.reload() : window.location.reload()
                   })
@@ -115,7 +115,7 @@ class PassesInsert extends Component {
                   })
                   break
                case 'vone':
-                  const virtualOneDayPassPayload = { reservationID: res.data.id, dateBooked: ""}
+                  const virtualOneDayPassPayload = { reservationID: res.data.id, dateBooked: " "}
                   api.createDayPass(virtualOneDayPassPayload).then(res => {
                      window.alert(`Virtual one day Ticket Created Successfully`) ? window.location.reload() : window.location.reload()
                   })

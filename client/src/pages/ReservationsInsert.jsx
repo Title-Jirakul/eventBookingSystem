@@ -173,7 +173,7 @@ class ReservationsInsert extends Component {
                         if(res.data.data.dateBooked === date) {
                            this.makeReservation(payload, roomID)
                         } 
-                        else if (res.data.data.dateBooked === "") {
+                        else if (res.data.data.dateBooked === " ") {
                            const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
                         api.updateDayPassDate(dayPassPayload).then(res => {
                            this.makeReservation(payload, roomID)
@@ -201,7 +201,7 @@ class ReservationsInsert extends Component {
                      break
                   case 'two':
                      api.getDayPass(res.data.data._id).then(res => {
-                        if (res.data.data.dateBooked === "") {
+                        if (res.data.data.dateBooked === " ") {
                            const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
                         api.updateDayPassDate(dayPassPayload).then(res => {
                            this.makeReservation(payload, roomID)
@@ -240,7 +240,7 @@ class ReservationsInsert extends Component {
                         if(res.data.data.dateBooked === date) {
                            this.makeVirtualReservation(payload, roomID)
                         } 
-                        else if (res.data.data.dateBooked === "") {
+                        else if (res.data.data.dateBooked === " ") {
                            const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
                            api.updateDayPassDate(dayPassPayload).then(res => {
                               this.makeVirtualReservation(payload, roomID)
