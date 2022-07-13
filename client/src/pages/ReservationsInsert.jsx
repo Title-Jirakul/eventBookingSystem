@@ -174,8 +174,8 @@ class ReservationsInsert extends Component {
                            this.makeReservation(payload, roomID)
                         } 
                         else if (res.data.data.dateBooked === " ") {
-                           const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
-                        api.updateDayPassDate(dayPassPayload).then(res => {
+                           const dayPassPayload = { reservationID: res.data.data.reservationID, dateBooked: date}
+                        api.updateDayPassDate(res.data.data.reservationID, dayPassPayload).then(res => {
                            this.makeReservation(payload, roomID)
                         })
                         }
@@ -202,8 +202,8 @@ class ReservationsInsert extends Component {
                   case 'two':
                      api.getDayPass(res.data.data._id).then(res => {
                         if (res.data.data.dateBooked === " ") {
-                           const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
-                        api.updateDayPassDate(dayPassPayload).then(res => {
+                           const dayPassPayload = { reservationID: res.data.data.reservationID, dateBooked: date}
+                        api.updateDayPassDate(res.data.data.reservationID, dayPassPayload).then(res => {
                            this.makeReservation(payload, roomID)
                         })
                         }
@@ -241,8 +241,8 @@ class ReservationsInsert extends Component {
                            this.makeVirtualReservation(payload, roomID)
                         } 
                         else if (res.data.data.dateBooked === " ") {
-                           const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
-                           api.updateDayPassDate(dayPassPayload).then(res => {
+                           const dayPassPayload = { reservationID: res.data.data.reservationID, dateBooked: date}
+                           api.updateDayPassDate(res.data.data.reservationID, dayPassPayload).then(res => {
                               this.makeVirtualReservation(payload, roomID)
                            })
                         }
