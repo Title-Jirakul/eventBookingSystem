@@ -177,7 +177,9 @@ class ReservationsInsert extends Component {
                            const dayPassPayload = { reservationID: res.data.data.reservationID, dateBooked: date}
                         api.updateDayPassDate(res.data.data.reservationID, dayPassPayload).then(res => {
                            this.makeReservation(payload, roomID)
-                        })
+                        }).catch(() => {
+                              window.alert(`pass update failed`)
+                           })
                         }
                         else {
                            window.alert(`single day pass cannot be used on ` + date)
@@ -205,10 +207,12 @@ class ReservationsInsert extends Component {
                            const dayPassPayload = { reservationID: res.data.data.reservationID, dateBooked: date}
                         api.updateDayPassDate(res.data.data.reservationID, dayPassPayload).then(res => {
                            this.makeReservation(payload, roomID)
-                        })
+                        }).catch(() => {
+                              window.alert(`pass update failed`)
+                           })
                         }
                         else {
-                           this.makeReservation(payload, roomID)
+                           window.alert(`Two day pass cannot be used on ` + date)
                         }
                      }).catch(() => {
                         const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
@@ -244,6 +248,8 @@ class ReservationsInsert extends Component {
                            const dayPassPayload = { reservationID: res.data.data.reservationID, dateBooked: date}
                            api.updateDayPassDate(res.data.data.reservationID, dayPassPayload).then(res => {
                               this.makeVirtualReservation(payload, roomID)
+                           }).catch(() => {
+                              window.alert(`pass update failed`)
                            })
                         }
                         else {
