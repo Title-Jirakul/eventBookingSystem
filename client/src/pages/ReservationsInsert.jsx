@@ -212,7 +212,7 @@ class ReservationsInsert extends Component {
                            })
                         }
                         else {
-                           window.alert(`Two day pass cannot be used on ` + date)
+                           this.makeReservation(payload, roomID)
                         }
                      }).catch(() => {
                         const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
