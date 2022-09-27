@@ -12,6 +12,7 @@ const Rooms = new Schema(
         maxVirtualCapacity: { type: Number, required: true, default: 1000 },
         className: { type: String, required: false },
         instructor: { type: String, required: false },
+        isAvailable: { type: Boolean, required: false, default: true },
     },
     { timestamps: true },
 )

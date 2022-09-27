@@ -291,7 +291,7 @@ class ReservationsInsert extends Component {
 
     getOptions = async () => {
        await api.getRooms().then(res => {
-          let allOptions = res.data.data.filter(data => (data.capacity < data.maxCapacity) || (data.virtualCapacity < data.maxVirtualCapacity))
+          let allOptions = res.data.data.filter(data => ((data.capacity < data.maxCapacity) || (data.virtualCapacity < data.maxVirtualCapacity)) && (data.isAvailable == true || data.isAvailable == null))
           this.setState({allOptions: allOptions})
        })
     }
