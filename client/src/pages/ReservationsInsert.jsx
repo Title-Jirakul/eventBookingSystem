@@ -291,7 +291,7 @@ class ReservationsInsert extends Component {
 
     getOptions = async () => {
        await api.getRooms().then(res => {
-          let allOptions = res.data.data.filter(data => ((data.capacity < data.maxCapacity) || (data.virtualCapacity < data.maxVirtualCapacity)) && (data.isAvailable == true || data.isAvailable == null))
+          let allOptions = res.data.data.filter(data => ((data.capacity < data.maxCapacity) || (data.virtualCapacity < data.maxVirtualCapacity)) && (data.isAvailable == true))
           this.setState({allOptions: allOptions})
        })
     }
@@ -376,7 +376,7 @@ class ReservationsInsert extends Component {
                       " ,Virtual Capacity: " + object.virtualCapacity + "/" + object.maxVirtualCapacity}</option>
                    })}
                 </InputSelect>
-                <Button onClick={this.handleCreateReservation}>Book</Button>
+                <Button disabled={true} onClick={this.handleCreateReservation}>Book</Button>
                 <CancelButton href={'/reservations/create'}>Clear</CancelButton>
             </Wrapper>
         )
