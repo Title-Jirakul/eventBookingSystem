@@ -190,14 +190,11 @@ class RoomsInsert extends Component {
                     <option hidden disabled selected value>-- Select a time --</option>
                     <option value="09:00 - 10:30">09:00 - 10:30</option>
                     <option value="11:00 - 12:30">11:00 - 12:30</option>
-                    <option value="11:00 - 13:00">11:00 - 13:00</option>
                     <option value="11:30 - 12:30">11:30 - 12:30</option>
                     <option value="14:00 - 15:30">14:00 - 15:30</option>
-                    <option value="14:00 - 16:00">14:00 - 16:00</option>
-                    <option value="15:00 - 18:00">15:00 - 18:00</option>
+                    <option value="16:00 - 17:30">16:00 - 17:30</option>
+                    <option value="16:00 - 18:00">16:00 - 18:00</option>
                     <option value="16:30 - 17:30">16:30 - 17:30</option>
-                    <option value="16:30 - 18:00">16:30 - 18:00</option>
-                    <option value="16:30 - 18:30">16:30 - 18:30</option>
                 </InputSelect>
 
                 <Label>Max Capacity: </Label>
