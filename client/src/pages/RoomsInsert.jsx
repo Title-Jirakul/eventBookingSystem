@@ -159,6 +159,12 @@ class RoomsInsert extends Component {
                     <option value="roomNo 2">RoomNo 2</option>
                     <option value="roomNo 3">RoomNo 3</option>
                     <option value="roomNo 4">RoomNo 4</option>
+                    <option value="roomNo 5">RoomNo 5</option>
+                    <option value="roomNo 6">RoomNo 6</option>
+                    <option value="roomNo 7">RoomNo 7</option>
+                    <option value="Swimming Pool">Swimming Pool</option>
+                    <option value="Peace Laguna">Peace Laguna</option>
+                    <option value="Yauch">Yauch</option>
                 </InputSelect>
 
                 <Label>Class Name: </Label>
@@ -188,13 +194,16 @@ class RoomsInsert extends Component {
                 <Label>Time: </Label>
                 <InputSelect onChange={this.handleChangeInputTime} defaultvalue={time}>
                     <option hidden disabled selected value>-- Select a time --</option>
+                    <option value="07:30 - 08:30">07:30 - 08:30</option>
+                    <option value="09:00 - 10:00">09:00 - 10:00</option>
                     <option value="09:00 - 10:30">09:00 - 10:30</option>
                     <option value="11:00 - 12:30">11:00 - 12:30</option>
-                    <option value="11:30 - 12:30">11:30 - 12:30</option>
                     <option value="14:00 - 15:30">14:00 - 15:30</option>
                     <option value="16:00 - 17:30">16:00 - 17:30</option>
-                    <option value="16:00 - 18:00">16:00 - 18:00</option>
                     <option value="16:30 - 17:30">16:30 - 17:30</option>
+                    <option value="17:45 - 18:30">17:45 - 18:30</option>
+                    <option value="09:00 - 17:00 (Whole Day)">09:00 - 17:00 (Whole Day)</option>
+                    <option value="09:00 - 14:00 (Yauch)">09:00 - 14:00 (Yauch)</option>
                 </InputSelect>
 
                 <Label>Max Capacity: </Label>
