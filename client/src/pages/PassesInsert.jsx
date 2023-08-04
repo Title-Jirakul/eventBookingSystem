@@ -144,11 +144,12 @@ class PassesInsert extends Component {
                 {/* Input select can be dynamic: admin can add passType in here */}
                 <InputSelect onChange={this.handleChangeInputPassType} defaultvalue="">
                     <option hidden disabled selected value>-- Select an option --</option>
-                    <option value="one">1 Day Pass</option>
-                    <option value="two">2 Day Pass</option>
-                    <option value="class">Single Class</option>
-                    <option value="vclass">Virtual Single Class</option>
-                    <option value="vone">Virtual 1 Day Pass</option>
+                    <option value="one">1d</option>
+                    <option value="three">3d</option>
+                    <option value="three">ev</option>
+                    <option value="three">kim</option>
+                    <option value="seven">7yh</option>
+                    <option value="class">1c</option>
                 </InputSelect>
 
                 <Label>Name: </Label>
