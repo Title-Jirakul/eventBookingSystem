@@ -193,7 +193,25 @@ class ReservationsInsert extends Component {
                      break
                   case 'three':
                      api.getDayPass(res.data.data._id).then(res => {
-                        this.makeReservation(payload, roomID)
+                        if (res.data.data.dateBooked === " ") {
+                           const dayPassPayload = { reservationID: res.data.data.reservationID, dateBooked: date}
+                           api.updateDayPassDate(res.data.data.reservationID, dayPassPayload).then(res => {
+                              this.makeReservation(payload, roomID)
+                           }).catch(() => {
+                              window.alert(`pass update failed`)
+                           })
+                        }
+                        else {
+                           const dateBooked = new Date(res.data.data.dateBooked)
+                           const roomDate = new Date(date)
+                           const differenceInTime = Math.abs(dateBooked.getTime() - roomDate.getTime())
+                           const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+                           if(differenceInDays <= 2) {
+                              this.makeReservation(payload, roomID)
+                           } else {
+                              window.alert(`Please select a class within 3 days of the initial booking time`)
+                           }
+                        }
                      }).catch(() => {
                         const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
                         api.createDayPass(dayPassPayload).then(res => {
@@ -205,14 +223,22 @@ class ReservationsInsert extends Component {
                      api.getDayPass(res.data.data._id).then(res => {
                         if (res.data.data.dateBooked === " ") {
                            const dayPassPayload = { reservationID: res.data.data.reservationID, dateBooked: date}
-                        api.updateDayPassDate(res.data.data.reservationID, dayPassPayload).then(res => {
-                           this.makeReservation(payload, roomID)
-                        }).catch(() => {
+                           api.updateDayPassDate(res.data.data.reservationID, dayPassPayload).then(res => {
+                              this.makeReservation(payload, roomID)
+                           }).catch(() => {
                               window.alert(`pass update failed`)
                            })
                         }
                         else {
-                           this.makeReservation(payload, roomID)
+                           const dateBooked = new Date(res.data.data.dateBooked)
+                           const roomDate = new Date(date)
+                           const differenceInTime = Math.abs(dateBooked.getTime() - roomDate.getTime())
+                           const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+                           if(differenceInDays <= 1) {
+                              this.makeReservation(payload, roomID)
+                           } else {
+                              window.alert(`Please select a class within 2 days of the initial booking time`)
+                           }
                         }
                      }).catch(() => {
                         const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
@@ -221,6 +247,34 @@ class ReservationsInsert extends Component {
                         })
                      })
                      break
+                  case 'seven':
+                        api.getDayPass(res.data.data._id).then(res => {
+                           if (res.data.data.dateBooked === " ") {
+                              const dayPassPayload = { reservationID: res.data.data.reservationID, dateBooked: date}
+                              api.updateDayPassDate(res.data.data.reservationID, dayPassPayload).then(res => {
+                                 this.makeReservation(payload, roomID)
+                              }).catch(() => {
+                                 window.alert(`pass update failed`)
+                              })
+                           }
+                           else {
+                              const dateBooked = new Date(res.data.data.dateBooked)
+                              const roomDate = new Date(date)
+                              const differenceInTime = Math.abs(dateBooked.getTime() - roomDate.getTime())
+                              const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+                              if(differenceInDays <= 6) {
+                                 this.makeReservation(payload, roomID)
+                              } else {
+                                 window.alert(`Please select a class within 7 days of the initial booking time`)
+                              }
+                           }
+                        }).catch(() => {
+                           const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
+                           api.createDayPass(dayPassPayload).then(res => {
+                              this.makeReservation(payload, roomID)
+                           })
+                        })
+                        break
                   case 'vclass':
                      api.getSinglePass(res.data.data._id).then(res => {
                         if(!res.data.data.isUsed) {

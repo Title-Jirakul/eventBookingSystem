@@ -100,12 +100,21 @@ class PassesInsert extends Component {
                   })
                   break
                case 'three':
-                  window.alert(`3 Day Ticket Created Successfully`) ? window.location.reload() : window.location.reload()
+                    const threeDayPassPayload = { reservationID: res.data.id, dateBooked: " "}
+                    api.createDayPass(threeDayPassPayload).then(res => {
+                     window.alert(`Three day ticket Created Successfully`) ? window.location.reload() : window.location.reload()
+                  })
                   break
                case 'two':
                   const twoDayPassPayload = { reservationID: res.data.id, dateBooked: " "}
                   api.createDayPass(twoDayPassPayload).then(res => {
                      window.alert(`Two day ticket Created Successfully`) ? window.location.reload() : window.location.reload()
+                  })
+                  break
+                case 'seven':
+                    const sevenDayPassPayload = { reservationID: res.data.id, dateBooked: " "}
+                    api.createDayPass(sevenDayPassPayload).then(res => {
+                     window.alert(`Seven day ticket Created Successfully`) ? window.location.reload() : window.location.reload()
                   })
                   break
                case 'vclass':
@@ -144,11 +153,12 @@ class PassesInsert extends Component {
                 {/* Input select can be dynamic: admin can add passType in here */}
                 <InputSelect onChange={this.handleChangeInputPassType} defaultvalue="">
                     <option hidden disabled selected value>-- Select an option --</option>
-                    <option value="one">1 Day Pass</option>
-                    <option value="two">2 Day Pass</option>
-                    <option value="class">Single Class</option>
-                    <option value="vclass">Virtual Single Class</option>
-                    <option value="vone">Virtual 1 Day Pass</option>
+                    <option value="one">1d</option>
+                    <option value="three">3d</option>
+                    <option value="three">ev</option>
+                    <option value="three">kim</option>
+                    <option value="seven">7yh</option>
+                    <option value="class">1c</option>
                 </InputSelect>
 
                 <Label>Name: </Label>
