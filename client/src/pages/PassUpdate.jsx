@@ -132,6 +132,17 @@ class PassUpdate extends Component {
                      window.alert(`Two Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
                   }
                   break
+                case 'seven':
+                    if(oldPassType != passType) {
+                       api.deleteSinglePass(id).then(res => {
+                          window.alert(`Seven Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                       }).catch(() => {
+                          window.alert(`Seven Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                       })
+                    } else {
+                       window.alert(`Seven Day Ticket updated Successfully`) ? window.location.reload() : window.location.reload()
+                    }
+                    break
                case 'vone':
                   if(oldPassType != passType) {
                      api.deleteSinglePass(id).then(res => {
@@ -191,11 +202,12 @@ class PassUpdate extends Component {
                 <Label>Ticket Type: </Label>
                 {/* Input select can be dynamic: admin can add passType in here */}
                 <InputSelect onChange={this.handleChangeInputPassType} value={passType}>
-                    <option value="one">1 Day Pass</option>
-                    <option value="two">2 Day Pass</option>
-                    <option value="class">Single Class</option>
-                    <option value="vclass">Virtual Single Class</option>
-                    <option value="vone">Virtual 1 Day Pass</option>
+                    <option value="one">1d</option>
+                    <option value="three">3d</option>
+                    <option value="three">ev</option>
+                    <option value="three">kim</option>
+                    <option value="seven">7yh</option>
+                    <option value="class">1c</option>
                 </InputSelect>
 
                 <Label>Name: </Label>

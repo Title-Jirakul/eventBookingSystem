@@ -100,12 +100,21 @@ class PassesInsert extends Component {
                   })
                   break
                case 'three':
-                  window.alert(`3 Day Ticket Created Successfully`) ? window.location.reload() : window.location.reload()
+                    const threeDayPassPayload = { reservationID: res.data.id, dateBooked: " "}
+                    api.createDayPass(threeDayPassPayload).then(res => {
+                     window.alert(`Three day ticket Created Successfully`) ? window.location.reload() : window.location.reload()
+                  })
                   break
                case 'two':
                   const twoDayPassPayload = { reservationID: res.data.id, dateBooked: " "}
                   api.createDayPass(twoDayPassPayload).then(res => {
                      window.alert(`Two day ticket Created Successfully`) ? window.location.reload() : window.location.reload()
+                  })
+                  break
+                case 'seven':
+                    const sevenDayPassPayload = { reservationID: res.data.id, dateBooked: " "}
+                    api.createDayPass(sevenDayPassPayload).then(res => {
+                     window.alert(`Seven day ticket Created Successfully`) ? window.location.reload() : window.location.reload()
                   })
                   break
                case 'vclass':
