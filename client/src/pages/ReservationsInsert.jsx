@@ -324,22 +324,22 @@ class ReservationsInsert extends Component {
     }
 
     makeReservation = async (payload, roomID) => {
-       api.createReservation(payload).then(() => {
-           api.updateRoomByOne(roomID).then(() => {
+       api.updateRoomByOne(roomID).then(() => {
+           api.createReservation(payload).then(() => {
               window.alert(`Reservation created successfully`) ? window.location.reload() : window.location.reload()
            })
        }).catch(res => {
-           window.alert(`Reservation creation failed`)
+           window.alert(`Reservation creation failed ` + res.data.message)
        })
     }
 
     makeVirtualReservation = async (payload, roomID) => {
-       api.createReservation(payload).then(() => {
-           api.updateVirtualRoomByOne(roomID).then(() => {
+       api.updateVirtualRoomByOne(roomID).then(() => {
+           api.createReservation(payload).then(() => {
               window.alert(`Reservation created successfully`) ? window.location.reload() : window.location.reload()
            })
        }).catch(res => {
-           window.alert(`Reservation creation failed`)
+           window.alert(`Virtual reservation creation failed ` + res.data.message)
        })
     }
 

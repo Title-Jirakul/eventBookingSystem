@@ -137,6 +137,12 @@ updateRoomByOne = async (req, res) => {
                 message: 'Class not found!',
             })
         }
+        if (room.capacity + 1 > room.maxCapacity) {
+            return res.status(500).json({
+                err,
+                message: 'Class is full',
+            })
+        }
         room.capacity = room.capacity + 1
         room
             .save()
@@ -162,6 +168,12 @@ updateVirtualRoomByOne = async (req, res) => {
             return res.status(404).json({
                 err,
                 message: 'Class not found!',
+            })
+        }
+        if (room.virtualCapacity + 1 > room.maxVirtualCapacity) {
+            return res.status(500).json({
+                err,
+                message: 'Virtual class is full',
             })
         }
         room.virtualCapacity = room.virtualCapacity + 1
