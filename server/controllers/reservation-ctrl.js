@@ -1,6 +1,6 @@
 const Reservation = require('../models/reservation-model')
 
-createReservation = (req, res) => {
+createReservation = async (req, res) => {
     const body = req.body
 
     if (!body) {
@@ -15,6 +15,25 @@ createReservation = (req, res) => {
     if (!reservation) {
         return res.status(400).json({ success: false, error: err })
     }
+
+    await Reservation.find({ reservationNo:  reservation.reservationNo}, (err, reservations) => {
+        if (err) {
+            return res.status(400).json({ success: false, error: err })
+        }
+
+        for (let x of reservations) {
+            if (x.date === reservation.date) {
+                let startTime = x.time.split(" - ")[0];
+                let newStartTime = reservation.time.split(" - ")[0];
+                if (startTime === newStartTime) {
+                    return res.status(400).json({
+                        success: false,
+                        message: 'Have another class starting at the same time',
+                    })
+                }
+            }
+        }
+    }).catch(err => console.log(err)) 
 
     reservation
         .save()
