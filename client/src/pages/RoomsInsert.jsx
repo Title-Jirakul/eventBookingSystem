@@ -163,9 +163,9 @@ class RoomsInsert extends Component {
                     <option value="roomNo 6">RoomNo 6</option>
                     <option value="roomNo 7">RoomNo 7</option>
                     <option value="roomNo 8">RoomNo 8</option>
-                    <option value="roomNo 9">RoomNo 9</option>
-                    <option value="roomNo 10">RoomNo 10</option>
-                    <option value="roomNo 11">RoomNo 11</option>
+                    <option value="beach 1">Beach 1</option>
+                    <option value="beach 2">Beach 2</option>
+                    <option value="swimming pool">Swimming Pool</option>
                 </InputSelect>
 
                 <Label>Class Name: </Label>

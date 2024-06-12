@@ -407,17 +407,21 @@ class ReservationsInsert extends Component {
 
                 <Label>Time: </Label>
                 <InputSelect onChange={this.handleChangeInputTime} defaultvalue={time}>
-                    <option hidden disabled selected value>-- Select a time --</option>
-                    <option value="07:30 - 08:30">07:30 - 08:30</option>
-                    <option value="09:00 - 10:00">09:00 - 10:00</option>
-                    <option value="09:00 - 10:30">09:00 - 10:30</option>
-                    <option value="11:00 - 12:30">11:00 - 12:30</option>
-                    <option value="14:00 - 15:30">14:00 - 15:30</option>
-                    <option value="16:00 - 17:30">16:00 - 17:30</option>
-                    <option value="16:30 - 17:30">16:30 - 17:30</option>
-                    <option value="17:45 - 18:30">17:45 - 18:30</option>
-                    <option value="09:00 - 17:00 (Whole Day)">09:00 - 17:00 (Whole Day)</option>
-                    <option value="09:00 - 14:00 (Yauch)">09:00 - 14:00 (Yauch)</option>
+                  <option hidden disabled selected value>-- Select a time --</option>
+                  <option value="07:30 - 09:30">07:30 - 09:30</option>
+                  <option value="07:30 - 09:00">07:30 - 09:00</option>
+                  <option value="08:00 - 09:00">08:00 - 09:00</option>
+                  <option value="09:00 - 10:30">09:00 - 10:30</option>
+                  <option value="09:00 - 10:00">09:00 - 10:00</option>
+                  <option value="09:30 - 10:30">09:30 - 10:30</option>
+                  <option value="11:00 - 12:30">11:00 - 12:30</option>
+                  <option value="11:00 - 12:00">11:00 - 12:00</option>
+                  <option value="11:00 - 13:00">11:00 - 13:00</option>
+                  <option value="14:00 - 15:30">14:00 - 15:30</option>
+                  <option value="14:00 - 15:00">14:00 - 15:00</option>
+                  <option value="16:00 - 17:00">16:00 - 17:00</option>
+                  <option value="16:00 - 17:30">16:00 - 17:30</option>
+                  <option value="16:00 - 18:00">16:00 - 18:00</option>
                 </InputSelect>
 
                 <Label>Available Classes: </Label>
