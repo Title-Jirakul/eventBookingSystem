@@ -23,12 +23,16 @@ createReservation = async (req, res) => {
 
         for (let x of reservations) {
             if (x.date === reservation.date) {
-                let startTime = x.time.split(" - ")[0];
-                let newStartTime = reservation.time.split(" - ")[0];
-                if (startTime === newStartTime) {
+                const [startTime, endTime] = x.time.split(" - ");
+                const [newStartTime, newEndTime] = reservation.time.split(" - ");
+                const startTime1 = timeToMinutes(startTime);
+                const startTime2 = timeToMinutes(newStartTime);
+                const endTime1 = timeToMinutes(endTime);
+                const endTime2 = timeToMinutes(newEndTime);
+                if (startTime1 < endTime2 && startTime2 < endTime1) {
                     return res.status(400).json({
                         success: false,
-                        message: 'Have another class starting at the same time',
+                        message: 'Have another class overlapping',
                     })
                 }
             }
@@ -163,6 +167,11 @@ getReservationById = async (req, res) => {
         }
         return res.status(200).json({ success: true, data: reservation })
     }).catch(err => console.log(err))
+}
+
+function timeToMinutes(time) {
+    const [hours, minutes] = time.split(':').map(Number);
+    return hours * 60 + minutes;
 }
 
 module.exports = {
