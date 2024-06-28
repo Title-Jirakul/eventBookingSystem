@@ -158,6 +158,7 @@ class PassesInsert extends Component {
                     <option value="class">1c001-999</option>
                     <option value="three">4n001-500</option>
                     <option value="three">2n001-500</option>
+                    <option value="one">TAT001-200</option>
                 </InputSelect>
 
                 <Label>Name: </Label>
