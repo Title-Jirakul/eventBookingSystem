@@ -201,6 +201,7 @@ class RoomsInsert extends Component {
                     <option value="09:00 - 10:30">09:00 - 10:30</option>
                     <option value="09:00 - 10:00">09:00 - 10:00</option>
                     <option value="09:30 - 10:30">09:30 - 10:30</option>
+                    <option value="09:00 - 11:00">09:00 - 11:00</option>
                     <option value="11:00 - 12:30">11:00 - 12:30</option>
                     <option value="11:00 - 12:00">11:00 - 12:00</option>
                     <option value="11:00 - 13:00">11:00 - 13:00</option>
