@@ -83,6 +83,7 @@ class ReservationsInsert extends Component {
             time: '',
             options: null,
             allOptions: null,
+            isLoading: false,
         }
     }
 
@@ -134,6 +135,9 @@ class ReservationsInsert extends Component {
     }
 
     handleCreateReservation = async () => {
+        if(this.state.isLoading) return;
+        this.setState({ isLoading: true });
+        try {
         const { reservationNumber, name, roomSetting, phoneNo, lastName } = this.state
         const roomSettingJSON = JSON.parse(roomSetting)
         const time = roomSettingJSON.time
@@ -321,6 +325,11 @@ class ReservationsInsert extends Component {
         }).catch(res => {
             window.alert(`Pass not exist, please try a different pass`)
         })
+      } catch (error) {
+         console.error(error);
+      } finally {
+         this.setState({ isLoading: false });
+      }
     }
 
     makeReservation = async (payload, roomID) => {
