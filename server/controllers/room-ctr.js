@@ -76,7 +76,7 @@ updateRoom = async (req, res) => {
 }
 
 updateRoomByLessOne = async (req, res) => {
-    Room.findOne({ _id: req.params.id }, (err, room) => {
+    await Room.findOne({ _id: req.params.id }, (err, room) => {
         if (err) {
             return res.status(404).json({
                 err,
@@ -99,7 +99,7 @@ updateRoomByLessOne = async (req, res) => {
                     message: 'Class not updated!',
                 })
             })
-    })
+    }).catch(err => console.log(err))
 }
 
 updateVirtualRoomByLessOne = async (req, res) => {
@@ -130,7 +130,7 @@ updateVirtualRoomByLessOne = async (req, res) => {
 }
 
 updateRoomByOne = async (req, res) => {
-    Room.findOne({ _id: req.params.id }, (err, room) => {
+    await Room.findOne({ _id: req.params.id }, (err, room) => {
         if (err) {
             return res.status(404).json({
                 err,
@@ -159,7 +159,7 @@ updateRoomByOne = async (req, res) => {
                     message: 'Class not updated!',
                 })
             })
-    })
+    }).catch(err => console.log(err))
 }
 
 updateVirtualRoomByOne = async (req, res) => {
