@@ -446,7 +446,7 @@ class ReservationsInsert extends Component {
                       " ,Virtual Capacity: " + object.virtualCapacity + "/" + object.maxVirtualCapacity}</option>
                    })}
                 </InputSelect>
-                <Button onClick={this.handleCreateReservation}>Book</Button>
+                <Button onClick={this.handleCreateReservation} disabled={true}>Book</Button>
                 <CancelButton href={'/reservations/create'}>Clear</CancelButton>
             </Wrapper>
         )
