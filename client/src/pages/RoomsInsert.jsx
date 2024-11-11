@@ -162,10 +162,6 @@ class RoomsInsert extends Component {
                     <option value="roomNo 5">RoomNo 5</option>
                     <option value="roomNo 6">RoomNo 6</option>
                     <option value="roomNo 7">RoomNo 7</option>
-                    <option value="roomNo 8">RoomNo 8</option>
-                    <option value="beach 1">Beach 1</option>
-                    <option value="beach 2">Beach 2</option>
-                    <option value="swimming pool">Swimming Pool</option>
                 </InputSelect>
 
                 <Label>Class Name: </Label>
@@ -195,21 +191,10 @@ class RoomsInsert extends Component {
                 <Label>Time: </Label>
                 <InputSelect onChange={this.handleChangeInputTime} defaultvalue={time}>
                     <option hidden disabled selected value>-- Select a time --</option>
-                    <option value="07:30 - 09:30">07:30 - 09:30</option>
-                    <option value="07:30 - 09:00">07:30 - 09:00</option>
-                    <option value="08:00 - 09:00">08:00 - 09:00</option>
-                    <option value="09:00 - 10:30">09:00 - 10:30</option>
-                    <option value="09:00 - 10:00">09:00 - 10:00</option>
                     <option value="09:30 - 10:30">09:30 - 10:30</option>
-                    <option value="09:00 - 11:00">09:00 - 11:00</option>
                     <option value="11:00 - 12:30">11:00 - 12:30</option>
-                    <option value="11:00 - 12:00">11:00 - 12:00</option>
-                    <option value="11:00 - 13:00">11:00 - 13:00</option>
                     <option value="14:00 - 15:30">14:00 - 15:30</option>
-                    <option value="14:00 - 15:00">14:00 - 15:00</option>
-                    <option value="16:00 - 17:00">16:00 - 17:00</option>
                     <option value="16:00 - 17:30">16:00 - 17:30</option>
-                    <option value="16:00 - 18:00">16:00 - 18:00</option>
                 </InputSelect>
 
                 <Label>Max Capacity: </Label>
