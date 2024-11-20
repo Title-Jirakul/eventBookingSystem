@@ -155,7 +155,7 @@ class PassesInsert extends Component {
                     <option hidden disabled selected value>-- Select an option --</option>
                     <option value="class">1c001-300</option>
                     <option value="one">1d001-300</option>
-                    <option value="two">2n001-300</option>
+                    <option value="two">2d001-300</option>
                     <option value="three">3n001-300</option>
                 </InputSelect>
 
