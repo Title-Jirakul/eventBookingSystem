@@ -132,7 +132,8 @@ class PassesInsert extends Component {
             }
         }).catch(res => {
             window.alert(`Ticket creation failed`)
-            console.log(res)
+            console.log(res.error)
+            console.log(res.message)
         })
     }
 

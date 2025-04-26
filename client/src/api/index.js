@@ -2,6 +2,11 @@ import axios from 'axios'
 
 const api = axios.create({
     baseURL: 'https://make-friends-server.herokuapp.com/api',
+    headers: {
+        common: {
+            'Content-Type': 'application/json'
+        }
+    }
 })
 
 export const createReservation = payload => api.post(`/reservation`, payload)
