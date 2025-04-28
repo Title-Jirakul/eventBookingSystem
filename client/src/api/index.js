@@ -9,6 +9,19 @@ const api = axios.create({
     }
 })
 
+api.interceptors.request.use(request => {
+    console.log('[Request]', request.method?.toUpperCase(), request.url, request.data);
+    return request;
+});
+
+api.interceptors.response.use(response => {
+    console.log('[Response]', response.config.url, response.status, response.data);
+    return response;
+}, error => {
+    console.log('[Response Error]', error.config?.url, error.response?.status, error.response?.data);
+    return Promise.reject(error);
+});
+
 export const createReservation = payload => api.post(`/reservation`, payload)
 export const getReservations = () => api.get(`/reservations`)
 export const updateReservation = (id, payload) => api.put(`/reservation/${id}`, payload)
