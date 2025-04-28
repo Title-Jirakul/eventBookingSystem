@@ -26,7 +26,7 @@ createPass = (req, res) => {
             })
         })
         .catch(error => {
-            return res.status(400).json({
+            return res.status(500).json({
                 error,
                 message: 'Customer pass not created!',
             })
@@ -65,7 +65,7 @@ updatePass = async (req, res) => {
                 })
             })
             .catch(error => {
-                return res.status(404).json({
+                return res.status(500).json({
                     error,
                     message: 'Booking not updated!',
                 })
@@ -127,7 +127,7 @@ getPasses = async (req, res) => {
         if (!bookings.length) {
             return res
                 .status(404)
-                .json({ success: false, error: `Movie not found` })
+                .json({ success: false, error: `Passes not found` })
         }
         return res.status(200).json({ success: true, data: bookings })
     }).catch(err => console.log(err))
