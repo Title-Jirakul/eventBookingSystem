@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const CustomersPass = new Schema(
     {
-        reservationNo: { type: String, required: true },
+        reservationNo: { type: String, required: true, unique: true },
         name: { type: String, required: true },
         passType: { type: String, required: false },
         phoneNo: { type: String, required: false },
