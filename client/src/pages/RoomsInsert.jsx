@@ -195,7 +195,7 @@ class RoomsInsert extends Component {
                 {/* TODO: pull from DB instead of static */}
                 <InputSelect onChange={this.handleChangeInputTime} defaultvalue={time}>
                     <option hidden disabled selected value>-- Select a time --</option>
-                    <option value="07:30 - 09:00">07:00 - 08:00</option>
+                    <option value="07:30 - 09:00">07:00 - 09:00</option>
                     <option value="09:00 - 10:30">09:00 - 10:30</option>
                     <option value="11:00 - 12:30">11:00 - 12:30</option>
                     <option value="14:00 - 15:30">14:00 - 15:30</option>
