@@ -153,6 +153,7 @@ class RoomsInsert extends Component {
                 <Title>Add Class</Title>
 
                 <Label>Class Number: </Label>
+                {/* TODO: pull from DB instead of static */}
                 <InputSelect onChange={this.handleChangeInputRoomNo} defaultvalue={roomNo}>
                     <option hidden disabled selected value>-- Select an option --</option>
                     <option value="roomNo 1">RoomNo 1</option>
@@ -164,9 +165,6 @@ class RoomsInsert extends Component {
                     <option value="roomNo 7">RoomNo 7</option>
                     <option value="roomNo 8">RoomNo 8</option>
                     <option value="roomNo 9">RoomNo 9</option>
-                    <option value="roomNo 10">RoomNo 10</option>
-                    <option value="roomNo 11">RoomNo 11</option>
-                    <option value="roomNo 12">RoomNo 12</option>
                 </InputSelect>
 
                 <Label>Class Name: </Label>
@@ -194,17 +192,13 @@ class RoomsInsert extends Component {
                 />
 
                 <Label>Time: </Label>
+                {/* TODO: pull from DB instead of static */}
                 <InputSelect onChange={this.handleChangeInputTime} defaultvalue={time}>
                     <option hidden disabled selected value>-- Select a time --</option>
-                    <option value="07:00 - 08:00">07:00 - 08:00</option>
-                    <option value="08:00 - 09:00">08:00 - 09:00</option>
-                    <option value="09:00 - 10:00">09:00 - 10:00</option>
+                    <option value="07:30 - 09:00">07:00 - 08:00</option>
                     <option value="09:00 - 10:30">09:00 - 10:30</option>
-                    <option value="11:00 - 12:00">11:00 - 12:00</option>
                     <option value="11:00 - 12:30">11:00 - 12:30</option>
-                    <option value="14:00 - 15:00">14:00 - 15:00</option>
                     <option value="14:00 - 15:30">14:00 - 15:30</option>
-                    <option value="16:00 - 17:00">16:00 - 17:00</option>
                     <option value="16:00 - 17:30">16:00 - 17:30</option>
                 </InputSelect>
 
