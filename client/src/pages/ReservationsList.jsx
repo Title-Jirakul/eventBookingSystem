@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import ReactTable from 'react-table-v6'
+// import ReactTable from 'react-table-v6'
 import api from '../api'
 import { AdminNavBar } from '../components'
 
 import styled from 'styled-components'
-import 'react-table-v6/react-table.css'
+// import 'react-table-v6/react-table.css'
 
 const Wrapper = styled.div`
     padding: 0 40px 40px 40px;
@@ -210,7 +210,7 @@ class ReservationsList extends Component {
         return (
             <Wrapper>
                 <AdminNavBar/>
-                {showTable && (
+                {/* {showTable && (
                     <ReactTable
                         data={reservations}
                         columns={columns}
@@ -219,7 +219,7 @@ class ReservationsList extends Component {
                         showPagination={false}
                         minRows={0}
                     />
-                )}
+                )} */}
             </Wrapper>
         )
     }

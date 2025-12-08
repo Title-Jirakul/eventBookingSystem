@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import ReactTable from 'react-table-v6'
+// import ReactTable from 'react-table-v6'
 import api from '../api'
 import { NavBar } from '../components'
 
 import styled from 'styled-components'
-import 'react-table-v6/react-table.css'
+// import 'react-table-v6/react-table.css'
 
 const Title = styled.h1.attrs({
     className: 'h1',
@@ -201,7 +201,7 @@ class ReservationsUpdate extends Component {
                 <Button onClick={this.handleGetReservations}>Get Reservations</Button>
                 <CancelButton href={'/reservations/update'}>Clear</CancelButton>
             <WrapperTable>
-                {showTable && (
+                {/* {showTable && (
                     <ReactTable
                         data={reservations}
                         columns={columns}
@@ -210,7 +210,7 @@ class ReservationsUpdate extends Component {
                         showPageSizeOptions={true}
                         minRows={0}
                     />
-                )}
+                )} */}
             </WrapperTable>
             </Wrapper>
         )
