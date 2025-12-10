@@ -1,155 +1,114 @@
-import React, { Component } from 'react'
-// import ReactTable from 'react-table-v6'
-import api from '../api'
-import { AdminNavBar } from '../components'
+import React, { Component } from "react";
+import api from "../api";
+import { AdminNavBar } from "../components";
+import styled from "styled-components";
 
-import styled from 'styled-components'
-// import 'react-table-v6/react-table.css'
+import { DataGrid } from "@mui/x-data-grid";
 
 const Wrapper = styled.div`
     padding: 0 40px 40px 40px;
-`
+`;
 
 const Delete = styled.div`
     color: #ff0000;
     cursor: pointer;
-`
+`;
 
 class DeleteClass extends Component {
-    deleteUser = event => {
-        event.preventDefault()
+    deleteUser = async (event) => {
+        event.preventDefault();
 
         if (
-            window.confirm(
-                `Do tou want to delete this class permanently?`,
-            )
+            window.confirm(`Do you want to delete this class permanently?`)
         ) {
-            api.deleteRoom(this.props.id)
-            api.deleteReservationsByRoomID(this.props.id)
-            window.location.reload()
+            try {
+                await api.deleteRoom(this.props.id);
+                await api.deleteReservationsByRoomID(this.props.id);
+            } finally {
+                window.location.reload();
+            }
         }
-    }
+    };
 
     render() {
-        return <Delete onClick={this.deleteUser}>Delete</Delete>
+        return <Delete onClick={this.deleteUser}>Delete</Delete>;
     }
 }
 
 class ClassList extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             classes: [],
-            columns: [],
             isLoading: false,
+        };
+    }
+
+    async componentDidMount() {
+        this.setState({ isLoading: true });
+
+        try {
+            const response = await api.getRooms();
+            const rows = response.data.data.map((item, index) => ({
+                id: item._id || index, // DataGrid requires "id"
+                ...item,
+            }));
+
+            this.setState({
+                classes: rows,
+                isLoading: false,
+            });
+        } catch (err) {
+            console.error(err);
+            this.setState({ isLoading: false });
         }
     }
 
-    componentDidMount = async () => {
-        this.setState({ isLoading: true })
+    render() {
+        const { classes, isLoading } = this.state;
 
-        await api.getRooms().then(classes => {
-            this.setState({
-                classes: classes.data.data,
-                isLoading: false,
-            })
-        })
+        const columns = [
+            { field: "roomNo", headerName: "Room No", flex: 1 },
+            { field: "className", headerName: "Class Name", flex: 1 },
+            { field: "instructor", headerName: "Instructor", flex: 1 },
+            { field: "date", headerName: "Date", flex: 1 },
+            { field: "time", headerName: "Time", flex: 1 },
+            { field: "maxCapacity", headerName: "Max Capacity", flex: 1 },
+            { field: "capacity", headerName: "Capacity", flex: 1 },
+            { field: "maxVirtualCapacity", headerName: "Max Virtual Capacity", flex: 1 },
+            { field: "virtualCapacity", headerName: "Virtual Capacity", flex: 1 },
+            {
+                field: "actions",
+                headerName: "",
+                sortable: false,
+                filterable: false,
+                width: 120,
+                renderCell: (params) => (
+                    <DeleteClass id={params.row._id || params.row.id} />
+                ),
+            },
+        ];
+
+        return (
+            <Wrapper>
+                <AdminNavBar />
+
+                <div style={{ width: "100%" }}>
+                    <DataGrid
+                        rows={classes}
+                        columns={columns}
+                        loading={isLoading}
+                        autoHeight
+                        disableColumnMenu
+                        disableSelectionOnClick
+                        pageSize={classes.length || 10}
+                        rowsPerPageOptions={[classes.length || 10]}
+                        hideFooterPagination
+                    />
+                </div>
+            </Wrapper>
+        );
     }
-
-    filterMethod = (filter, row) => {
-        const id = filter.pivotId || filter.id
-        return row[id] !== undefined ? row[id].toLowerCase().startsWith(filter.value.toLowerCase()) : true
-    }
-
-    // render() {
-    //     const { classes, isLoading } = this.state
-    //     console.log('TCL: classesList -> render -> classes', classes)
-
-    //     const columns = [
-    //         {
-    //             Header: 'Room No',
-    //             accessor: 'roomNo',
-    //             filterable: true,
-    //             filterMethod: this.filterMethod,
-    //         },
-    //         {
-    //             Header: 'Class Name',
-    //             accessor: 'className',
-    //             filterable: true,
-    //             filterMethod: this.filterMethod,
-    //         },
-    //         {
-    //             Header: 'Instructor',
-    //             accessor: 'instructor',
-    //             filterable: true,
-    //             filterMethod: this.filterMethod,
-    //         },
-    //         {
-    //             Header: 'Date',
-    //             accessor: 'date',
-    //             filterable: true,
-    //             filterMethod: this.filterMethod,
-    //         },
-    //         {
-    //             Header: 'Time',
-    //             accessor: 'time',
-    //             filterable: true,
-    //             filterMethod: this.filterMethod,
-    //         },
-    //         {
-    //             Header: 'Max Capacity',
-    //             accessor: 'maxCapacity',
-    //             filterable: true,
-    //         },
-    //         {
-    //             Header: 'Capacity',
-    //             accessor: 'capacity',
-    //             filterable: true,
-    //         },
-    //         {
-    //             Header: 'Max Virtual Capacity',
-    //             accessor: 'maxVirtualCapacity',
-    //             filterable: true,
-    //         },
-    //         {
-    //             Header: 'Virtual Capacity',
-    //             accessor: 'virtualCapacity',
-    //             filterable: true,
-    //         },
-    //         {
-    //             Header: '',
-    //             accessor: '',
-    //             Cell: function(props) {
-    //                 return (
-    //                     <span>
-    //                         <DeleteClass id={props.original._id}/>
-    //                     </span>
-    //                 )
-    //             },
-    //         },
-    //     ]
-
-    //     let showTable = true
-    //     if (!classes.length) {
-    //         showTable = false
-    //     }
-
-    //     return (
-    //         <Wrapper>
-    //             <AdminNavBar/>
-    //             {showTable && (
-    //                 <ReactTable
-    //                     data={classes}
-    //                     columns={columns}
-    //                     loading={isLoading}
-    //                     defaultPageSize={classes.length}
-    //                     showPagination={false}
-    //                     minRows={0}
-    //                 />
-    //             )}
-    //         </Wrapper>
-    //     )
-    // }
 }
 
-export default ClassList
+export default ClassList;

@@ -1,228 +1,138 @@
-import React, { Component } from 'react'
-// import ReactTable from 'react-table-v6'
-import api from '../api'
-import { AdminNavBar } from '../components'
-
-import styled from 'styled-components'
-// import 'react-table-v6/react-table.css'
+import React, { useEffect, useState, useCallback } from "react";
+import { DataGrid } from "@mui/x-data-grid";
+import { Box, Button } from "@mui/material";
+import styled from "styled-components";
+import api from "../api";
+import { AdminNavBar } from "../components";
 
 const Wrapper = styled.div`
-    padding: 0 40px 40px 40px;
-`
+  padding: 0 40px 40px 40px;
+`;
 
-const Delete = styled.div`
-    color: #ff0000;
-    cursor: pointer;
-`
+const DeleteButton = styled.div`
+  color: #ff0000;
+  cursor: pointer;
+`;
 
-class DeleteReservation extends Component {
-    deleteUser = async event => {
-        event.preventDefault()
-
-        if (
-            window.confirm(
-                `Do you want to delete the reservation ${this.props.reservationNo} permanently?`,
-            )
-        ) {
-            await api.deleteReservation(this.props.id).then(res => {
-                  api.getPassByReservationId(this.props.reservationNo).then(res => {
-                     switch(res.data.data.passType) {
-                        case 'class':
-                           api.updateSinglePassUsed(res.data.data._id).then(res => {
-                              api.updateRoomByLess(this.props.roomID).then(res => {
-                                 window.location.reload()
-                              })
-                           }).catch(() => {
-                              window.location.reload()
-                           })
-                           break
-                        case 'one':
-                           api.getReservationByReservationNo(this.props.reservationNo).then(res => {
-                              api.updateRoomByLess(this.props.roomID).then(res => {
-                                 window.location.reload()
-                              })
-                           }).catch(() => {
-                              api.deleteDayPass(res.data.data._id).then(res => {
-                                 window.location.reload()
-                              }).catch(() => {
-                                 window.location.reload()
-                              })
-                           })
-                           break
-                        case 'three':
-                           api.getReservationByReservationNo(this.props.reservationNo).then(res => {
-                              api.updateRoomByLess(this.props.roomID).then(res => {
-                                 window.location.reload()
-                              })
-                           }).catch(() => {
-                              api.deleteDayPass(res.data.data._id).then(res => {
-                                 window.location.reload()
-                              }).catch(() => {
-                                 window.location.reload()
-                              })
-                           })
-                           break
-                        case 'vclass':
-                           api.updateSinglePassUsed(res.data.data._id).then(res => {
-                              api.updateVirtualRoomByLess(this.props.roomID).then(res => {
-                                 window.location.reload()
-                              })
-                           }).catch(() => {
-                              window.location.reload()
-                           })
-                           break
-                        case 'vone':
-                           api.getReservationByReservationNo(this.props.reservationNo).then(res => {
-                              api.updateVirtualRoomByLess(this.props.roomID).then(res => {
-                                 window.location.reload()
-                              })
-                           }).catch(() => {
-                              api.deleteDayPass(res.data.data._id).then(res => {
-                                 window.location.reload()
-                              }).catch(() => {
-                                 window.location.reload()
-                              })
-                           })
-                           break
-                        case 'two':
-                           api.getReservationByReservationNo(this.props.reservationNo).then(res => {
-                              api.updateRoomByLess(this.props.roomID).then(res => {
-                                 window.location.reload()
-                              })
-                           }).catch(() => {
-                              api.deleteDayPass(res.data.data._id).then(res => {
-                                 window.location.reload()
-                              }).catch(() => {
-                                 window.location.reload()
-                              })
-                           })
-                           break
-                        default:
-                            break
-                     }
-                  })
-            })
-        }
+const DeleteReservation = ({ id, reservationNo, roomID }) => {
+  const handleDelete = useCallback(async () => {
+    if (!window.confirm(`Do you want to delete reservation ${reservationNo} permanently?`)) {
+      return;
     }
 
-    render() {
-        return <Delete onClick={this.deleteUser}>Delete</Delete>
+    try {
+      await api.deleteReservation(id);
+
+      const pass = await api.getPassByReservationId(reservationNo);
+      const passType = pass?.data?.data?.passType;
+      const passId = pass?.data?.data?._id;
+
+      const updateRoom = () => api.updateRoomByLess(roomID);
+      const updateRoomVirtual = () => api.updateVirtualRoomByLess(roomID);
+
+      switch (passType) {
+        case "class":
+          await api.updateSinglePassUsed(passId);
+          await updateRoom();
+          break;
+
+        case "vclass":
+          await api.updateSinglePassUsed(passId);
+          await updateRoomVirtual();
+          break;
+
+        case "one":
+        case "three":
+        case "two":
+          try {
+            await api.getReservationByReservationNo(reservationNo);
+            await updateRoom();
+          } catch {
+            await api.deleteDayPass(passId);
+          }
+          break;
+
+        case "vone":
+          try {
+            await api.getReservationByReservationNo(reservationNo);
+            await updateRoomVirtual();
+          } catch {
+            await api.deleteDayPass(passId);
+          }
+          break;
+
+        default:
+          break;
+      }
+
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+      window.location.reload();
     }
-}
+  }, [id, reservationNo, roomID]);
 
-class ReservationsList extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            reservations: [],
-            columns: [],
-            isLoading: false,
-        }
-    }
+  return <DeleteButton onClick={handleDelete}>Delete</DeleteButton>;
+};
 
-    componentDidMount = async () => {
-        this.setState({ isLoading: true })
+const ReservationsList = () => {
+  const [reservations, setReservations] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-        await api.getReservations().then(reservations => {
-            this.setState({
-                reservations: reservations.data.data,
-                isLoading: false,
-            })
-        })
-    }
+  useEffect(() => {
+    const loadReservations = async () => {
+      setIsLoading(true);
+      const res = await api.getReservations();
+      setReservations(res.data.data);
+      setIsLoading(false);
+    };
+    loadReservations();
+  }, []);
 
-    filterMethod = (filter, row) => {
-        const id = filter.pivotId || filter.id
-        return row[id] !== undefined ? row[id].toLowerCase().startsWith(filter.value.toLowerCase()) : true
-    }
+  const columns = [
+    { field: "reservationNo", headerName: "Ticket No", flex: 1 },
+    { field: "name", headerName: "First Name", flex: 1 },
+    { field: "lastName", headerName: "Last Name", flex: 1 },
+    { field: "phoneNo", headerName: "Phone Number", flex: 1 },
+    { field: "date", headerName: "Date", flex: 1 },
+    { field: "time", headerName: "Time", flex: 1 },
+    { field: "roomNo", headerName: "Room No", flex: 1 },
+    { field: "instructor", headerName: "Instructor", flex: 1 },
+    {
+      field: "delete",
+      headerName: "",
+      flex: 0.5,
+      sortable: false,
+      filterable: false,
+      renderCell: (params) => (
+        <DeleteReservation
+          id={params.row._id}
+          reservationNo={params.row.reservationNo}
+          roomID={params.row.roomID}
+        />
+      ),
+    },
+  ];
 
-    render() {
-        const { reservations, isLoading } = this.state
-        console.log('TCL: reservationsList -> render -> reservations', reservations)
+  return (
+    <Wrapper>
+      <AdminNavBar />
 
-        const columns = [
-            {
-                Header: 'Ticket No',
-                accessor: 'reservationNo',
-                filterable: true,
-                filterMethod: this.filterMethod,
-            },
-            {
-                Header: 'First Name',
-                accessor: 'name',
-                filterable: true,
-                filterMethod: this.filterMethod,
-            },
-            {
-                Header: 'Last Name',
-                accessor: 'lastName',
-                filterable: true,
-                filterMethod: this.filterMethod,
-            },
-            {
-                Header: 'Phone Number',
-                accessor: 'phoneNo',
-                filterable: true,
-                filterMethod: this.filterMethod,
-            },
-            {
-                Header: 'Date',
-                accessor: 'date',
-                filterable: true,
-                filterMethod: this.filterMethod,
-            },
-            {
-                Header: 'Time',
-                accessor: 'time',
-                filterable: true,
-                filterMethod: this.filterMethod,
-            },
-            {
-                Header: 'Room No',
-                accessor: 'roomNo',
-                filterable: true,
-                filterMethod: this.filterMethod,
-            },
-            {
-                Header: 'Instructor',
-                accessor: 'instructor',
-                filterable: true,
-                filterMethod: this.filterMethod,
-            },
-            {
-                Header: '',
-                accessor: '',
-                Cell: function(props) {
-                    return (
-                        <span>
-                            <DeleteReservation id={props.original._id} reservationNo={props.original.reservationNo} roomID={props.original.roomID}/>
-                        </span>
-                    )
-                },
-            },
-        ]
+      <Box sx={{ height: "80vh", width: "100%", mt: 3 }}>
+        <DataGrid
+          rows={reservations}
+          columns={columns}
+          getRowId={(row) => row._id}
+          loading={isLoading}
+          disableRowSelectionOnClick
+          sx={{
+            background: "white",
+            borderRadius: 2,
+          }}
+        />
+      </Box>
+    </Wrapper>
+  );
+};
 
-        let showTable = true
-        if (!reservations.length) {
-            showTable = false
-        }
-
-        return (
-            <Wrapper>
-                <AdminNavBar/>
-                {/* {showTable && (
-                    <ReactTable
-                        data={reservations}
-                        columns={columns}
-                        loading={isLoading}
-                        defaultPageSize={reservations.length}
-                        showPagination={false}
-                        minRows={0}
-                    />
-                )} */}
-            </Wrapper>
-        )
-    }
-}
-
-export default ReservationsList
+export default ReservationsList;
