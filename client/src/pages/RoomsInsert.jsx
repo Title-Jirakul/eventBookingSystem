@@ -83,6 +83,7 @@ class RoomsInsert extends Component {
             className: '',
             instructor: '',
             time: '',
+            times: [],
             date: '',
             maxCapacity: 30,
             maxVirtualCapacity: 0,
@@ -148,12 +149,20 @@ class RoomsInsert extends Component {
 
     async componentDidMount() {
         try {
-            const res = await api.getRoomNumbers();
-            if (res.data.success) {
-                this.setState({ roomNos: res.data.data });
+            const [roomRes, timeRes] = await Promise.all([
+                api.getRoomNos(),
+                api.getTimes(),
+            ]);
+
+            if (roomRes.data.success) {
+                this.setState({ roomNos: roomRes.data.data });
+            }
+
+            if (timeRes.data.success) {
+                this.setState({ times: timeRes.data.data });
             }
         } catch (err) {
-            console.error('Failed to fetch room numbers', err);
+            console.error('Failed to load data', err);
         }
     }
 
@@ -207,15 +216,19 @@ class RoomsInsert extends Component {
                     onChange={this.handleChangeInputDate}
                 />
 
-                <Label>Time: </Label>
-                {/* TODO: pull from DB instead of static */}
-                <InputSelect onChange={this.handleChangeInputTime} defaultvalue={time}>
-                    <option hidden disabled selected value>-- Select a time --</option>
-                    <option value="07:30 - 09:00">07:00 - 09:00</option>
-                    <option value="09:00 - 10:30">09:00 - 10:30</option>
-                    <option value="11:00 - 12:30">11:00 - 12:30</option>
-                    <option value="14:00 - 15:30">14:00 - 15:30</option>
-                    <option value="16:00 - 17:30">16:00 - 17:30</option>
+                <InputSelect
+                    value={time}
+                    onChange={this.handleChangeInputTime}
+                >
+                    <option value="" disabled>
+                        -- Select a time --
+                    </option>
+
+                    {this.state.times.map(t => (
+                        <option key={t._id} value={t.time}>
+                            {t.time}
+                        </option>
+                    ))}
                 </InputSelect>
 
                 <Label>Max Capacity: </Label>

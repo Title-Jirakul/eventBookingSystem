@@ -59,6 +59,8 @@ export const updateDayPassDate = (id, payload) => api.put(`/dayPass/${id}`, payl
 
 export const getRoomNumbers = () => api.get(`/roomNos`)
 
+export const getTimes = () => api.get(`/times`)
+
 const apis = {
     createReservation,
     getReservations,
@@ -96,6 +98,8 @@ const apis = {
     updateDayPassDate,
 
     getRoomNumbers,
+
+    getTimes,
 }
 
 export default apis
