@@ -57,6 +57,8 @@ export const deleteDayPass = id => api.delete(`/dayPass/${id}`)
 export const getDayPass = id => api.get(`/dayPass/${id}`)
 export const updateDayPassDate = (id, payload) => api.put(`/dayPass/${id}`, payload)
 
+export const getRoomNumbers = () => api.get(`/roomNos`)
+
 const apis = {
     createReservation,
     getReservations,
@@ -92,6 +94,8 @@ const apis = {
     deleteDayPass,
     getDayPass,
     updateDayPassDate,
+
+    getRoomNumbers,
 }
 
 export default apis

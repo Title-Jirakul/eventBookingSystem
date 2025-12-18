@@ -5,3 +5,4 @@ server/yarn.lock
 client/package-lock.json
 client/node_modules
 client/yarn.lock
+node_modules

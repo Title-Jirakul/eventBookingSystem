@@ -78,6 +78,7 @@ class RoomsInsert extends Component {
         super(props)
 
         this.state = {
+            roomNos: [],
             roomNo: '',
             className: '',
             instructor: '',
@@ -145,6 +146,18 @@ class RoomsInsert extends Component {
         })
     }
 
+    async componentDidMount() {
+        try {
+            const res = await api.getRoomNumbers();
+            if (res.data.success) {
+                this.setState({ roomNos: res.data.data });
+            }
+        } catch (err) {
+            console.error('Failed to fetch room numbers', err);
+        }
+    }
+
+
     render() {
         const { roomNo, time, date, maxCapacity, maxVirtualCapacity, className, instructor } = this.state
         return (
@@ -153,19 +166,22 @@ class RoomsInsert extends Component {
                 <Title>Add Class</Title>
 
                 <Label>Class Number: </Label>
-                {/* TODO: pull from DB instead of static */}
-                <InputSelect onChange={this.handleChangeInputRoomNo} defaultvalue={roomNo}>
-                    <option hidden disabled selected value>-- Select an option --</option>
-                    <option value="roomNo 1">RoomNo 1</option>
-                    <option value="roomNo 2">RoomNo 2</option>
-                    <option value="roomNo 3">RoomNo 3</option>
-                    <option value="roomNo 4">RoomNo 4</option>
-                    <option value="roomNo 5">RoomNo 5</option>
-                    <option value="roomNo 6">RoomNo 6</option>
-                    <option value="roomNo 7">RoomNo 7</option>
-                    <option value="roomNo 8">RoomNo 8</option>
-                    <option value="roomNo 9">RoomNo 9</option>
-                </InputSelect>
+                <Label>Class Number: </Label>
+
+            <InputSelect
+                value={roomNo}
+                onChange={this.handleChangeInputRoomNo}
+            >
+                <option value="" disabled>
+                    -- Select an option --
+                </option>
+
+                {this.state.roomNos.map(room => (
+                    <option key={room._id} value={room.roomNo}>
+                        {room.roomNo}
+                    </option>
+                ))}
+            </InputSelect>
 
                 <Label>Class Name: </Label>
                 <InputText
