@@ -74,6 +74,7 @@ class ReservationsInsert extends Component {
         super(props)
 
         this.state = {
+            times: [],
             reservationNumber: '',
             name: '',
             lastName: '',
@@ -353,11 +354,31 @@ class ReservationsInsert extends Component {
     }
 
     getOptions = async () => {
-       await api.getRooms().then(res => {
-          let allOptions = res.data.data.filter(data => (data.capacity < data.maxCapacity) || (data.virtualCapacity < data.maxVirtualCapacity))
-          this.setState({allOptions: allOptions})
-       })
-    }
+    try {
+         const [roomRes, timeRes] = await Promise.all([
+               api.getRooms(),
+               api.getTimes(),
+         ])
+
+         // rooms
+         if (roomRes?.data?.success) {
+               const allOptions = roomRes.data.data.filter(room =>
+                  room.capacity < room.maxCapacity ||
+                  room.virtualCapacity < room.maxVirtualCapacity
+               )
+
+               this.setState({ allOptions })
+         }
+
+         // times
+         if (timeRes?.data?.success) {
+               this.setState({ times: timeRes.data.data })
+         }
+      } catch (err) {
+         console.error('Failed to load rooms or times', err)
+      }
+   }  
+
 
     getOptionsByDateTime = async (thisDate, thisTime) => {
        const {allOptions} = this.state
@@ -415,13 +436,19 @@ class ReservationsInsert extends Component {
                 />
 
                 <Label>Time: </Label>
-                <InputSelect onChange={this.handleChangeInputTime} defaultvalue={time}>
-                  <option hidden disabled selected value>-- Select a time --</option>
-                  <option value="07:30 - 09:00">07:00 - 09:00</option>
-                  <option value="09:00 - 10:30">09:00 - 10:30</option>
-                  <option value="11:00 - 12:30">11:00 - 12:30</option>
-                  <option value="14:00 - 15:30">14:00 - 15:30</option>
-                  <option value="16:00 - 17:30">16:00 - 17:30</option>
+                <InputSelect
+                    value={time}
+                    onChange={this.handleChangeInputTime}
+                >
+                    <option value="" disabled>
+                        -- Select a time --
+                    </option>
+
+                    {this.state.times.map(t => (
+                        <option key={t._id} value={t.time}>
+                            {t.time}
+                        </option>
+                    ))}
                 </InputSelect>
 
                 <Label>Available Classes: </Label>
