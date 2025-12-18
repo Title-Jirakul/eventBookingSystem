@@ -150,7 +150,7 @@ class RoomsInsert extends Component {
     async componentDidMount() {
         try {
             const [roomRes, timeRes] = await Promise.all([
-                api.getRoomNos(),
+                api.getRoomNumbers(),
                 api.getTimes(),
             ]);
 
