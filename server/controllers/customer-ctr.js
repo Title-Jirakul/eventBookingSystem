@@ -1,4 +1,6 @@
 const CustomerPass = require('../models/customer-model')
+const DayPass = require('../models/dayPass-model')
+const SinglePass = require('../models/singlePass-model')
 
 createPass = (req, res) => {
     const body = req.body
@@ -89,6 +91,20 @@ deletePass = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+deleteAllPasses = async (req, res) => {
+    try {
+        await Promise.all([
+            CustomerPass.deleteMany({}),
+            DayPass.deleteMany({}),
+            SinglePass.deleteMany({}),
+        ])
+
+        return res.status(200).json({ success: true })
+    } catch (error) {
+        return res.status(400).json({ success: false, error })
+    }
+}
+
 getPassByReservationId = async (req, res) => {
     await CustomerPass.findOne({ reservationNo: req.params.id }, (err, booking) => {
         if (err) {
@@ -137,6 +153,7 @@ module.exports = {
     createPass,
     updatePass,
     deletePass,
+    deleteAllPasses,
     getPasses,
     getPassById,
     getPassByReservationId,

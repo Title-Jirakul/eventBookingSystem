@@ -3,5 +3,6 @@ import Logo from './Logo'
 import NavBar from './NavBar'
 import AdminNavBar from './AdminNavBar'
 import AdminLinks from './AdminLinks'
+import BulkDeleteConfirmDialog from './BulkDeleteConfirmDialog'
 
-export { Links, Logo, NavBar, AdminNavBar, AdminLinks }
+export { Links, Logo, NavBar, AdminNavBar, AdminLinks, BulkDeleteConfirmDialog }

@@ -125,6 +125,15 @@ deleteReservationsByRoomID = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+deleteAllReservations = async (req, res) => {
+    try {
+        await Reservation.deleteMany({})
+        return res.status(200).json({ success: true })
+    } catch (error) {
+        return res.status(400).json({ success: false, error })
+    }
+}
+
 getReservationByReservationNo = async (req, res) => {
     await Reservation.find({ reservationNo: req.params.id }, (err, reservations) => {
         if (err) {
@@ -179,6 +188,7 @@ module.exports = {
     updateReservation,
     deleteReservation,
     deleteReservationsByRoomID,
+    deleteAllReservations,
     getReservations,
     getReservationByReservationNo,
     getReservationById,

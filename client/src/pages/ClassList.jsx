@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 import api from "../api";
-import { AdminNavBar } from "../components";
+import { AdminNavBar, BulkDeleteConfirmDialog } from "../components";
 import styled from "styled-components";
 
 import { DataGrid } from "@mui/x-data-grid";
 
 const Wrapper = styled.div`
     padding: 0 40px 40px 40px;
+`;
+
+const ActionsBar = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
 `;
 
 const Delete = styled.div`
@@ -41,16 +47,22 @@ class ClassList extends Component {
         this.state = {
             classes: [],
             isLoading: false,
+            isBulkDeleteOpen: false,
+            isBulkDeleting: false,
         };
     }
 
     async componentDidMount() {
+        await this.loadClasses();
+    }
+
+    loadClasses = async () => {
         this.setState({ isLoading: true });
 
         try {
             const response = await api.getRooms();
             const rows = response.data.data.map((item, index) => ({
-                id: item._id || index, // DataGrid requires "id"
+                id: item._id || index,
                 ...item,
             }));
 
@@ -59,13 +71,43 @@ class ClassList extends Component {
                 isLoading: false,
             });
         } catch (err) {
-            console.error(err);
-            this.setState({ isLoading: false });
+            this.setState({
+                classes: [],
+                isLoading: false,
+            });
         }
-    }
+    };
+
+    openBulkDelete = () => {
+        this.setState({ isBulkDeleteOpen: true });
+    };
+
+    closeBulkDelete = () => {
+        if (this.state.isBulkDeleting) {
+            return;
+        }
+
+        this.setState({ isBulkDeleteOpen: false });
+    };
+
+    handleBulkDelete = async () => {
+        this.setState({ isBulkDeleting: true });
+
+        try {
+            await api.deleteAllRooms();
+            this.setState({
+                classes: [],
+                isBulkDeleteOpen: false,
+            });
+        } catch (error) {
+            window.alert("Failed to delete all classes.");
+        } finally {
+            this.setState({ isBulkDeleting: false });
+        }
+    };
 
     render() {
-        const { classes, isLoading } = this.state;
+        const { classes, isLoading, isBulkDeleteOpen, isBulkDeleting } = this.state;
 
         const columns = [
             { field: "roomNo", headerName: "Room No", flex: 1 },
@@ -92,6 +134,11 @@ class ClassList extends Component {
         return (
             <Wrapper>
                 <AdminNavBar />
+                <ActionsBar>
+                    <button type="button" className="btn btn-danger" onClick={this.openBulkDelete}>
+                        Delete
+                    </button>
+                </ActionsBar>
 
                 <div style={{ width: "100%" }}>
                     <DataGrid
@@ -106,6 +153,14 @@ class ClassList extends Component {
                         hideFooterPagination
                     />
                 </div>
+                <BulkDeleteConfirmDialog
+                    open={isBulkDeleteOpen}
+                    title="Delete all classes?"
+                    description="This will permanently delete all classes and the reservations linked to them. Type DELETE to confirm."
+                    onClose={this.closeBulkDelete}
+                    onConfirm={this.handleBulkDelete}
+                    isSubmitting={isBulkDeleting}
+                />
             </Wrapper>
         );
     }

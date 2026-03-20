@@ -3,10 +3,16 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button } from "@mui/material";
 import styled from "styled-components";
 import api from "../api";
-import { AdminNavBar } from "../components";
+import { AdminNavBar, BulkDeleteConfirmDialog } from "../components";
 
 const Wrapper = styled.div`
   padding: 0 40px 40px 40px;
+`;
+
+const ActionsBar = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
 `;
 
 const DeleteButton = styled.div`
@@ -78,16 +84,38 @@ const DeleteReservation = ({ id, reservationNo, roomID }) => {
 const ReservationsList = () => {
   const [reservations, setReservations] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isBulkDeleteOpen, setIsBulkDeleteOpen] = useState(false);
+  const [isBulkDeleting, setIsBulkDeleting] = useState(false);
 
-  useEffect(() => {
-    const loadReservations = async () => {
-      setIsLoading(true);
+  const loadReservations = useCallback(async () => {
+    setIsLoading(true);
+    try {
       const res = await api.getReservations();
       setReservations(res.data.data);
+    } catch (error) {
+      setReservations([]);
+    } finally {
       setIsLoading(false);
-    };
-    loadReservations();
+    }
   }, []);
+
+  useEffect(() => {
+    loadReservations();
+  }, [loadReservations]);
+
+  const handleBulkDelete = async () => {
+    setIsBulkDeleting(true);
+
+    try {
+      await api.deleteAllReservations();
+      setReservations([]);
+      setIsBulkDeleteOpen(false);
+    } catch (error) {
+      window.alert("Failed to delete all reservations.");
+    } finally {
+      setIsBulkDeleting(false);
+    }
+  };
 
   const columns = [
     { field: "reservationNo", headerName: "Ticket No", flex: 1 },
@@ -117,6 +145,11 @@ const ReservationsList = () => {
   return (
     <Wrapper>
       <AdminNavBar />
+      <ActionsBar>
+        <Button variant="contained" color="error" onClick={() => setIsBulkDeleteOpen(true)}>
+          Delete
+        </Button>
+      </ActionsBar>
 
       <Box sx={{ height: "80vh", width: "100%", mt: 3 }}>
         <DataGrid
@@ -131,6 +164,18 @@ const ReservationsList = () => {
           }}
         />
       </Box>
+      <BulkDeleteConfirmDialog
+        open={isBulkDeleteOpen}
+        title="Delete all reservations?"
+        description="This will permanently delete every reservation shown on this page. Type DELETE to confirm."
+        onClose={() => {
+          if (!isBulkDeleting) {
+            setIsBulkDeleteOpen(false);
+          }
+        }}
+        onConfirm={handleBulkDelete}
+        isSubmitting={isBulkDeleting}
+      />
     </Wrapper>
   );
 };

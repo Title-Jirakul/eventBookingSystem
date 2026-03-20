@@ -1,4 +1,5 @@
 const Room = require('../models/room-model')
+const Reservation = require('../models/reservation-model')
 
 createRoom = (req, res) => {
     const body = req.body
@@ -211,6 +212,19 @@ deleteRoom = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
+deleteAllRooms = async (req, res) => {
+    try {
+        await Promise.all([
+            Room.deleteMany({}),
+            Reservation.deleteMany({}),
+        ])
+
+        return res.status(200).json({ success: true })
+    } catch (error) {
+        return res.status(400).json({ success: false, error })
+    }
+}
+
 getRoomByDate = async (req, res) => {
     await Room.findOne({ date: req.params.id }, (err, room) => {
         if (err) {
@@ -248,6 +262,7 @@ module.exports = {
     updateVirtualRoomByOne,
     updateVirtualRoomByLessOne,
     deleteRoom,
+    deleteAllRooms,
     getRooms,
     getRoomByDate,
 }
