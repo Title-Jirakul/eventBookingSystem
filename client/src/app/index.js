@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 
-import { ReservationsList, ReservationsInsert, ReservationsUpdate, RoomsInsert, PassesInsert, ClassList, PassList, Admin, PassUpdate, ReservationUpdate } from '../pages'
+import { ReservationsList, ReservationsInsert, ReservationsUpdate, RoomsInsert, PassesInsert, ClassList, ClassConfig, PassList, Admin, PassUpdate, ReservationUpdate } from '../pages'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -11,6 +11,7 @@ function App() {
             <Switch>
                 <Route path="/reservations/list" exact component={ReservationsList} />
                 <Route path="/classes/list" exact component={ClassList} />
+                <Route path="/classes/config" exact component={ClassConfig} />
                 <Route path="/reservations/create" exact component={ReservationsInsert} />
                 <Route path="/reservations/update" exact component={ReservationsUpdate} />
                 <Route path="/classes/create" exact component={RoomsInsert} />

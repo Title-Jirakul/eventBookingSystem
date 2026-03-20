@@ -41,6 +41,12 @@ const InputSelect = styled.select.attrs({
     margin: 5px;
 `
 
+const ErrorText = styled.p`
+    color: #c62828;
+    font-size: 0.9rem;
+    margin: 0 5px 8px 5px;
+`
+
 const Button = styled.button.attrs({
     className: `btn btn-primary`,
 })`
@@ -87,7 +93,42 @@ class RoomsInsert extends Component {
             date: '',
             maxCapacity: 30,
             maxVirtualCapacity: 0,
+            roomNoError: '',
+            timeError: '',
         }
+    }
+
+    validateRoomNo = (value) => {
+        if (!value) {
+            return 'Please select a class number.'
+        }
+
+        if (!/^[A-Za-z0-9][A-Za-z0-9 /-]{0,29}$/.test(value)) {
+            return 'The selected class number format is invalid.'
+        }
+
+        return ''
+    }
+
+    validateTime = (value) => {
+        if (!value) {
+            return 'Please select a time.'
+        }
+
+        const match = value.match(/^([01]\d|2[0-3]):([0-5]\d)\s-\s([01]\d|2[0-3]):([0-5]\d)$/)
+
+        if (!match) {
+            return 'The selected time format is invalid.'
+        }
+
+        const startMinutes = Number(match[1]) * 60 + Number(match[2])
+        const endMinutes = Number(match[3]) * 60 + Number(match[4])
+
+        if (endMinutes <= startMinutes) {
+            return 'The selected time range is invalid.'
+        }
+
+        return ''
     }
 
     handleChangeInputName = async event => {
@@ -102,12 +143,18 @@ class RoomsInsert extends Component {
 
     handleChangeInputRoomNo = async event => {
         const roomNo = event.target.value
-        this.setState({ roomNo })
+        this.setState({
+            roomNo,
+            roomNoError: this.validateRoomNo(roomNo),
+        })
     }
 
     handleChangeInputTime = async event => {
         const time = event.target.value
-        this.setState({ time })
+        this.setState({
+            time,
+            timeError: this.validateTime(time),
+        })
     }
 
     handleChangeInputDate = async event => {
@@ -136,6 +183,15 @@ class RoomsInsert extends Component {
 
     handleCreateRoom = async () => {
         const { roomNo, time, date, maxCapacity, maxVirtualCapacity, className, instructor} = this.state
+        const roomNoError = this.validateRoomNo(roomNo)
+        const timeError = this.validateTime(time)
+
+        if (roomNoError || timeError) {
+            this.setState({ roomNoError, timeError })
+            window.alert('Please fix the class number and time format before saving.')
+            return
+        }
+
         const capacity = 0
         const virtualCapacity = 0
         const payload = { roomNo, time, date, capacity, maxCapacity, virtualCapacity, maxVirtualCapacity, className, instructor}
@@ -168,7 +224,7 @@ class RoomsInsert extends Component {
 
 
     render() {
-        const { roomNo, time, date, maxCapacity, maxVirtualCapacity, className, instructor } = this.state
+        const { roomNo, time, date, maxCapacity, maxVirtualCapacity, className, instructor, roomNoError, timeError } = this.state
         return (
             <Wrapper>
                 <AdminNavBar/>
@@ -191,6 +247,7 @@ class RoomsInsert extends Component {
                     </option>
                 ))}
             </InputSelect>
+            {roomNoError && <ErrorText>{roomNoError}</ErrorText>}
 
                 <Label>Class Name: </Label>
                 <InputText
@@ -230,6 +287,7 @@ class RoomsInsert extends Component {
                         </option>
                     ))}
                 </InputSelect>
+                {timeError && <ErrorText>{timeError}</ErrorText>}
 
                 <Label>Max Capacity: </Label>
                 <InputText

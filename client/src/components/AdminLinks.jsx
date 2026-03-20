@@ -34,6 +34,11 @@ class AdminLinks extends Component {
                             </Link>
                         </Item>
                         <Item>
+                            <Link to="/classes/config" className="nav-link">
+                                Class Config
+                            </Link>
+                        </Item>
+                        <Item>
                             <Link to="/reservations/list" className="nav-link">
                                 All Reservations
                             </Link>
