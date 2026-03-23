@@ -49,11 +49,20 @@ const CancelButton = styled.a.attrs({
     margin: 15px 15px 15px 5px;
 `
 
-const DatePick = ({parentCallback}) => {
+const Notice = styled.div`
+    background: #fff3cd;
+    border: 1px solid #ffe69c;
+    border-radius: 8px;
+    color: #664d03;
+    margin: 10px 5px 20px 5px;
+    padding: 12px 16px;
+`
+
+const DatePick = ({ parentCallback, disabled }) => {
   const [startDate, setStartDate] = useState(new Date());
   const ExampleCustomInput = forwardRef(
     ({ value, onClick }, ref) => (
-      <button className="btn btn-outline-secondary" onClick={onClick} ref={ref}>
+      <button className="btn btn-outline-secondary" onClick={onClick} ref={ref} disabled={disabled}>
         Pick a date
       </button>
     ),
@@ -61,6 +70,7 @@ const DatePick = ({parentCallback}) => {
   return (
     <DatePicker
       selected={startDate}
+      disabled={disabled}
       onChange={date => {
          setStartDate(date)
          parentCallback(date)}}
@@ -85,6 +95,8 @@ class ReservationsInsert extends Component {
             options: null,
             allOptions: null,
             isLoading: false,
+            allowReservations: true,
+            isSettingsLoading: true,
         }
     }
 
@@ -136,6 +148,11 @@ class ReservationsInsert extends Component {
     }
 
     handleCreateReservation = async () => {
+        if (!this.state.allowReservations) {
+            window.alert('Reservations are currently disabled.')
+            return
+        }
+
         if(this.state.isLoading) return;
         this.setState({ isLoading: true });
         try {
@@ -355,27 +372,42 @@ class ReservationsInsert extends Component {
 
     getOptions = async () => {
     try {
-         const [roomRes, timeRes] = await Promise.all([
+         const [roomRes, timeRes, settingsRes] = await Promise.allSettled([
                api.getRooms(),
                api.getTimes(),
+               api.getAppSettings(),
          ])
 
          // rooms
-         if (roomRes?.data?.success) {
-               const allOptions = roomRes.data.data.filter(room =>
+         if (roomRes.status === 'fulfilled' && roomRes.value?.data?.success) {
+               const allOptions = roomRes.value.data.data.filter(room =>
                   room.capacity < room.maxCapacity ||
                   room.virtualCapacity < room.maxVirtualCapacity
                )
 
                this.setState({ allOptions })
+         } else {
+               this.setState({ allOptions: [] })
          }
 
          // times
-         if (timeRes?.data?.success) {
-               this.setState({ times: timeRes.data.data })
+         if (timeRes.status === 'fulfilled' && timeRes.value?.data?.success) {
+               this.setState({ times: timeRes.value.data.data })
+         } else {
+               this.setState({ times: [] })
+         }
+
+         if (settingsRes.status === 'fulfilled' && settingsRes.value?.data?.success) {
+               this.setState({
+                  allowReservations: settingsRes.value.data.data.allowReservations,
+                  isSettingsLoading: false,
+               })
+         } else {
+               this.setState({ isSettingsLoading: false })
          }
       } catch (err) {
          console.error('Failed to load rooms or times', err)
+         this.setState({ isSettingsLoading: false })
       }
    }  
 
@@ -391,17 +423,24 @@ class ReservationsInsert extends Component {
     }
 
     render() {
-        const { reservationNumber, name, roomSetting, options, phoneNo, lastName, date, time } = this.state
+        const { reservationNumber, name, roomSetting, options, phoneNo, lastName, date, time, allowReservations, isSettingsLoading } = this.state
         return (
             <Wrapper>
                 <NavBar/>
                 <Title>Reservation</Title>
+
+                {!isSettingsLoading && !allowReservations && (
+                    <Notice>
+                        Reservations are temporarily disabled. Please contact the studio for updates.
+                    </Notice>
+                )}
 
                 <Label>Ticket Number: </Label>
                 <InputText
                     type="text"
                     value={reservationNumber}
                     onChange={this.handleChangeInputReservationNumber}
+                    disabled={!allowReservations}
                 />
 
                 <Label>First Name: </Label>
@@ -409,6 +448,7 @@ class ReservationsInsert extends Component {
                     type="text"
                     value={name}
                     onChange={this.handleChangeInputName}
+                    disabled={!allowReservations}
                 />
 
                 <Label>Last Name: </Label>
@@ -416,6 +456,7 @@ class ReservationsInsert extends Component {
                     type="text"
                     value={lastName}
                     onChange={this.handleChangeInputLastName}
+                    disabled={!allowReservations}
                 />
 
                 <Label>Phone Number: </Label>
@@ -423,22 +464,25 @@ class ReservationsInsert extends Component {
                     type="text"
                     value={phoneNo}
                     onChange={this.handleChangeInputPhoneNo}
+                    disabled={!allowReservations}
                 />
                 
                 <Label>Date: </Label>
                 <LilWrapper>
-                    <DatePick parentCallback={this.handleChangeInputDatePicker}/>
+                    <DatePick parentCallback={this.handleChangeInputDatePicker} disabled={!allowReservations} />
                 </LilWrapper>
                 <InputText
                     type="text"
                     value={date}
                     onChange={this.handleChangeInputDate}
+                    disabled={!allowReservations}
                 />
 
                 <Label>Time: </Label>
                 <InputSelect
                     value={time}
                     onChange={this.handleChangeInputTime}
+                    disabled={!allowReservations}
                 >
                     <option value="" disabled>
                         -- Select a time --
@@ -452,7 +496,7 @@ class ReservationsInsert extends Component {
                 </InputSelect>
 
                 <Label>Available Classes: </Label>
-                <InputSelect onChange={this.handleChangeInputRoomSetting} defaultvalue="">
+                <InputSelect onChange={this.handleChangeInputRoomSetting} defaultvalue="" disabled={!allowReservations}>
                    <option hidden disabled selected value>-- Select an option --</option>
                    {this.state.options && this.state.options.map(object => {
                       return <option value={JSON.stringify(object)}>{
@@ -463,7 +507,7 @@ class ReservationsInsert extends Component {
                       " ,Virtual Capacity: " + object.virtualCapacity + "/" + object.maxVirtualCapacity}</option>
                    })}
                 </InputSelect>
-                <Button onClick={this.handleCreateReservation}>Book</Button>
+                <Button onClick={this.handleCreateReservation} disabled={!allowReservations || isSettingsLoading}>Book</Button>
                 <CancelButton href={'/reservations/create'}>Clear</CancelButton>
             </Wrapper>
         )

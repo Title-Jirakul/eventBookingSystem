@@ -7,6 +7,7 @@ const DayPassCtr = require('../controllers/dayPass-ctr')
 const SinglePassCtr = require('../controllers/singlePass-ctr')
 const RoomNoCtrl = require('../controllers/roomNo-ctr')
 const TimeCtrl = require('../controllers/time-ctr')
+const AppSettingCtrl = require('../controllers/app-setting-ctr')
 
 const router = express.Router()
 
@@ -55,5 +56,8 @@ router.get('/roomNos', RoomNoCtrl.getRooms)
 router.post('/time', TimeCtrl.createTime)
 router.delete('/time/:id', TimeCtrl.deleteTime)
 router.get('/times', TimeCtrl.getTimes)
+
+router.get('/settings', AppSettingCtrl.getAppSettings)
+router.put('/settings/reservations', AppSettingCtrl.updateReservationAvailability)
 
 module.exports = router

@@ -68,6 +68,9 @@ export const getTimes = () => api.get(`/times`)
 export const createTime = payload => api.post(`/time`, payload)
 export const deleteTime = id => api.delete(`/time/${id}`)
 
+export const getAppSettings = () => api.get(`/settings`)
+export const updateReservationAvailability = payload => api.put(`/settings/reservations`, payload)
+
 const apis = {
     createReservation,
     getReservations,
@@ -114,6 +117,9 @@ const apis = {
     getTimes,
     createTime,
     deleteTime,
+
+    getAppSettings,
+    updateReservationAvailability,
 }
 
 export default apis

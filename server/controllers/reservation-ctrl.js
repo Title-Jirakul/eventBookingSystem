@@ -1,6 +1,16 @@
 const Reservation = require('../models/reservation-model')
+const AppSetting = require('../models/app-setting-model')
 
 createReservation = async (req, res) => {
+    const settings = await AppSetting.findOne({})
+
+    if (settings && settings.allowReservations === false) {
+        return res.status(403).json({
+            success: false,
+            message: 'Reservations are currently disabled.',
+        })
+    }
+
     const body = req.body
 
     if (!body) {

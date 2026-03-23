@@ -86,6 +86,21 @@ const ListItem = styled.div`
     padding: 12px 14px;
 `
 
+const ToggleCard = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border: 1px solid #ececec;
+    border-radius: 6px;
+    padding: 16px;
+`
+
+const StatusText = styled.p`
+    color: #444;
+    margin: 4px 0 0 0;
+`
+
 class ClassConfig extends Component {
     constructor(props) {
         super(props)
@@ -98,6 +113,8 @@ class ClassConfig extends Component {
             isLoading: false,
             roomNoError: '',
             timeError: '',
+            allowReservations: true,
+            isSavingReservationSetting: false,
         }
     }
 
@@ -146,20 +163,25 @@ class ClassConfig extends Component {
         this.setState({ isLoading: true })
 
         try {
-            const [roomRes, timeRes] = await Promise.allSettled([
+            const [roomRes, timeRes, settingsRes] = await Promise.allSettled([
                 api.getRoomNumbers(),
                 api.getTimes(),
+                api.getAppSettings(),
             ])
 
             this.setState({
                 roomNos: roomRes.status === 'fulfilled' ? roomRes.value.data.data : [],
                 times: timeRes.status === 'fulfilled' ? timeRes.value.data.data : [],
+                allowReservations: settingsRes.status === 'fulfilled'
+                    ? settingsRes.value.data.data.allowReservations
+                    : true,
                 isLoading: false,
             })
         } catch (error) {
             this.setState({
                 roomNos: [],
                 times: [],
+                allowReservations: true,
                 isLoading: false,
             })
         }
@@ -243,13 +265,64 @@ class ClassConfig extends Component {
         }
     }
 
+    handleToggleReservations = async () => {
+        const { allowReservations } = this.state
+
+        this.setState({ isSavingReservationSetting: true })
+
+        try {
+            const response = await api.updateReservationAvailability({
+                allowReservations: !allowReservations,
+            })
+
+            this.setState({
+                allowReservations: response.data.data.allowReservations,
+                isSavingReservationSetting: false,
+            })
+        } catch (error) {
+            this.setState({ isSavingReservationSetting: false })
+            window.alert('Failed to update reservation availability.')
+        }
+    }
+
     render() {
-        const { roomNo, time, roomNos, times, isLoading, roomNoError, timeError } = this.state
+        const {
+            roomNo,
+            time,
+            roomNos,
+            times,
+            isLoading,
+            roomNoError,
+            timeError,
+            allowReservations,
+            isSavingReservationSetting,
+        } = this.state
 
         return (
             <Wrapper>
                 <AdminNavBar />
                 <Title>Admin Config</Title>
+
+                <Section>
+                    <SectionTitle>Reservation Access</SectionTitle>
+                    <ToggleCard>
+                        <div>
+                            <Label>Reservation Page</Label>
+                            <StatusText>
+                                {allowReservations
+                                    ? 'Users can currently create reservations.'
+                                    : 'Users are currently blocked from creating reservations.'}
+                            </StatusText>
+                        </div>
+                        <Button
+                            type="button"
+                            onClick={this.handleToggleReservations}
+                            disabled={isSavingReservationSetting}
+                        >
+                            {allowReservations ? 'Disable Reservations' : 'Enable Reservations'}
+                        </Button>
+                    </ToggleCard>
+                </Section>
 
                 <Section>
                     <SectionTitle>Class Numbers</SectionTitle>
