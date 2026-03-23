@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import api from '../api'
 import { AdminNavBar, BulkDeleteConfirmDialog } from '../components'
+import { downloadCsv } from '../utils/downloadCsv'
 
 import { DataGrid } from '@mui/x-data-grid'
 import styled from 'styled-components'
@@ -12,6 +13,7 @@ const Wrapper = styled.div`
 const ActionsBar = styled.div`
     display: flex;
     justify-content: flex-end;
+    gap: 12px;
     margin-bottom: 16px;
 `
 
@@ -124,6 +126,16 @@ class PassList extends Component {
         }
     }
 
+    handleDownloadCsv = () => {
+        downloadCsv('all-tickets.csv', this.state.passes, [
+            { header: 'Reservation No', key: 'reservationNo' },
+            { header: 'Name', key: 'name' },
+            { header: 'Ticket Type', key: 'passType' },
+            { header: 'Phone Number', key: 'phoneNo' },
+            { header: 'Is Active', key: 'isActive' },
+        ])
+    }
+
     render() {
         const { passes, isLoading, isBulkDeleteOpen, isBulkDeleting } = this.state
 
@@ -159,6 +171,14 @@ class PassList extends Component {
             <Wrapper>
                 <AdminNavBar />
                 <ActionsBar>
+                    <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        onClick={this.handleDownloadCsv}
+                        disabled={passes.length === 0}
+                    >
+                        Download CSV
+                    </button>
                     <button type="button" className="btn btn-danger" onClick={this.openBulkDelete}>
                         Delete
                     </button>

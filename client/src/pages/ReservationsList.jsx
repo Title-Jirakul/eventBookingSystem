@@ -4,6 +4,7 @@ import { Box, Button } from "@mui/material";
 import styled from "styled-components";
 import api from "../api";
 import { AdminNavBar, BulkDeleteConfirmDialog } from "../components";
+import { downloadCsv } from "../utils/downloadCsv";
 
 const Wrapper = styled.div`
   padding: 0 40px 40px 40px;
@@ -12,6 +13,7 @@ const Wrapper = styled.div`
 const ActionsBar = styled.div`
   display: flex;
   justify-content: flex-end;
+  gap: 12px;
   margin-bottom: 16px;
 `;
 
@@ -117,6 +119,19 @@ const ReservationsList = () => {
     }
   };
 
+  const handleDownloadCsv = () => {
+    downloadCsv("all-reservations.csv", reservations, [
+      { header: "Ticket No", key: "reservationNo" },
+      { header: "First Name", key: "name" },
+      { header: "Last Name", key: "lastName" },
+      { header: "Phone Number", key: "phoneNo" },
+      { header: "Date", key: "date" },
+      { header: "Time", key: "time" },
+      { header: "Room No", key: "roomNo" },
+      { header: "Instructor", key: "instructor" },
+    ]);
+  };
+
   const columns = [
     { field: "reservationNo", headerName: "Ticket No", flex: 1 },
     { field: "name", headerName: "First Name", flex: 1 },
@@ -146,6 +161,9 @@ const ReservationsList = () => {
     <Wrapper>
       <AdminNavBar />
       <ActionsBar>
+        <Button variant="outlined" onClick={handleDownloadCsv} disabled={reservations.length === 0}>
+          Download CSV
+        </Button>
         <Button variant="contained" color="error" onClick={() => setIsBulkDeleteOpen(true)}>
           Delete
         </Button>

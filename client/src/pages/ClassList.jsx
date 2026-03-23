@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import api from "../api";
 import { AdminNavBar, BulkDeleteConfirmDialog } from "../components";
 import styled from "styled-components";
+import { downloadCsv } from "../utils/downloadCsv";
 
 import { DataGrid } from "@mui/x-data-grid";
 
@@ -12,6 +13,7 @@ const Wrapper = styled.div`
 const ActionsBar = styled.div`
     display: flex;
     justify-content: flex-end;
+    gap: 12px;
     margin-bottom: 16px;
 `;
 
@@ -106,6 +108,20 @@ class ClassList extends Component {
         }
     };
 
+    handleDownloadCsv = () => {
+        downloadCsv("all-classes.csv", this.state.classes, [
+            { header: "Room No", key: "roomNo" },
+            { header: "Class Name", key: "className" },
+            { header: "Instructor", key: "instructor" },
+            { header: "Date", key: "date" },
+            { header: "Time", key: "time" },
+            { header: "Max Capacity", key: "maxCapacity" },
+            { header: "Capacity", key: "capacity" },
+            { header: "Max Virtual Capacity", key: "maxVirtualCapacity" },
+            { header: "Virtual Capacity", key: "virtualCapacity" },
+        ]);
+    };
+
     render() {
         const { classes, isLoading, isBulkDeleteOpen, isBulkDeleting } = this.state;
 
@@ -135,6 +151,14 @@ class ClassList extends Component {
             <Wrapper>
                 <AdminNavBar />
                 <ActionsBar>
+                    <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        onClick={this.handleDownloadCsv}
+                        disabled={classes.length === 0}
+                    >
+                        Download CSV
+                    </button>
                     <button type="button" className="btn btn-danger" onClick={this.openBulkDelete}>
                         Delete
                     </button>
