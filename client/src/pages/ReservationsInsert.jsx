@@ -82,6 +82,7 @@ const DatePick = ({ parentCallback, disabled }) => {
 class ReservationsInsert extends Component {
     constructor(props) {
         super(props)
+        this.isSubmittingReservation = false
 
         this.state = {
             times: [],
@@ -148,15 +149,27 @@ class ReservationsInsert extends Component {
     }
 
     handleCreateReservation = async () => {
+        if (this.isSubmittingReservation) {
+            return
+        }
+
         if (!this.state.allowReservations) {
             window.alert('Reservations are currently disabled.')
             return
         }
 
         if(this.state.isLoading) return;
+
+        this.isSubmittingReservation = true
         this.setState({ isLoading: true });
         try {
         const { reservationNumber, name, roomSetting, phoneNo, lastName } = this.state
+
+        if (!roomSetting) {
+           window.alert('Please select an available class.')
+           return
+        }
+
         const roomSettingJSON = JSON.parse(roomSetting)
         const time = roomSettingJSON.time
         const date = roomSettingJSON.date
@@ -167,207 +180,29 @@ class ReservationsInsert extends Component {
             name: name, time: time, date: date, roomNo: roomNumber, phoneNo: phoneNo,
         lastName: lastName, roomID: roomID, instructor: instructor }
 
-        await api.getPassByReservationId(reservationNumber).then(res => {
-            if(!res.data.data.isActive){
-               window.alert(`Pass is not active, please try a different pass`)
-            } else {
-               switch (res.data.data.passType) {
-                  case 'class':
-                     api.getSinglePass(res.data.data._id).then(res => {
-                        if(!res.data.data.isUsed) {
-                           api.updateSinglePassUsed(res.data.data.reservationID).then(() => {
-                              this.makeReservation(payload, roomID)
-                           }).catch(() => {
-                              window.alert(`pass update failed`)
-                           })
-                        } else {
-                           window.alert(`Single pass has been used`)
-                        }
-                     }).catch(() => {
-                        const singlePassPayload = { reservationID: res.data.data._id, isUsed: true}
-                        api.createSinglePass(singlePassPayload).then(res => {
-                           this.makeReservation(payload, roomID)
-                        })
-                     })
-                     break
-                  case 'one':
-                     api.getDayPass(res.data.data._id).then(res => {
-                        if(res.data.data.dateBooked === date) {
-                           this.makeReservation(payload, roomID)
-                        } 
-                        else if (res.data.data.dateBooked === " ") {
-                           const dayPassPayload = { reservationID: res.data.data.reservationID, dateBooked: date}
-                        api.updateDayPassDate(res.data.data.reservationID, dayPassPayload).then(res => {
-                           this.makeReservation(payload, roomID)
-                        }).catch(() => {
-                              window.alert(`pass update failed`)
-                           })
-                        }
-                        else {
-                           window.alert(`single day pass cannot be used on ` + date)
-                        }
-                     }).catch(() => {
-                        const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
-                        api.createDayPass(dayPassPayload).then(res => {
-                           this.makeReservation(payload, roomID)
-                        })
-                     })
-                     break
-                  case 'three':
-                     api.getDayPass(res.data.data._id).then(res => {
-                        if (res.data.data.dateBooked === " ") {
-                           const dayPassPayload = { reservationID: res.data.data.reservationID, dateBooked: date}
-                           api.updateDayPassDate(res.data.data.reservationID, dayPassPayload).then(res => {
-                              this.makeReservation(payload, roomID)
-                           }).catch(() => {
-                              window.alert(`pass update failed`)
-                           })
-                        }
-                        else {
-                           const dateBooked = new Date(res.data.data.dateBooked)
-                           const roomDate = new Date(date)
-                           const differenceInTime = Math.abs(dateBooked.getTime() - roomDate.getTime())
-                           const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-                           if(differenceInDays <= 2) {
-                              this.makeReservation(payload, roomID)
-                           } else {
-                              window.alert(`Please select a class within 3 days of the initial booking time`)
-                           }
-                        }
-                     }).catch(() => {
-                        const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
-                        api.createDayPass(dayPassPayload).then(res => {
-                           this.makeReservation(payload, roomID)
-                        })
-                     })
-                     break
-                  case 'two':
-                     api.getDayPass(res.data.data._id).then(res => {
-                        if (res.data.data.dateBooked === " ") {
-                           const dayPassPayload = { reservationID: res.data.data.reservationID, dateBooked: date}
-                           api.updateDayPassDate(res.data.data.reservationID, dayPassPayload).then(res => {
-                              this.makeReservation(payload, roomID)
-                           }).catch(() => {
-                              window.alert(`pass update failed`)
-                           })
-                        }
-                        else {
-                           const dateBooked = new Date(res.data.data.dateBooked)
-                           const roomDate = new Date(date)
-                           const differenceInTime = Math.abs(dateBooked.getTime() - roomDate.getTime())
-                           const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-                           if(differenceInDays <= 1) {
-                              this.makeReservation(payload, roomID)
-                           } else {
-                              window.alert(`Please select a class within 2 days of the initial booking time`)
-                           }
-                        }
-                     }).catch(() => {
-                        const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
-                        api.createDayPass(dayPassPayload).then(res => {
-                           this.makeReservation(payload, roomID)
-                        })
-                     })
-                     break
-                  case 'seven':
-                        api.getDayPass(res.data.data._id).then(res => {
-                           if (res.data.data.dateBooked === " ") {
-                              const dayPassPayload = { reservationID: res.data.data.reservationID, dateBooked: date}
-                              api.updateDayPassDate(res.data.data.reservationID, dayPassPayload).then(res => {
-                                 this.makeReservation(payload, roomID)
-                              }).catch(() => {
-                                 window.alert(`pass update failed`)
-                              })
-                           }
-                           else {
-                              const dateBooked = new Date(res.data.data.dateBooked)
-                              const roomDate = new Date(date)
-                              const differenceInTime = Math.abs(dateBooked.getTime() - roomDate.getTime())
-                              const differenceInDays = differenceInTime / (1000 * 3600 * 24);
-                              if(differenceInDays <= 6) {
-                                 this.makeReservation(payload, roomID)
-                              } else {
-                                 window.alert(`Please select a class within 7 days of the initial booking time`)
-                              }
-                           }
-                        }).catch(() => {
-                           const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
-                           api.createDayPass(dayPassPayload).then(res => {
-                              this.makeReservation(payload, roomID)
-                           })
-                        })
-                        break
-                  case 'vclass':
-                     api.getSinglePass(res.data.data._id).then(res => {
-                        if(!res.data.data.isUsed) {
-                           api.updateSinglePassUsed(res.data.data.reservationID).then(() => {
-                              this.makeVirtualReservation(payload, roomID)
-                           }).catch(() => {
-                              window.alert(`Pass update failed`)
-                           })
-                        } else {
-                           window.alert(`Virtual single class pass has been used`)
-                        }
-                     }).catch(() => {
-                        const singlePassPayload = { reservationID: res.data.data._id, isUsed: true}
-                        api.createSinglePass(singlePassPayload).then(res => {
-                           this.makeVirtualReservation(payload, roomID)
-                        })
-                     })
-                     break
-                  case 'vone':
-                     api.getDayPass(res.data.data._id).then(res => {
-                        if(res.data.data.dateBooked === date) {
-                           this.makeVirtualReservation(payload, roomID)
-                        } 
-                        else if (res.data.data.dateBooked === " ") {
-                           const dayPassPayload = { reservationID: res.data.data.reservationID, dateBooked: date}
-                           api.updateDayPassDate(res.data.data.reservationID, dayPassPayload).then(res => {
-                              this.makeVirtualReservation(payload, roomID)
-                           }).catch(() => {
-                              window.alert(`pass update failed`)
-                           })
-                        }
-                        else {
-                           window.alert(`Virtual single day pass cannot be used on ` + date)
-                        }
-                     }).catch(() => {
-                        const dayPassPayload = { reservationID: res.data.data._id, dateBooked: date}
-                        api.createDayPass(dayPassPayload).then(res => {
-                           this.makeVirtualReservation(payload, roomID)
-                        })
-                     })
-                     break
-               } 
-            }
-        }).catch(res => {
-            window.alert(`Pass not exist, please try a different pass`)
-        })
+        const reservationCreated = await this.makeReservation(payload)
+
+        if (!reservationCreated) {
+            return
+        }
       } catch (error) {
          console.error(error);
       } finally {
          this.setState({ isLoading: false });
+         this.isSubmittingReservation = false
       }
     }
 
-    makeReservation = async (payload, roomID) => {
-       api.updateRoomByOne(roomID).then(() => {
-           api.createReservation(payload).then(() => {
-              window.alert(`Reservation created successfully`) ? window.location.reload() : window.location.reload()
-           })
-       }).catch(res => {
-           window.alert(`Reservation creation failed ` + res.data.message)
-       })
-    }
-
-    makeVirtualReservation = async (payload, roomID) => {
-       api.updateVirtualRoomByOne(roomID).then(() => {
-           api.createReservation(payload).then(() => {
-              window.alert(`Reservation created successfully`) ? window.location.reload() : window.location.reload()
-           })
-       }).catch(res => {
-           window.alert(`Virtual reservation creation failed ` + res.data.message)
-       })
+    makeReservation = async (payload) => {
+       try {
+           await api.createReservation(payload)
+           window.alert(`Reservation created successfully`)
+           window.location.reload()
+           return true
+       } catch (error) {
+           window.alert(`Reservation creation failed ` + (error.response?.data?.message || error.message || ''))
+           return false
+       }
     }
 
     getOptions = async () => {
@@ -423,7 +258,8 @@ class ReservationsInsert extends Component {
     }
 
     render() {
-        const { reservationNumber, name, roomSetting, options, phoneNo, lastName, date, time, allowReservations, isSettingsLoading } = this.state
+        const { reservationNumber, name, roomSetting, options, phoneNo, lastName, date, time, allowReservations, isSettingsLoading, isLoading } = this.state
+        const isFormDisabled = !allowReservations || isSettingsLoading || isLoading
         return (
             <Wrapper>
                 <NavBar/>
@@ -440,7 +276,7 @@ class ReservationsInsert extends Component {
                     type="text"
                     value={reservationNumber}
                     onChange={this.handleChangeInputReservationNumber}
-                    disabled={!allowReservations}
+                    disabled={isFormDisabled}
                 />
 
                 <Label>First Name: </Label>
@@ -448,7 +284,7 @@ class ReservationsInsert extends Component {
                     type="text"
                     value={name}
                     onChange={this.handleChangeInputName}
-                    disabled={!allowReservations}
+                    disabled={isFormDisabled}
                 />
 
                 <Label>Last Name: </Label>
@@ -456,7 +292,7 @@ class ReservationsInsert extends Component {
                     type="text"
                     value={lastName}
                     onChange={this.handleChangeInputLastName}
-                    disabled={!allowReservations}
+                    disabled={isFormDisabled}
                 />
 
                 <Label>Phone Number: </Label>
@@ -464,25 +300,25 @@ class ReservationsInsert extends Component {
                     type="text"
                     value={phoneNo}
                     onChange={this.handleChangeInputPhoneNo}
-                    disabled={!allowReservations}
+                    disabled={isFormDisabled}
                 />
                 
                 <Label>Date: </Label>
                 <LilWrapper>
-                    <DatePick parentCallback={this.handleChangeInputDatePicker} disabled={!allowReservations} />
+                    <DatePick parentCallback={this.handleChangeInputDatePicker} disabled={isFormDisabled} />
                 </LilWrapper>
                 <InputText
                     type="text"
                     value={date}
                     onChange={this.handleChangeInputDate}
-                    disabled={!allowReservations}
+                    disabled={isFormDisabled}
                 />
 
                 <Label>Time: </Label>
                 <InputSelect
                     value={time}
                     onChange={this.handleChangeInputTime}
-                    disabled={!allowReservations}
+                    disabled={isFormDisabled}
                 >
                     <option value="" disabled>
                         -- Select a time --
@@ -496,10 +332,14 @@ class ReservationsInsert extends Component {
                 </InputSelect>
 
                 <Label>Available Classes: </Label>
-                <InputSelect onChange={this.handleChangeInputRoomSetting} defaultvalue="" disabled={!allowReservations}>
+                <InputSelect
+                   onChange={this.handleChangeInputRoomSetting}
+                   value={roomSetting}
+                   disabled={isFormDisabled}
+                >
                    <option hidden disabled selected value>-- Select an option --</option>
                    {this.state.options && this.state.options.map(object => {
-                      return <option value={JSON.stringify(object)}>{
+                      return <option key={object._id} value={JSON.stringify(object)}>{
                       " Room: " + object.roomNo +
                       " ,Class Name: " + object.className +
                       " ,Instructor: " + object.instructor +
@@ -507,7 +347,9 @@ class ReservationsInsert extends Component {
                       " ,Virtual Capacity: " + object.virtualCapacity + "/" + object.maxVirtualCapacity}</option>
                    })}
                 </InputSelect>
-                <Button onClick={this.handleCreateReservation} disabled={!allowReservations || isSettingsLoading}>Book</Button>
+                <Button onClick={this.handleCreateReservation} disabled={isFormDisabled}>
+                    {isLoading ? 'Booking...' : 'Book'}
+                </Button>
                 <CancelButton href={'/reservations/create'}>Clear</CancelButton>
             </Wrapper>
         )
