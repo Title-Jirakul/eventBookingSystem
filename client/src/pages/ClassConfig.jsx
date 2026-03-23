@@ -249,7 +249,7 @@ class ClassConfig extends Component {
         return (
             <Wrapper>
                 <AdminNavBar />
-                <Title>Class Config</Title>
+                <Title>Admin Config</Title>
 
                 <Section>
                     <SectionTitle>Class Numbers</SectionTitle>

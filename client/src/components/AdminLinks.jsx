@@ -35,7 +35,7 @@ class AdminLinks extends Component {
                         </Item>
                         <Item>
                             <Link to="/classes/config" className="nav-link">
-                                Class Config
+                                Admin Config
                             </Link>
                         </Item>
                         <Item>
