@@ -58,6 +58,37 @@ const Notice = styled.div`
     padding: 12px 16px;
 `
 
+const StatusCard = styled.div`
+    border-radius: 8px;
+    margin: 10px 5px 20px 5px;
+    padding: 12px 16px;
+`
+
+const ProcessingCard = styled(StatusCard)`
+    background: #e7f1ff;
+    border: 1px solid #b6d4fe;
+    color: #084298;
+`
+
+const ErrorCard = styled(StatusCard)`
+    background: #f8d7da;
+    border: 1px solid #f1aeb5;
+    color: #842029;
+`
+
+const SuccessCard = styled(StatusCard)`
+    background: #d1e7dd;
+    border: 1px solid #a3cfbb;
+    color: #0f5132;
+`
+
+const ActionsRow = styled.div`
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+`
+
 const DatePick = ({ parentCallback, disabled }) => {
   const [startDate, setStartDate] = useState(new Date());
   const ExampleCustomInput = forwardRef(
@@ -98,6 +129,8 @@ class ReservationsInsert extends Component {
             isLoading: false,
             allowReservations: true,
             isSettingsLoading: true,
+            submitError: '',
+            submitSuccess: '',
         }
     }
 
@@ -154,19 +187,19 @@ class ReservationsInsert extends Component {
         }
 
         if (!this.state.allowReservations) {
-            window.alert('Reservations are currently disabled.')
+            this.setState({ submitError: 'Reservations are currently disabled.', submitSuccess: '' })
             return
         }
 
         if(this.state.isLoading) return;
 
         this.isSubmittingReservation = true
-        this.setState({ isLoading: true });
+        this.setState({ isLoading: true, submitError: '', submitSuccess: '' });
         try {
         const { reservationNumber, name, roomSetting, phoneNo, lastName } = this.state
 
         if (!roomSetting) {
-           window.alert('Please select an available class.')
+           this.setState({ submitError: 'Please select an available class.' })
            return
         }
 
@@ -187,6 +220,7 @@ class ReservationsInsert extends Component {
         }
       } catch (error) {
          console.error(error);
+         this.setState({ submitError: 'Something went wrong while creating the reservation.' })
       } finally {
          this.setState({ isLoading: false });
          this.isSubmittingReservation = false
@@ -196,11 +230,16 @@ class ReservationsInsert extends Component {
     makeReservation = async (payload) => {
        try {
            await api.createReservation(payload)
-           window.alert(`Reservation created successfully`)
-           window.location.reload()
+           this.setState({ submitSuccess: 'Reservation created successfully.', submitError: '' })
+           window.setTimeout(() => {
+              window.location.reload()
+           }, 700)
            return true
        } catch (error) {
-           window.alert(`Reservation creation failed ` + (error.response?.data?.message || error.message || ''))
+           this.setState({
+              submitError: `Reservation creation failed ${error.response?.data?.message || error.message || ''}`.trim(),
+              submitSuccess: '',
+           })
            return false
        }
     }
@@ -258,7 +297,21 @@ class ReservationsInsert extends Component {
     }
 
     render() {
-        const { reservationNumber, name, roomSetting, options, phoneNo, lastName, date, time, allowReservations, isSettingsLoading, isLoading } = this.state
+        const {
+            reservationNumber,
+            name,
+            roomSetting,
+            options,
+            phoneNo,
+            lastName,
+            date,
+            time,
+            allowReservations,
+            isSettingsLoading,
+            isLoading,
+            submitError,
+            submitSuccess,
+        } = this.state
         const isFormDisabled = !allowReservations || isSettingsLoading || isLoading
         return (
             <Wrapper>
@@ -269,6 +322,20 @@ class ReservationsInsert extends Component {
                     <Notice>
                         Reservations are temporarily disabled. Please contact the studio for updates.
                     </Notice>
+                )}
+
+                {isLoading && (
+                    <ProcessingCard>
+                        Please wait while we validate your pass, reserve your class, and confirm the booking.
+                    </ProcessingCard>
+                )}
+
+                {!isLoading && submitError && (
+                    <ErrorCard>{submitError}</ErrorCard>
+                )}
+
+                {!isLoading && submitSuccess && (
+                    <SuccessCard>{submitSuccess}</SuccessCard>
                 )}
 
                 <Label>Ticket Number: </Label>
@@ -347,10 +414,15 @@ class ReservationsInsert extends Component {
                       " ,Virtual Capacity: " + object.virtualCapacity + "/" + object.maxVirtualCapacity}</option>
                    })}
                 </InputSelect>
-                <Button onClick={this.handleCreateReservation} disabled={isFormDisabled}>
-                    {isLoading ? 'Booking...' : 'Book'}
-                </Button>
-                <CancelButton href={'/reservations/create'}>Clear</CancelButton>
+                <ActionsRow>
+                    <Button onClick={this.handleCreateReservation} disabled={isFormDisabled}>
+                        {isLoading && (
+                            <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" />
+                        )}
+                        {isLoading ? 'Booking...' : 'Book'}
+                    </Button>
+                    <CancelButton href={'/reservations/create'}>Clear</CancelButton>
+                </ActionsRow>
             </Wrapper>
         )
     }
