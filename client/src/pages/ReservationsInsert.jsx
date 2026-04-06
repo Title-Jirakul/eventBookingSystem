@@ -114,6 +114,7 @@ class ReservationsInsert extends Component {
     constructor(props) {
         super(props)
         this.isSubmittingReservation = false
+        this.selectedRoomSetting = ''
 
         this.state = {
             times: [],
@@ -156,6 +157,7 @@ class ReservationsInsert extends Component {
 
     handleChangeInputRoomSetting = async event => {
         const roomSetting = event.target.value
+        this.selectedRoomSetting = roomSetting
         this.setState({ roomSetting })
     }
 
@@ -196,7 +198,8 @@ class ReservationsInsert extends Component {
         this.isSubmittingReservation = true
         this.setState({ isLoading: true, submitError: '', submitSuccess: '' });
         try {
-        const { reservationNumber, name, roomSetting, phoneNo, lastName } = this.state
+        const { reservationNumber, name, phoneNo, lastName } = this.state
+        const roomSetting = this.selectedRoomSetting || this.state.roomSetting
 
         if (!roomSetting) {
            this.setState({ submitError: 'Please select an available class.' })
@@ -288,8 +291,17 @@ class ReservationsInsert extends Component {
 
     getOptionsByDateTime = async (thisDate, thisTime) => {
        const {allOptions} = this.state
-       let options = allOptions.filter(data => ((data.capacity < data.maxCapacity) || (data.virtualCapacity < data.maxVirtualCapacity)) && ((data.date === thisDate) && (data.time === thisTime)))
-       this.setState({options: options})
+       const options = allOptions.filter(data => ((data.capacity < data.maxCapacity) || (data.virtualCapacity < data.maxVirtualCapacity)) && ((data.date === thisDate) && (data.time === thisTime)))
+       const selectedOptionStillExists = options.some((option) => JSON.stringify(option) === this.selectedRoomSetting)
+
+       if (!selectedOptionStillExists) {
+            this.selectedRoomSetting = ''
+       }
+
+       this.setState({
+            options,
+            roomSetting: selectedOptionStillExists ? this.state.roomSetting : '',
+       })
     }
 
     componentDidMount = async () => {
