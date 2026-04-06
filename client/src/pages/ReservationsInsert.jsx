@@ -114,7 +114,7 @@ class ReservationsInsert extends Component {
     constructor(props) {
         super(props)
         this.isSubmittingReservation = false
-        this.selectedRoomSetting = ''
+        this.selectedRoomId = ''
 
         this.state = {
             times: [],
@@ -122,7 +122,7 @@ class ReservationsInsert extends Component {
             name: '',
             lastName: '',
             phoneNo: '',
-            roomSetting: '',
+            roomSettingId: '',
             date: '',
             time: '',
             options: null,
@@ -156,9 +156,9 @@ class ReservationsInsert extends Component {
     }
 
     handleChangeInputRoomSetting = async event => {
-        const roomSetting = event.target.value
-        this.selectedRoomSetting = roomSetting
-        this.setState({ roomSetting })
+        const roomSettingId = event.target.value
+        this.selectedRoomId = roomSettingId
+        this.setState({ roomSettingId })
     }
 
     handleChangeInputDate = async event => {
@@ -198,20 +198,20 @@ class ReservationsInsert extends Component {
         this.isSubmittingReservation = true
         this.setState({ isLoading: true, submitError: '', submitSuccess: '' });
         try {
-        const { reservationNumber, name, phoneNo, lastName } = this.state
-        const roomSetting = this.selectedRoomSetting || this.state.roomSetting
+        const { reservationNumber, name, phoneNo, lastName, options, roomSettingId } = this.state
+        const selectedRoomId = this.selectedRoomId || roomSettingId
+        const selectedRoom = (options || []).find((option) => option._id === selectedRoomId)
 
-        if (!roomSetting) {
+        if (!selectedRoom) {
            this.setState({ submitError: 'Please select an available class.' })
            return
         }
 
-        const roomSettingJSON = JSON.parse(roomSetting)
-        const time = roomSettingJSON.time
-        const date = roomSettingJSON.date
-        const roomNumber = roomSettingJSON.roomNo
-        const roomID = roomSettingJSON._id
-        const instructor = roomSettingJSON.instructor
+        const time = selectedRoom.time
+        const date = selectedRoom.date
+        const roomNumber = selectedRoom.roomNo
+        const roomID = selectedRoom._id
+        const instructor = selectedRoom.instructor
         const payload = { reservationNo: reservationNumber, 
             name: name, time: time, date: date, roomNo: roomNumber, phoneNo: phoneNo,
         lastName: lastName, roomID: roomID, instructor: instructor }
@@ -292,15 +292,15 @@ class ReservationsInsert extends Component {
     getOptionsByDateTime = async (thisDate, thisTime) => {
        const {allOptions} = this.state
        const options = allOptions.filter(data => ((data.capacity < data.maxCapacity) || (data.virtualCapacity < data.maxVirtualCapacity)) && ((data.date === thisDate) && (data.time === thisTime)))
-       const selectedOptionStillExists = options.some((option) => JSON.stringify(option) === this.selectedRoomSetting)
+       const selectedOptionStillExists = options.some((option) => option._id === this.selectedRoomId)
 
        if (!selectedOptionStillExists) {
-            this.selectedRoomSetting = ''
+            this.selectedRoomId = ''
        }
 
        this.setState({
             options,
-            roomSetting: selectedOptionStillExists ? this.state.roomSetting : '',
+            roomSettingId: selectedOptionStillExists ? this.state.roomSettingId : '',
        })
     }
 
@@ -312,7 +312,7 @@ class ReservationsInsert extends Component {
         const {
             reservationNumber,
             name,
-            roomSetting,
+            roomSettingId,
             options,
             phoneNo,
             lastName,
@@ -331,7 +331,7 @@ class ReservationsInsert extends Component {
                 <Title>Reservation</Title>
 
                 {!isSettingsLoading && !allowReservations && (
-                    <Notice>
+                   <Notice>
                         Reservations are temporarily disabled. Please contact the studio for updates.
                     </Notice>
                 )}
@@ -413,12 +413,12 @@ class ReservationsInsert extends Component {
                 <Label>Available Classes: </Label>
                 <InputSelect
                    onChange={this.handleChangeInputRoomSetting}
-                   value={roomSetting}
+                   value={roomSettingId}
                    disabled={isFormDisabled}
                 >
-                   <option hidden disabled selected value>-- Select an option --</option>
+                   <option value="" disabled>-- Select an option --</option>
                    {this.state.options && this.state.options.map(object => {
-                      return <option key={object._id} value={JSON.stringify(object)}>{
+                      return <option key={object._id} value={object._id}>{
                       " Room: " + object.roomNo +
                       " ,Class Name: " + object.className +
                       " ,Instructor: " + object.instructor +
