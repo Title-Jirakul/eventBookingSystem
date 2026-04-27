@@ -172,9 +172,8 @@ class ClassList extends Component {
                         autoHeight
                         disableColumnMenu
                         disableSelectionOnClick
-                        pageSize={classes.length || 10}
-                        rowsPerPageOptions={[classes.length || 10]}
-                        hideFooterPagination
+                        pageSize={100}
+                        rowsPerPageOptions={[25, 50, 100]}
                     />
                 </div>
                 <BulkDeleteConfirmDialog
