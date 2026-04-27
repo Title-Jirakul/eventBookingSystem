@@ -194,7 +194,8 @@ class PassList extends Component {
                             backgroundColor: '#fff',
                             borderRadius: 2,
                         }}
-                        pageSizeOptions={[passes.length]}
+                        pageSize={100}
+                        rowsPerPageOptions={[25, 50, 100]}
                     />
                 </div>
                 <BulkDeleteConfirmDialog
