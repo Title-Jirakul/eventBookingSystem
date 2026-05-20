@@ -137,50 +137,13 @@ class ReservationsUpdate extends Component {
                isLoading: false,
             })
         }).catch(res => {
+            this.setState({ isLoading: false })
             window.alert(`No reservation made for this ticket, please try again`)
         })
     }
 
     render() {
         const { ticketNo, reservations, isLoading } = this.state
-
-        const columns = [
-            {
-                Header: 'Date',
-                accessor: 'date',
-                filterable: true,
-                filterMethod: this.filterMethod,
-            },
-            {
-                Header: 'Time',
-                accessor: 'time',
-                filterable: true,
-                filterMethod: this.filterMethod,
-            },
-            {
-                Header: 'Room No',
-                accessor: 'roomNo',
-                filterable: true,
-                filterMethod: this.filterMethod,
-            },
-            {
-                Header: 'Instructor',
-                accessor: 'instructor',
-                filterable: true,
-                filterMethod: this.filterMethod,
-            },
-            {
-                Header: '',
-                accessor: '',
-                Cell: function(props) {
-                    return (
-                        <span>
-                            <DeleteReservation id={props.original._id} roomID={props.original.roomID} reservationNo={props.original.reservationNo}/>
-                        </span>
-                    )
-                },
-            },
-        ]
 
         let showTable = true
         if (!reservations.length) {
@@ -201,16 +164,37 @@ class ReservationsUpdate extends Component {
                 <Button onClick={this.handleGetReservations}>Get Reservations</Button>
                 <CancelButton href={'/reservations/update'}>Clear</CancelButton>
             <WrapperTable>
-                {/* {showTable && (
-                    <ReactTable
-                        data={reservations}
-                        columns={columns}
-                        loading={isLoading}
-                        defaultPageSize={10}
-                        showPageSizeOptions={true}
-                        minRows={0}
-                    />
-                )} */}
+                {isLoading && <div>Loading reservations...</div>}
+                {showTable && (
+                    <table className="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Room No</th>
+                                <th>Instructor</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {reservations.map(reservation => (
+                                <tr key={reservation._id}>
+                                    <td>{reservation.date}</td>
+                                    <td>{reservation.time}</td>
+                                    <td>{reservation.roomNo}</td>
+                                    <td>{reservation.instructor}</td>
+                                    <td>
+                                        <DeleteReservation
+                                            id={reservation._id}
+                                            roomID={reservation.roomID}
+                                            reservationNo={reservation.reservationNo}
+                                        />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
             </WrapperTable>
             </Wrapper>
         )
