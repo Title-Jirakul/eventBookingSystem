@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import api from "../api";
-import { AdminNavBar, BulkDeleteConfirmDialog } from "../components";
+import {
+    AdminNavBar,
+    BulkDeleteConfirmDialog,
+    addColumnFilters,
+    filterRowsByColumnText,
+} from "../components";
 import styled from "styled-components";
 import { downloadCsv } from "../utils/downloadCsv";
 
@@ -48,6 +53,7 @@ class ClassList extends Component {
         super(props);
         this.state = {
             classes: [],
+            columnFilters: {},
             isLoading: false,
             isBulkDeleteOpen: false,
             isBulkDeleting: false,
@@ -122,8 +128,17 @@ class ClassList extends Component {
         ]);
     };
 
+    handleColumnFilterChange = (field, value) => {
+        this.setState(prevState => ({
+            columnFilters: {
+                ...prevState.columnFilters,
+                [field]: value,
+            },
+        }));
+    };
+
     render() {
-        const { classes, isLoading, isBulkDeleteOpen, isBulkDeleting } = this.state;
+        const { classes, columnFilters, isLoading, isBulkDeleteOpen, isBulkDeleting } = this.state;
 
         const columns = [
             { field: "roomNo", headerName: "Room No", flex: 1 },
@@ -146,6 +161,12 @@ class ClassList extends Component {
                 ),
             },
         ];
+        const filteredClasses = filterRowsByColumnText(classes, columnFilters);
+        const columnsWithFilters = addColumnFilters(
+            columns,
+            columnFilters,
+            this.handleColumnFilterChange
+        );
 
         return (
             <Wrapper>
@@ -166,12 +187,18 @@ class ClassList extends Component {
 
                 <div style={{ width: "100%" }}>
                     <DataGrid
-                        rows={classes}
-                        columns={columns}
+                        rows={filteredClasses}
+                        columns={columnsWithFilters}
                         loading={isLoading}
                         autoHeight
+                        headerHeight={82}
                         disableColumnMenu
                         disableSelectionOnClick
+                        sx={{
+                            "& .MuiDataGrid-columnHeaderTitleContainerContent": {
+                                width: "100%",
+                            },
+                        }}
                         pageSize={100}
                         rowsPerPageOptions={[25, 50, 100]}
                     />

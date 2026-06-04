@@ -3,7 +3,12 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button } from "@mui/material";
 import styled from "styled-components";
 import api from "../api";
-import { AdminNavBar, BulkDeleteConfirmDialog } from "../components";
+import {
+  AdminNavBar,
+  BulkDeleteConfirmDialog,
+  addColumnFilters,
+  filterRowsByColumnText,
+} from "../components";
 import { downloadCsv } from "../utils/downloadCsv";
 
 const Wrapper = styled.div`
@@ -85,6 +90,7 @@ const DeleteReservation = ({ id, reservationNo, roomID }) => {
 
 const ReservationsList = () => {
   const [reservations, setReservations] = useState([]);
+  const [columnFilters, setColumnFilters] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isBulkDeleteOpen, setIsBulkDeleteOpen] = useState(false);
   const [isBulkDeleting, setIsBulkDeleting] = useState(false);
@@ -132,6 +138,13 @@ const ReservationsList = () => {
     ]);
   };
 
+  const handleColumnFilterChange = (field, value) => {
+    setColumnFilters(currentFilters => ({
+      ...currentFilters,
+      [field]: value,
+    }));
+  };
+
   const columns = [
     { field: "reservationNo", headerName: "Ticket No", flex: 1 },
     { field: "name", headerName: "First Name", flex: 1 },
@@ -156,6 +169,8 @@ const ReservationsList = () => {
       ),
     },
   ];
+  const filteredReservations = filterRowsByColumnText(reservations, columnFilters);
+  const columnsWithFilters = addColumnFilters(columns, columnFilters, handleColumnFilterChange);
 
   return (
     <Wrapper>
@@ -171,14 +186,18 @@ const ReservationsList = () => {
 
       <Box sx={{ height: "80vh", width: "100%", mt: 3 }}>
         <DataGrid
-          rows={reservations}
-          columns={columns}
+          rows={filteredReservations}
+          columns={columnsWithFilters}
           getRowId={(row) => row._id}
           loading={isLoading}
+          headerHeight={82}
           disableRowSelectionOnClick
           sx={{
             background: "white",
             borderRadius: 2,
+            "& .MuiDataGrid-columnHeaderTitleContainerContent": {
+              width: "100%",
+            },
           }}
         />
       </Box>
