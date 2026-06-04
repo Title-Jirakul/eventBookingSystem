@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'https://make-friends-server.herokuapp.com/api',
+    baseURL: 'https://eventbookingsystem-1.onrender.com/api',
     headers: {
         common: {
             'Content-Type': 'application/json'
